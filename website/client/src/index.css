@@ -54,17 +54,26 @@
     font-family: 'Poppins', system-ui, -apple-system, sans-serif;
     scrollbar-gutter: stable;
     overscroll-behavior-y: none;
+    color-scheme: light;
+  }
+
+  html.dark, html[data-theme='dark'] {
+    color-scheme: dark;
   }
   
   html, body, #root {
     background-color: var(--bg);
     color: var(--text);
     min-height: 100dvh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
     scrollbar-color: var(--border) var(--bg);
   }
 
   body {
     overflow-x: clip; /* Prevents horizontal scroll without breaking position: sticky */
+    width: 100%;
   }
 
   /* Anchor link smooth scroll margin offset equal to nav height */
