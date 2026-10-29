@@ -120,9 +120,9 @@ void main() {
   // 1. Morph interpolation between active targets
   vec3 targetPos = getMorphPosition(uMorph);
 
-  // 2. Low-frequency 3D noise for organic texture
+  // 2. Low-frequency 3D noise for organic texture (subtle float so headset geometry stays crisp)
   vec3 noiseCoord = targetPos * 0.65 + vec3(uTime * 0.12, uTime * 0.1, uTime * 0.08) + vec3(aSeed * 0.4);
-  float bump = snoise(noiseCoord) * 0.28;
+  float bump = snoise(noiseCoord) * 0.025;
   vec3 norm = normalize(targetPos + vec3(0.001));
   vec3 pos = targetPos + norm * bump;
 
@@ -189,10 +189,10 @@ void main() {
   vBlur = clamp(distFromFocus * 0.32, 0.0, 1.0);
   vDepthFactor = clamp((-mvPosition.z - 3.5) / 4.0, 0.0, 1.0);
 
-  // gl_PointSize scaled by distance, blur factor, and theme
+  // gl_PointSize scaled by distance, blur factor, and theme (crisp glowing points)
   float themeSizeBoost = mix(1.0, 1.15, uTheme);
-  float sizeBoost = (1.0 + vBlur * 1.5) * themeSizeBoost;
-  gl_PointSize = (aSize * sizeBoost * uPixelRatio * 38.0) / -mvPosition.z;
+  float sizeBoost = (1.0 + vBlur * 1.3) * themeSizeBoost;
+  gl_PointSize = (aSize * sizeBoost * uPixelRatio * 18.0) / -mvPosition.z;
 }
 `;
 
