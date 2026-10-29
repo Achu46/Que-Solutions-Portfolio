@@ -31,7 +31,7 @@ export default function HeroSection({ hero, settings }) {
         <div className="relative z-20 flex items-center justify-end w-full">
           <a
             href="#contact"
-            className="inverse inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-wider hover:opacity-95 active:scale-95 transition-all"
+            className="inverse inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 min-h-[44px] rounded-full text-xs font-bold uppercase tracking-wider hover:opacity-95 active:scale-95 transition-all"
           >
             <span className="w-2 h-2 rounded-full accent-dot animate-pulse" />
             <span>Contact us</span>
@@ -39,10 +39,10 @@ export default function HeroSection({ hero, settings }) {
         </div>
 
         {/* ---------------- 2-COLUMN HERO BODY (Text Left, 3D Stage Right) ---------------- */}
-        <div className="relative z-20 my-auto py-6 lg:py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center max-w-7xl mx-auto w-full">
+        <div className="relative z-20 my-auto py-4 sm:py-6 lg:py-8 grid grid-cols-1 min-[900px]:grid-cols-12 gap-8 lg:gap-10 items-center max-w-[1320px] mx-auto w-full">
           
           {/* LEFT COLUMN: Text, Badge, Headline, Paragraph, CTAs (Order 1 on mobile) */}
-          <div className="lg:col-span-7 order-1 flex flex-col justify-center space-y-5 sm:space-y-6">
+          <div className="min-[900px]:col-span-7 order-1 flex flex-col justify-center text-left min-[641px]:max-[899px]:text-center min-[641px]:max-[899px]:items-center space-y-4 sm:space-y-6">
             
             {/* Bracketed Eyebrow Badge (No white border) */}
             <div className="inline-flex items-center">
@@ -63,11 +63,11 @@ export default function HeroSection({ hero, settings }) {
                 'Dedicated outsourced customer care and call centre services built specifically for small & growing product-based businesses.'}
             </p>
 
-            {/* Action Buttons Row: Get a Quote + View Our Work */}
-            <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-1">
+            {/* Action Buttons Row: Get a Quote + View Our Work (Full width on mobile, 44px min touch target) */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center min-[641px]:max-[899px]:justify-center gap-3 sm:gap-4 pt-1 w-full sm:w-auto">
               <a
                 href="#contact"
-                className="brand-inverse inline-flex items-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider hover:opacity-95 active:scale-95 transition-all"
+                className="brand-inverse inline-flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 min-h-[44px] w-full sm:w-auto rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider hover:opacity-95 active:scale-95 transition-all"
               >
                 <span className="w-2.5 h-2.5 rounded-full accent-dot" />
                 <span>Get a Quote</span>
@@ -76,22 +76,22 @@ export default function HeroSection({ hero, settings }) {
 
               <a
                 href="#services"
-                className="inline-flex items-center gap-2 px-6 sm:px-7 py-3.5 sm:py-4 rounded-full text-xs sm:text-sm font-semibold border border-border/70 bg-surface/70 hover:bg-hover text-text transition-all active:scale-95 shadow-sm"
+                className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3.5 sm:py-4 min-h-[44px] w-full sm:w-auto rounded-full text-xs sm:text-sm font-semibold border border-border/70 bg-surface/70 hover:bg-hover text-text transition-all active:scale-95 shadow-sm"
               >
                 <span>View Our Work</span>
               </a>
             </div>
 
             {/* Operating Hours / Trust Cue */}
-            <div className="pt-2 flex items-center gap-2 text-xs font-mono text-text/70">
+            <div className="pt-2 flex items-center min-[641px]:max-[899px]:justify-center gap-2 text-xs font-mono text-text/70">
               <span className="w-1.5 h-1.5 rounded-full bg-brand" />
               <span>Mon–Sat • 4 hrs/day (~104 hrs/mo)</span>
             </div>
           </div>
 
           {/* RIGHT COLUMN: 3D Stage with GPU Particle Headset & 3 Floating Chips (Order 2 on mobile) */}
-          <div className="lg:col-span-5 order-2 relative flex items-center justify-center w-full">
-            <div className="relative w-full h-[360px] sm:h-[420px] lg:h-[480px] flex items-center justify-center">
+          <div className="min-[900px]:col-span-5 order-2 relative flex items-center justify-center w-full">
+            <div className="headset-stage relative w-full h-[320px] max-h-[40svh] min-[641px]:h-[420px] min-[641px]:max-h-none min-[900px]:h-[480px] 2xl:h-[540px] flex items-center justify-center">
               
               {/* Lazy-Loaded GPU Particle Headset Stage */}
               <Suspense fallback={<HeroPosterFallback isDark={isDark} />}>
@@ -100,7 +100,7 @@ export default function HeroSection({ hero, settings }) {
 
               {/* Chip 1: Inbound Support (Top Left - No white border or box-shadow ring) */}
               <div 
-                className="absolute top-4 left-2 sm:top-6 sm:left-4 z-10 flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-surface/90 backdrop-blur-md text-text text-xs sm:text-sm font-semibold select-none pointer-events-none transition-transform"
+                className="absolute top-2 left-1 sm:top-6 sm:left-4 z-10 flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-4 sm:py-2.5 rounded-full bg-surface/90 backdrop-blur-md text-text text-[11px] sm:text-xs md:text-sm font-semibold select-none pointer-events-none transition-transform"
                 style={{ animation: 'float 5.2s ease-in-out infinite' }}
               >
                 <Headphones className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand flex-shrink-0" />
@@ -109,7 +109,7 @@ export default function HeroSection({ hero, settings }) {
 
               {/* Chip 2: Chat Support (Right Center - No white border or box-shadow ring) */}
               <div 
-                className="absolute top-1/2 -translate-y-1/2 right-2 sm:right-4 z-10 flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-surface/90 backdrop-blur-md text-text text-xs sm:text-sm font-semibold select-none pointer-events-none transition-transform"
+                className="absolute top-1/2 -translate-y-1/2 right-1 sm:right-4 z-10 flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-4 sm:py-2.5 rounded-full bg-surface/90 backdrop-blur-md text-text text-[11px] sm:text-xs md:text-sm font-semibold select-none pointer-events-none transition-transform"
                 style={{ animation: 'float 6.4s ease-in-out 1.2s infinite' }}
               >
                 <MessageSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand flex-shrink-0" />
@@ -118,7 +118,7 @@ export default function HeroSection({ hero, settings }) {
 
               {/* Chip 3: Outbound Support (Bottom Left - No white border or box-shadow ring) */}
               <div 
-                className="absolute bottom-4 left-6 sm:bottom-6 sm:left-8 z-10 flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-surface/90 backdrop-blur-md text-text text-xs sm:text-sm font-semibold select-none pointer-events-none transition-transform"
+                className="absolute bottom-2 left-4 sm:bottom-6 sm:left-8 z-10 flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-4 sm:py-2.5 rounded-full bg-surface/90 backdrop-blur-md text-text text-[11px] sm:text-xs md:text-sm font-semibold select-none pointer-events-none transition-transform"
                 style={{ animation: 'float 5.8s ease-in-out 2.5s infinite' }}
               >
                 <PhoneOutgoing className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand flex-shrink-0" />
