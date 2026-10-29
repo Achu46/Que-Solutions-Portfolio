@@ -1,12 +1,12 @@
 import React, { Suspense } from 'react';
-import { ArrowDown, ArrowUpRight, Headphones, MessageSquare, PhoneOutgoing, Sun, Moon } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Headphones, MessageSquare, PhoneOutgoing } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import HeroPosterFallback from './3d/HeroPosterFallback';
 
 const Hero3DCanvas = React.lazy(() => import('./3d/Hero3DCanvas'));
 
 export default function HeroSection({ hero, settings }) {
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
 
   return (
     <section 
@@ -27,47 +27,15 @@ export default function HeroSection({ hero, settings }) {
         {/* Soft volumetric light cone from top centre */}
         <div className="absolute inset-0 volumetric-cone z-0 pointer-events-none" />
 
-        {/* ---------------- TOP BAR INSIDE HERO CARD ---------------- */}
-        <div className="relative z-20 flex items-center justify-between w-full">
-          {/* Top-Left: Brand Logo in Neutral Rounded Container (no pale box artifact) */}
-          <a href="#home" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-surface border border-border flex items-center justify-center p-1.5 shadow-sm overflow-hidden flex-shrink-0 transition-transform group-hover:scale-105">
-              <img
-                src="/logo.png"
-                alt="QUE SOLUTIONS"
-                className="w-full h-full object-contain"
-              />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xs sm:text-sm font-bold tracking-wider text-text">
-                QUE SOLUTIONS
-              </span>
-              <span className="hidden sm:inline-block text-[10px] tracking-wider text-text/60 font-mono">
-                PEOPLE TODAY. A BRIGHTER TOMORROW.
-              </span>
-            </div>
+        {/* ---------------- TOP BAR (Contact Us only, no empty gap) ---------------- */}
+        <div className="relative z-20 flex items-center justify-end w-full">
+          <a
+            href="#contact"
+            className="inverse inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-md hover:opacity-95 active:scale-95 transition-all"
+          >
+            <span className="w-2 h-2 rounded-full accent-dot animate-pulse" />
+            <span>Contact us</span>
           </a>
-
-          {/* Top-Right: Theme Toggle + "Contact us" Pill with Accent Dot */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            <button
-              onClick={toggleTheme}
-              type="button"
-              className="p-2 sm:p-2.5 rounded-full border border-border bg-surface/80 hover:bg-hover text-text transition-colors focus-visible:ring-2 focus-visible:ring-brand shadow-sm"
-              aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
-              title={isDark ? "Switch to light theme" : "Switch to dark theme"}
-            >
-              {isDark ? <Sun className="w-4 h-4 text-brand" /> : <Moon className="w-4 h-4 text-brand" />}
-            </button>
-
-            <a
-              href="#contact"
-              className="inverse inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg hover:opacity-95 active:scale-95 transition-all"
-            >
-              <span className="w-2 h-2 rounded-full accent-dot animate-pulse" />
-              <span>Contact us</span>
-            </a>
-          </div>
         </div>
 
         {/* ---------------- 2-COLUMN HERO BODY (Text Left, 3D Stage Right) ---------------- */}

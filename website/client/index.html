@@ -35,8 +35,10 @@
     <script>
       (function() {
         try {
-          var stored = localStorage.getItem('que_theme');
-          var isDark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var params = new URLSearchParams(window.location.search);
+          var urlTheme = params.get('theme');
+          var isDark = (urlTheme === 'dark') || (!urlTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (urlTheme === 'light') isDark = false;
           if (isDark) {
             document.documentElement.classList.add('dark');
             document.documentElement.setAttribute('data-theme', 'dark');

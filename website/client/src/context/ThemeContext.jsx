@@ -5,12 +5,14 @@ const ThemeContext = createContext();
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
     try {
-      const saved = localStorage.getItem('que_theme');
-      if (saved === 'dark' || saved === 'light') return saved;
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    } catch {
-      return 'light';
-    }
+      if (typeof window !== 'undefined') {
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlTheme = urlParams.get('theme');
+        if (urlTheme === 'dark' || urlTheme === 'light') return urlTheme;
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+    } catch {}
+    return 'light';
   });
 
   useEffect(() => {
@@ -22,32 +24,28 @@ export function ThemeProvider({ children }) {
       root.classList.remove('dark');
       root.setAttribute('data-theme', 'light');
     }
-    try {
-      localStorage.setItem('que_theme', theme);
-    } catch {}
   }, [theme]);
 
-  // Listen to system theme changes if not explicitly overridden by user
+  // Live listener for system prefers-color-scheme (unless overridden by ?theme= in URL)
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlTheme = urlParams.get('theme');
+    if (urlTheme === 'dark' || urlTheme === 'light') {
+      setTheme(urlTheme);
+      return;
+    }
+
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = (e) => {
-      const saved = localStorage.getItem('que_theme');
-      if (!saved) {
-        setTheme(e.matches ? 'dark' : 'light');
-      }
+      setTheme(e.matches ? 'dark' : 'light');
     };
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
   const toggleTheme = () => {
-    const root = document.documentElement;
-    // Add transition class only when toggling, remove after 250ms
-    root.classList.add('theme-transitioning');
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
-    setTimeout(() => {
-      root.classList.remove('theme-transitioning');
-    }, 250);
   };
 
   return (
