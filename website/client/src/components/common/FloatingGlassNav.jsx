@@ -58,7 +58,6 @@ export default function FloatingGlassNav({ settings }) {
         {/* Navigation Items */}
         {navLinks.map((link) => {
           const isActive = activeSection === link.id;
-          const isCta = link.id === 'contact';
 
           if (link.hasDropdown) {
             return (
@@ -116,30 +115,6 @@ export default function FloatingGlassNav({ settings }) {
                   )}
                 </AnimatePresence>
               </div>
-            );
-          }
-
-          // Special styling for right-side CTA button (Contact) vs standard links
-          if (isCta) {
-            return (
-              <a
-                key={link.id}
-                href={link.href}
-                onClick={() => setActiveSection(link.id)}
-                className={`relative flex-shrink-0 flex items-center justify-center min-h-[44px] px-4 sm:px-5 py-2 rounded-full text-[12px] sm:text-xs md:text-sm font-bold whitespace-nowrap transition-all shadow-sm ${
-                  isActive
-                    ? 'bg-white text-black shadow-md'
-                    : 'bg-white/95 text-black hover:bg-white dark:bg-white dark:text-black border border-border/40'
-                }`}
-                style={{
-                  backgroundColor: '#FFFFFF',
-                  color: '#000000',
-                }}
-              >
-                <span className="relative z-10 font-bold tracking-wide" style={{ color: '#000000' }}>
-                  {link.name}
-                </span>
-              </a>
             );
           }
 
