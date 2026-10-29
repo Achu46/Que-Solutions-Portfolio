@@ -102,10 +102,14 @@ export default function Navbar({ settings }) {
 
             <a
               href="#contact"
-              className="brand-inverse flex items-center gap-2 text-xs uppercase tracking-wider font-bold px-5 py-2.5 rounded-full shadow-soft hover:opacity-95 active:scale-95 transition-all"
+              className="flex items-center justify-center gap-2 text-xs uppercase tracking-wider font-bold px-5 py-2.5 min-h-[44px] rounded-full shadow-soft hover:opacity-95 active:scale-95 transition-all z-10"
+              style={{
+                backgroundColor: '#FFFFFF',
+                color: '#000000',
+              }}
             >
-              <span>Get a Quote</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <span className="font-bold tracking-wide text-black" style={{ color: '#000000' }}>Get a Quote</span>
+              <ArrowRight className="w-3.5 h-3.5 text-black" style={{ color: '#000000' }} />
             </a>
           </div>
 

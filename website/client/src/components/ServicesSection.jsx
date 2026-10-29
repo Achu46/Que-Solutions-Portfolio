@@ -1,14 +1,8 @@
 import React, { useRef } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { PhoneIncoming, PhoneOutgoing, MessageSquareText, Check, ArrowRight, ShieldCheck, Headphones, Smartphone, MessageCircle } from 'lucide-react';
+import { PhoneIncoming, PhoneOutgoing, MessageSquareText, Check, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useCanvasScroll } from '../context/CanvasScrollContext';
 import Reveal from './common/Reveal';
-
-const serviceShapeHints = [
-  { id: 'inbound', num: '01', shape: '3D Headset', icon: Headphones, label: 'Inbound Call Support' },
-  { id: 'outbound', num: '02', shape: '3D Handset', icon: Smartphone, label: 'Outbound Call Support' },
-  { id: 'chat', num: '03', shape: '3D Chat Bubble', icon: MessageCircle, label: 'Live Chat & WhatsApp' },
-];
 
 function ServiceTiltCard({ service, index, isActive, onSelectService }) {
   const cardRef = useRef(null);
@@ -151,32 +145,6 @@ export default function ServicesSection({ services }) {
             </p>
           </Reveal>
         </div>
-
-        {/* 01 / 02 / 03 Interactive Progress Indicator */}
-        <Reveal delay={0.2} className="mb-12">
-          <div className="flex items-center justify-center">
-            <div className="inline-flex items-center gap-2 sm:gap-4 p-1.5 sm:p-2 rounded-full border border-border/80 bg-surface/85 backdrop-blur-xl shadow-lg">
-              {serviceShapeHints.map((hint, idx) => {
-                const isSelected = activeServiceIndex === idx;
-                const Icon = hint.icon;
-                return (
-                  <div
-                    key={hint.id}
-                    className={`flex items-center gap-2 px-3 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs font-medium transition-all ${
-                      isSelected
-                        ? 'inverse shadow-md font-bold'
-                        : 'text-text opacity-70 hover:opacity-100'
-                    }`}
-                  >
-                    <Icon className="w-3.5 h-3.5" />
-                    <span>{hint.num}</span>
-                    <span className="hidden sm:inline font-mono text-[11px] opacity-80">• {hint.shape}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </Reveal>
 
         {/* 3D-Tilt Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">

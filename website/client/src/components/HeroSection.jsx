@@ -31,10 +31,16 @@ export default function HeroSection({ hero, settings }) {
         <div className="relative z-20 flex items-center justify-end w-full">
           <a
             href="#contact"
-            className="inverse inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 min-h-[44px] rounded-full text-xs font-bold uppercase tracking-wider hover:opacity-95 active:scale-95 transition-all"
+            className="inverse inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 min-h-[44px] rounded-full text-xs font-bold uppercase tracking-wider hover:opacity-95 active:scale-95 transition-all shadow-sm"
+            style={{
+              color: 'var(--inverse-text)',
+              backgroundColor: 'var(--inverse-bg)',
+            }}
           >
-            <span className="w-2 h-2 rounded-full accent-dot animate-pulse" />
-            <span>Contact us</span>
+            <span className="w-2 h-2 rounded-full accent-dot animate-pulse flex-shrink-0" />
+            <span className="relative z-10 font-bold tracking-wide" style={{ color: 'var(--inverse-text)' }}>
+              Contact us
+            </span>
           </a>
         </div>
 

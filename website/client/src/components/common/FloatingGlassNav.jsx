@@ -58,6 +58,7 @@ export default function FloatingGlassNav({ settings }) {
         {/* Navigation Items */}
         {navLinks.map((link) => {
           const isActive = activeSection === link.id;
+          const isCta = link.id === 'contact';
 
           if (link.hasDropdown) {
             return (
@@ -70,9 +71,10 @@ export default function FloatingGlassNav({ settings }) {
                 <a
                   href={link.href}
                   onClick={() => setActiveSection(link.id)}
-                  className={`relative flex items-center justify-center min-h-[44px] gap-1 px-3 sm:px-4 py-2 rounded-full text-[12px] sm:text-xs md:text-sm font-medium whitespace-nowrap transition-colors ${
-                    isActive ? 'text-text font-bold' : 'text-text opacity-70 hover:opacity-100'
-                  }`}
+                  className={`relative flex items-center justify-center min-h-[44px] gap-1 px-3 sm:px-4 py-2 rounded-full text-[12px] sm:text-xs md:text-sm font-medium whitespace-nowrap transition-colors`}
+                  style={{
+                    color: isActive ? 'var(--inverse-text)' : 'var(--text)',
+                  }}
                 >
                   {isActive && (
                     <motion.div
@@ -81,8 +83,13 @@ export default function FloatingGlassNav({ settings }) {
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
-                  <span>{link.name}</span>
-                  <ChevronDown className={`w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-200 ${servicesDropdownOpen ? 'rotate-180' : ''}`} />
+                  <span className="relative z-10" style={{ color: isActive ? 'var(--inverse-text)' : undefined }}>
+                    {link.name}
+                  </span>
+                  <ChevronDown 
+                    className={`relative z-10 w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-200 ${servicesDropdownOpen ? 'rotate-180' : ''}`} 
+                    style={{ color: isActive ? 'var(--inverse-text)' : undefined }}
+                  />
                 </a>
 
                 {/* Services Dropdown Flyout */}
@@ -112,14 +119,39 @@ export default function FloatingGlassNav({ settings }) {
             );
           }
 
+          // Special styling for right-side CTA button (Contact) vs standard links
+          if (isCta) {
+            return (
+              <a
+                key={link.id}
+                href={link.href}
+                onClick={() => setActiveSection(link.id)}
+                className={`relative flex-shrink-0 flex items-center justify-center min-h-[44px] px-4 sm:px-5 py-2 rounded-full text-[12px] sm:text-xs md:text-sm font-bold whitespace-nowrap transition-all shadow-sm ${
+                  isActive
+                    ? 'bg-white text-black shadow-md'
+                    : 'bg-white/95 text-black hover:bg-white dark:bg-white dark:text-black border border-border/40'
+                }`}
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  color: '#000000',
+                }}
+              >
+                <span className="relative z-10 font-bold tracking-wide" style={{ color: '#000000' }}>
+                  {link.name}
+                </span>
+              </a>
+            );
+          }
+
           return (
             <a
               key={link.id}
               href={link.href}
               onClick={() => setActiveSection(link.id)}
-              className={`relative flex-shrink-0 flex items-center justify-center min-h-[44px] px-3 sm:px-4 py-2 rounded-full text-[12px] sm:text-xs md:text-sm font-medium whitespace-nowrap transition-colors ${
-                isActive ? 'text-text font-bold' : 'text-text opacity-70 hover:opacity-100'
-              }`}
+              className={`relative flex-shrink-0 flex items-center justify-center min-h-[44px] px-3 sm:px-4 py-2 rounded-full text-[12px] sm:text-xs md:text-sm font-medium whitespace-nowrap transition-colors`}
+              style={{
+                color: isActive ? 'var(--inverse-text)' : 'var(--text)',
+              }}
             >
               {isActive && (
                 <motion.div
@@ -128,7 +160,16 @@ export default function FloatingGlassNav({ settings }) {
                   transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                 />
               )}
-              <span>{link.name}</span>
+              <span 
+                className="relative z-10" 
+                style={{ 
+                  color: isActive ? 'var(--inverse-text)' : undefined,
+                  fontWeight: isActive ? 700 : 500,
+                  opacity: isActive ? 1 : 0.8
+                }}
+              >
+                {link.name}
+              </span>
             </a>
           );
         })}
