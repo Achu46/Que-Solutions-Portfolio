@@ -1,47 +1,12 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { ArrowDown, ArrowUpRight } from 'lucide-react';
+import React, { Suspense } from 'react';
+import { ArrowDown, ArrowUpRight, Headphones, MessageSquare, PhoneOutgoing, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import { useCanvasScroll } from '../context/CanvasScrollContext';
 import HeroPosterFallback from './3d/HeroPosterFallback';
 
+const Hero3DCanvas = React.lazy(() => import('./3d/Hero3DCanvas'));
+
 export default function HeroSection({ hero, settings }) {
-  const { isDark } = useTheme();
-  const cardRef = useRef(null);
-  const { setHeroCardEl } = useCanvasScroll();
-  const [canRender3D, setCanRender3D] = useState(true);
-
-  // Register card element for dynamic clip-path computation
-  useEffect(() => {
-    if (cardRef.current && setHeroCardEl) {
-      setHeroCardEl(cardRef.current);
-    }
-  }, [setHeroCardEl]);
-
-  // Check fallback criteria
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isLowTier =
-      (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
-      (navigator.deviceMemory && navigator.deviceMemory <= 4) ||
-      (navigator.connection && navigator.connection.saveData);
-
-    if (prefersReducedMotion || isLowTier) {
-      setCanRender3D(false);
-      return;
-    }
-
-    try {
-      const probeCanvas = document.createElement('canvas');
-      const gl =
-        probeCanvas.getContext('webgl2') ||
-        probeCanvas.getContext('webgl') ||
-        probeCanvas.getContext('experimental-webgl');
-      if (!gl) setCanRender3D(false);
-    } catch {
-      setCanRender3D(false);
-    }
-  }, []);
+  const { isDark, toggleTheme } = useTheme();
 
   return (
     <section 
@@ -50,12 +15,11 @@ export default function HeroSection({ hero, settings }) {
       className="relative min-h-[100dvh] w-full flex flex-col justify-between p-3 sm:p-4 md:p-6 bg-bg overflow-hidden"
     >
       {/* =========================================================================
-          THE INSET HERO CARD (Radius ~24-32px on pure black/white canvas)
+          THE INSET HERO CARD (2-column layout: text left, 3D stage right)
           ========================================================================= */}
       <div 
-        ref={cardRef}
         id="hero-card"
-        className="relative flex-1 w-full rounded-[26px] sm:rounded-[32px] border border-border/60 overflow-hidden flex flex-col justify-between p-6 sm:p-10 lg:p-14 transition-colors duration-300 shadow-2xl"
+        className="relative flex-1 w-full rounded-[26px] sm:rounded-[32px] border border-border/80 overflow-hidden flex flex-col justify-between p-5 sm:p-8 lg:p-12 transition-colors duration-300 shadow-2xl"
         style={{
           background: 'var(--hero-gradient)',
         }}
@@ -63,76 +27,134 @@ export default function HeroSection({ hero, settings }) {
         {/* Soft volumetric light cone from top centre */}
         <div className="absolute inset-0 volumetric-cone z-0 pointer-events-none" />
 
-        {/* 2D Fallback poster rendered only if 3D is disabled on low-tier or reduced motion */}
-        {!canRender3D && <HeroPosterFallback isDark={isDark} />}
-
         {/* ---------------- TOP BAR INSIDE HERO CARD ---------------- */}
         <div className="relative z-20 flex items-center justify-between w-full">
-          {/* Top-Left: Small Brand Logo */}
+          {/* Top-Left: Brand Logo in Neutral Rounded Container (no pale box artifact) */}
           <a href="#home" className="flex items-center gap-3 group">
-            <img
-              src="/logo.png"
-              alt="QUE SOLUTIONS"
-              className="h-9 sm:h-11 w-auto object-contain rounded-full border border-border/60 transition-transform group-hover:scale-105"
-            />
-            <span className="hidden sm:inline-block text-xs font-bold tracking-wider text-text">
-              QUE SOLUTIONS
-            </span>
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-surface border border-border flex items-center justify-center p-1.5 shadow-sm overflow-hidden flex-shrink-0 transition-transform group-hover:scale-105">
+              <img
+                src="/logo.png"
+                alt="QUE SOLUTIONS"
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs sm:text-sm font-bold tracking-wider text-text">
+                QUE SOLUTIONS
+              </span>
+              <span className="hidden sm:inline-block text-[10px] tracking-wider text-text/60 font-mono">
+                PEOPLE TODAY. A BRIGHTER TOMORROW.
+              </span>
+            </div>
           </a>
 
-          {/* Top-Right: "Contact us" Pill with Accent Dot */}
-          <a
-            href="#contact"
-            className="inverse inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg hover:opacity-95 active:scale-95 transition-all"
-          >
-            <span className="w-2 h-2 rounded-full accent-dot animate-pulse" />
-            <span>Contact us</span>
-          </a>
+          {/* Top-Right: Theme Toggle + "Contact us" Pill with Accent Dot */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              onClick={toggleTheme}
+              type="button"
+              className="p-2 sm:p-2.5 rounded-full border border-border bg-surface/80 hover:bg-hover text-text transition-colors focus-visible:ring-2 focus-visible:ring-brand shadow-sm"
+              aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+              title={isDark ? "Switch to light theme" : "Switch to dark theme"}
+            >
+              {isDark ? <Sun className="w-4 h-4 text-brand" /> : <Moon className="w-4 h-4 text-brand" />}
+            </button>
+
+            <a
+              href="#contact"
+              className="inverse inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg hover:opacity-95 active:scale-95 transition-all"
+            >
+              <span className="w-2 h-2 rounded-full accent-dot animate-pulse" />
+              <span>Contact us</span>
+            </a>
+          </div>
         </div>
 
-        {/* ---------------- MAIN CONTENT: SPLIT HEADLINE & CONTENT ---------------- */}
-        <div className="relative z-20 my-auto py-8 lg:py-12 flex flex-col justify-center max-w-7xl mx-auto w-full">
+        {/* ---------------- 2-COLUMN HERO BODY (Text Left, 3D Stage Right) ---------------- */}
+        <div className="relative z-20 my-auto py-6 lg:py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center max-w-7xl mx-auto w-full">
           
-          {/* Bracketed Eyebrow */}
-          <div className="mb-4 sm:mb-6">
-            <span className="text-xs sm:text-sm font-mono tracking-widest text-text font-semibold uppercase px-3 py-1 rounded-full border border-border/60 bg-surface/50 backdrop-blur-sm">
-              [ SUPPORT | TECHNOLOGY | GROWTH ]
-            </span>
-          </div>
-
-          {/* Two-Part Split Headline */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+          {/* LEFT COLUMN: Text, Badge, Headline, Paragraph, CTAs (Order 1 on mobile) */}
+          <div className="lg:col-span-7 order-1 flex flex-col justify-center space-y-5 sm:space-y-6">
             
-            {/* Part 1: Left Lines (Very Large Lightweight Sans) */}
-            <div className="lg:col-span-7 space-y-1">
-              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light tracking-[-0.035em] text-text leading-[1.05]">
-                Reliable Customer <br />
-                <span className="font-normal">Support for</span>
-              </h1>
+            {/* Bracketed Eyebrow Badge */}
+            <div className="inline-flex items-center">
+              <span className="text-xs sm:text-sm font-mono tracking-widest text-text font-semibold uppercase px-3.5 py-1.5 rounded-full border border-border/80 bg-surface/60 backdrop-blur-sm">
+                [ OUTSOURCED CUSTOMER CARE & CALL CENTRE ]
+              </span>
             </div>
 
-            {/* Part 2: Right (Lower) Lines with Paragraph Beside/Below */}
-            <div className="lg:col-span-5 space-y-5 lg:pl-4">
-              <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light tracking-[-0.035em] text-text leading-[1.05]">
-                Growing <br />
-                <span className="font-normal">Businesses.</span>
-              </h2>
+            {/* Headline with Poppins 600 weight, clamp, and high-contrast text */}
+            <h1 className="hero-headline text-text">
+              Customer Care That <br />
+              <span className="text-brand">Feels Personal.</span>
+            </h1>
 
-              <p className="text-xs sm:text-sm md:text-base text-text opacity-85 leading-relaxed font-normal max-w-md">
-                {hero?.subheadline ||
-                  'Affordable outsourced customer care, call centre and chat support for small and growing product-based businesses.'}
-              </p>
+            {/* Subheadline Paragraph */}
+            <p className="text-sm sm:text-base lg:text-lg text-text/80 max-w-xl leading-relaxed font-normal">
+              {hero?.subheadline ||
+                'Dedicated outsourced customer care and call centre services built specifically for small & growing product-based businesses.'}
+            </p>
 
-              {/* Pill CTA with Round Accent Dot */}
-              <div className="pt-2">
-                <a
-                  href="#contact"
-                  className="inverse inline-flex items-center gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider shadow-2xl hover:opacity-95 active:scale-95 transition-all"
-                >
-                  <span className="w-2.5 h-2.5 rounded-full accent-dot" />
-                  <span>Get a Quote</span>
-                  <ArrowUpRight className="w-4 h-4 ml-1 opacity-70" />
-                </a>
+            {/* Action Buttons Row: Get a Quote + View Our Work */}
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-1">
+              <a
+                href="#contact"
+                className="brand-inverse inline-flex items-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider shadow-xl hover:opacity-95 active:scale-95 transition-all"
+              >
+                <span className="w-2.5 h-2.5 rounded-full accent-dot" />
+                <span>Get a Quote</span>
+                <ArrowUpRight className="w-4 h-4 ml-0.5 opacity-80" />
+              </a>
+
+              <a
+                href="#services"
+                className="inline-flex items-center gap-2 px-6 sm:px-7 py-3.5 sm:py-4 rounded-full text-xs sm:text-sm font-semibold border border-border/90 bg-surface/70 hover:bg-hover text-text transition-all active:scale-95 shadow-sm"
+              >
+                <span>View Our Work</span>
+              </a>
+            </div>
+
+            {/* Operating Hours / Trust Cue */}
+            <div className="pt-2 flex items-center gap-2 text-xs font-mono text-text/70">
+              <span className="w-1.5 h-1.5 rounded-full bg-brand" />
+              <span>Mon–Sat • 4 hrs/day (~104 hrs/mo)</span>
+            </div>
+          </div>
+
+          {/* RIGHT COLUMN: 3D Stage with GPU Lemniscate Tube & 3 Floating Glass Chips (Order 2 on mobile) */}
+          <div className="lg:col-span-5 order-2 relative flex items-center justify-center w-full">
+            <div className="relative w-full h-[360px] sm:h-[420px] lg:h-[480px] flex items-center justify-center">
+              
+              {/* Lazy-Loaded GPU Particle Infinity-Loop Stage */}
+              <Suspense fallback={<HeroPosterFallback isDark={isDark} />}>
+                <Hero3DCanvas isDark={isDark} />
+              </Suspense>
+
+              {/* Chip 1: Inbound Support (Top Left) */}
+              <div 
+                className="absolute top-4 left-2 sm:top-6 sm:left-4 z-10 flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full border border-border/80 bg-surface/85 backdrop-blur-xl shadow-lg text-text text-xs sm:text-sm font-semibold select-none pointer-events-none transition-transform"
+                style={{ animation: 'float 5.2s ease-in-out infinite' }}
+              >
+                <Headphones className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand flex-shrink-0" />
+                <span>Inbound Support</span>
+              </div>
+
+              {/* Chip 2: Chat Support (Right Center) */}
+              <div 
+                className="absolute top-1/2 -translate-y-1/2 right-2 sm:right-4 z-10 flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full border border-border/80 bg-surface/85 backdrop-blur-xl shadow-lg text-text text-xs sm:text-sm font-semibold select-none pointer-events-none transition-transform"
+                style={{ animation: 'float 6.4s ease-in-out 1.2s infinite' }}
+              >
+                <MessageSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand flex-shrink-0" />
+                <span>Chat Support</span>
+              </div>
+
+              {/* Chip 3: Outbound Support (Bottom Left) */}
+              <div 
+                className="absolute bottom-4 left-6 sm:bottom-6 sm:left-8 z-10 flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full border border-border/80 bg-surface/85 backdrop-blur-xl shadow-lg text-text text-xs sm:text-sm font-semibold select-none pointer-events-none transition-transform"
+                style={{ animation: 'float 5.8s ease-in-out 2.5s infinite' }}
+              >
+                <PhoneOutgoing className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand flex-shrink-0" />
+                <span>Outbound Support</span>
               </div>
             </div>
           </div>
@@ -140,17 +162,15 @@ export default function HeroSection({ hero, settings }) {
 
         {/* ---------------- BOTTOM INDICATORS INSIDE HERO CARD ---------------- */}
         <div className="relative z-20 flex items-center justify-between w-full pt-4">
-          {/* Bottom-Left: "Scroll to explore" */}
-          <div className="flex items-center gap-2.5 text-[11px] sm:text-xs font-medium uppercase tracking-widest text-text opacity-70">
+          <div className="flex items-center gap-2.5 text-[11px] sm:text-xs font-medium uppercase tracking-widest text-text/70">
             <span className="w-4 h-4 rounded-full border border-border flex items-center justify-center">
               <ArrowDown className="w-2.5 h-2.5 animate-bounce" />
             </span>
             <span>Scroll to explore</span>
           </div>
 
-          {/* Operating hours hint */}
-          <div className="hidden sm:block text-[11px] font-mono text-text opacity-60">
-            Mon–Sat • 4 hrs/day (~104 hrs/mo)
+          <div className="hidden sm:block text-[11px] font-mono text-text/60">
+            Erode, Tamil Nadu • People Today. A Brighter Tomorrow.
           </div>
         </div>
       </div>

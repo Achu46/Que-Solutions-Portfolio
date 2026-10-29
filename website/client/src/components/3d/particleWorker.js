@@ -42,37 +42,71 @@ export function generateParticleBuffers(count) {
     aSize[i] = Math.random() * 0.7 + 0.65;
 
     // -------------------------------------------------------------
-    // SHAPE 0: Noisy Organic Mass (Hero)
+    // SHAPE 0 & 1: Que Infinity Loop (Lemniscate Tube echoing the logo)
     // -------------------------------------------------------------
-    const u0 = Math.random() * Math.PI * 2;
-    const v0 = Math.random() * Math.PI * 2;
-    const R0 = 2.15 + (Math.random() - 0.5) * 0.25;
-    const r0 = 0.85 + (Math.random() - 0.5) * 0.35;
-    const bump0 = Math.sin(u0 * 3.0 + v0 * 2.0) * 0.28 + Math.cos(u0 * 4.0 - v0) * 0.18;
-    const effR0 = r0 + bump0;
+    const t0 = Math.random() * Math.PI * 2;
+    const sinT0 = Math.sin(t0);
+    const cosT0 = Math.cos(t0);
+    const denom0 = 1 + sinT0 * sinT0;
+    const scale0 = 2.35;
     
-    positionA[i3] = (R0 + effR0 * Math.cos(v0)) * Math.cos(u0);
-    positionA[i3 + 1] = (R0 + effR0 * Math.cos(v0)) * Math.sin(u0) * 0.65 + Math.sin(u0 * 2.0) * 0.35;
-    positionA[i3 + 2] = effR0 * Math.sin(v0) + Math.cos(u0) * 0.4;
+    // Lemniscate centerline in XY plane (facing camera) with Z depth wave
+    const cx0 = (scale0 * cosT0) / denom0;
+    const cy0 = (scale0 * sinT0 * cosT0) / denom0;
+    const cz0 = 0.42 * Math.sin(t0 * 2.0);
 
-    // -------------------------------------------------------------
-    // SHAPE 1: Que Infinity / Ligature Loop (Lemniscate Tube)
-    // -------------------------------------------------------------
-    const t1 = Math.random() * Math.PI * 2;
-    const phi1 = Math.random() * Math.PI * 2;
-    const sinT1 = Math.sin(t1);
-    const cosT1 = Math.cos(t1);
-    const denom1 = 1 + sinT1 * sinT1;
-    const scale1 = 2.6;
-    
-    const cx1 = (scale1 * cosT1) / denom1;
-    const cz1 = (scale1 * sinT1 * cosT1) / denom1;
-    const cy1 = 0.45 * Math.sin(t1 * 2.0);
+    // Tangent vector
+    const dt = 0.005;
+    const tNext = t0 + dt;
+    const sinTN = Math.sin(tNext);
+    const cosTN = Math.cos(tNext);
+    const denomN = 1 + sinTN * sinTN;
+    const cxNext = (scale0 * cosTN) / denomN;
+    const cyNext = (scale0 * sinTN * cosTN) / denomN;
+    const czNext = 0.42 * Math.sin(tNext * 2.0);
 
-    const tubeRadius1 = 0.35 + (Math.random() - 0.5) * 0.1;
-    positionB[i3] = cx1 + tubeRadius1 * Math.cos(phi1);
-    positionB[i3 + 1] = cy1 + tubeRadius1 * Math.sin(phi1);
-    positionB[i3 + 2] = cz1 + tubeRadius1 * Math.sin(phi1 + t1) * 0.8;
+    let tx = cxNext - cx0;
+    let ty = cyNext - cy0;
+    let tz = czNext - cz0;
+    const tLen = Math.sqrt(tx * tx + ty * ty + tz * tz) || 1;
+    tx /= tLen;
+    ty /= tLen;
+    tz /= tLen;
+
+    // Normal & Binormal
+    let ux = 0, uy = 0, uz = 1;
+    if (Math.abs(tz) > 0.9) {
+      ux = 0; uy = 1; uz = 0;
+    }
+    let nx = ty * uz - tz * uy;
+    let ny = tz * ux - tx * uz;
+    let nz = tx * uy - ty * ux;
+    const nLen = Math.sqrt(nx * nx + ny * ny + nz * nz) || 1;
+    nx /= nLen;
+    ny /= nLen;
+    nz /= nLen;
+
+    const bx = ty * nz - tz * ny;
+    const by = tz * nx - tx * nz;
+    const bz = tx * ny - ty * nx;
+
+    // Volumetric tube cross-section with natural density distribution
+    const phi0 = Math.random() * Math.PI * 2;
+    const tubeRadius0 = (0.24 + (Math.random() - 0.5) * 0.06) * Math.sqrt(Math.random());
+    const cosPhi0 = Math.cos(phi0);
+    const sinPhi0 = Math.sin(phi0);
+
+    const px0 = cx0 + (nx * cosPhi0 + bx * sinPhi0) * tubeRadius0;
+    const py0 = cy0 + (ny * cosPhi0 + by * sinPhi0) * tubeRadius0;
+    const pz0 = cz0 + (nz * cosPhi0 + bz * sinPhi0) * tubeRadius0;
+
+    positionA[i3] = px0;
+    positionA[i3 + 1] = py0;
+    positionA[i3 + 2] = pz0;
+
+    positionB[i3] = px0;
+    positionB[i3 + 1] = py0;
+    positionB[i3 + 2] = pz0;
 
     // -------------------------------------------------------------
     // SHAPE 2: Customer Support Headset

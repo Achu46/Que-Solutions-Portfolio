@@ -318,10 +318,10 @@ export default function HeroParticleSystem({
       u.uAssemble.value = assembleProgressRef.current;
     }
 
-    // 3. Read spring values driven by useScroll + useSpring
+    // 3. Read spring values driven by useScroll + useSpring (if persistent)
     let targetMorphVal = morphTarget;
     let targetScaleVal = 1.0;
-    let targetPosXVal = 0.4;
+    let targetPosXVal = 0.0;
     let targetDisperseVal = 1.0;
     let targetOpacityMult = 1.0;
 
@@ -368,14 +368,18 @@ export default function HeroParticleSystem({
       lerpSpeed
     );
 
-    // 6. Slow organic mesh tilt & floating breathing
-    meshRef.current.rotation.y = time * 0.12;
-    meshRef.current.rotation.z = Math.sin(time * 0.3) * 0.05;
-    meshRef.current.position.y = Math.sin(time * 0.5) * 0.1;
+    // 6. Slow organic mesh tilt with pointer tilt & gentle breathing
+    const tiltX = isTouchRef.current ? 0 : pointerWorldRef.current.x * 0.08;
+    const tiltY = isTouchRef.current ? 0 : pointerWorldRef.current.y * 0.08;
+
+    meshRef.current.rotation.y = time * 0.14 + tiltX;
+    meshRef.current.rotation.x = Math.sin(time * 0.25) * 0.07 - tiltY;
+    meshRef.current.rotation.z = Math.sin(time * 0.3) * 0.04;
+    meshRef.current.position.y = Math.sin(time * 0.5) * 0.08;
   });
 
   return (
-    <points ref={meshRef} geometry={geometry} position={[0.4, 0.1, 0]}>
+    <points ref={meshRef} geometry={geometry} position={[0, 0, 0]}>
       <shaderMaterial
         ref={materialRef}
         vertexShader={particleVertexShader}

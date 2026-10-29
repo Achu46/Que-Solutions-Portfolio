@@ -17,8 +17,10 @@ export function ThemeProvider({ children }) {
     const root = document.documentElement;
     if (theme === 'dark') {
       root.classList.add('dark');
+      root.setAttribute('data-theme', 'dark');
     } else {
       root.classList.remove('dark');
+      root.setAttribute('data-theme', 'light');
     }
     try {
       localStorage.setItem('que_theme', theme);

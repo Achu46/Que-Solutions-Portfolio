@@ -17,6 +17,8 @@ export default {
         'accent-contrast': 'var(--accent-contrast)',
         // Official Olive Brand Scale + Lime Glow Highlight
         brand: {
+          DEFAULT: 'var(--brand)',
+          text: 'var(--brand-text)',
           50: '#f6f8f4',
           100: '#ebf1e6',
           200: '#d7e3cd',

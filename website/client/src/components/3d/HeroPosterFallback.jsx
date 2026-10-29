@@ -56,38 +56,44 @@ export default function HeroPosterFallback({ isDark }) {
 
           {/* Organic Core Cluster of Glowing Dots */}
           <g filter="url(#softGlow)" fill={isDark ? 'url(#fallbackDotDark)' : 'url(#fallbackDotLight)'}>
-            {/* Clustered Toroid / Organic Ring Dots */}
-            {Array.from({ length: 96 }).map((_, i) => {
-              const u = (i / 96) * Math.PI * 2;
-              const rMajor = 52 + Math.sin(u * 3) * 6;
-              const rMinor = 18 + Math.cos(u * 4) * 4;
-              const cx = rMajor * Math.cos(u);
-              const cy = (rMajor * Math.sin(u) * 0.65) + Math.sin(u * 2) * 8;
-              const radius = 2.4 + (i % 5) * 0.6;
+            {/* Lemniscate Infinity Loop Primary Ribbon */}
+            {Array.from({ length: 110 }).map((_, i) => {
+              const u = (i / 110) * Math.PI * 2;
+              const sinU = Math.sin(u);
+              const cosU = Math.cos(u);
+              const denom = 1 + sinU * sinU;
+              const scale = 72;
+              const jitter = (i % 3 - 1) * 2.2;
+              const cx = (scale * cosU) / denom + jitter;
+              const cy = (scale * sinU * cosU) / denom + jitter;
+              const radius = 2.4 + (i % 5) * 0.5;
               return (
                 <circle
-                  key={`core-${i}`}
+                  key={`loop-${i}`}
                   cx={cx}
                   cy={cy}
                   r={radius}
-                  opacity={0.65 + (i % 4) * 0.08}
+                  opacity={0.7 + (i % 4) * 0.08}
                 />
               );
             })}
 
-            {/* Inner Dense Mass */}
-            {Array.from({ length: 64 }).map((_, i) => {
-              const u = (i / 64) * Math.PI * 2;
-              const r = 32 + (i % 7) * 3;
-              const cx = r * Math.cos(u);
-              const cy = r * Math.sin(u) * 0.75;
+            {/* Inner Volumetric Fill Points */}
+            {Array.from({ length: 80 }).map((_, i) => {
+              const u = (i / 80) * Math.PI * 2;
+              const sinU = Math.sin(u);
+              const cosU = Math.cos(u);
+              const denom = 1 + sinU * sinU;
+              const scale = 66 + (i % 4) * 2;
+              const cx = (scale * cosU) / denom;
+              const cy = (scale * sinU * cosU) / denom;
               return (
                 <circle
                   key={`inner-${i}`}
                   cx={cx}
                   cy={cy}
-                  r={2.2 + (i % 3) * 0.5}
-                  opacity={0.75}
+                  r={2.0 + (i % 3) * 0.4}
+                  opacity={0.82}
                 />
               );
             })}

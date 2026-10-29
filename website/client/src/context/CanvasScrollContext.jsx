@@ -178,7 +178,18 @@ export function CanvasScrollProvider({ children }) {
 export function useCanvasScroll() {
   const context = useContext(CanvasScrollContext);
   if (!context) {
-    throw new Error('useCanvasScroll must be used within CanvasScrollProvider');
+    return {
+      heroCardEl: null,
+      setHeroCardEl: () => {},
+      clipPathStyle: 'none',
+      activeServiceIndex: 0,
+      setActiveServiceIndex: () => {},
+      springMorph: { get: () => 0, set: () => {} },
+      springOpacity: { get: () => 1, set: () => {} },
+      springScale: { get: () => 1, set: () => {} },
+      springPosX: { get: () => 0, set: () => {} },
+      springDisperse: { get: () => 1, set: () => {} },
+    };
   }
   return context;
 }

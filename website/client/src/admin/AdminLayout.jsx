@@ -59,11 +59,13 @@ export default function AdminLayout() {
       <aside className="hidden lg:flex flex-col w-64 bg-surface border-r border-border shrink-0">
         {/* Sidebar Header with Brand Logo */}
         <div className="p-5 border-b border-border flex items-center gap-3">
-          <img
-            src="/logo.png"
-            alt="QUE SOLUTIONS"
-            className="h-10 w-10 object-contain rounded-full border border-border"
-          />
+          <div className="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center p-1.5 shadow-sm overflow-hidden flex-shrink-0">
+            <img
+              src="/logo.png"
+              alt="QUE SOLUTIONS"
+              className="w-full h-full object-contain"
+            />
+          </div>
           <div>
             <span className="text-xs font-bold tracking-wider text-text block">QUE SOLUTIONS</span>
             <span className="text-[9px] px-1.5 py-0.5 rounded bg-brand/10 text-brand font-bold border border-brand/20">
@@ -168,7 +170,9 @@ export default function AdminLayout() {
             <div className="relative w-64 max-w-[80%] bg-surface border-r border-border p-5 flex flex-col justify-between z-50">
               <div>
                 <div className="flex items-center justify-between pb-4 border-b border-border">
-                  <img src="/logo.png" alt="QUE" className="h-9 w-9 object-contain rounded-full border border-border" />
+                  <div className="w-9 h-9 rounded-full bg-surface border border-border flex items-center justify-center p-1 shadow-sm overflow-hidden flex-shrink-0">
+                    <img src="/logo.png" alt="QUE" className="w-full h-full object-contain" />
+                  </div>
                   <button onClick={() => setSidebarOpen(false)} className="text-text">
                     <X className="w-5 h-5" />
                   </button>

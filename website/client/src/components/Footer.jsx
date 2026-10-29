@@ -17,11 +17,13 @@ export default function Footer({ settings }) {
           {/* Brand Info */}
           <div className="space-y-4">
             <a href="#home" className="inline-block">
-              <img
-                src="/logo.png"
-                alt="QUE SOLUTIONS"
-                className="h-10 w-auto object-contain rounded-full border border-border"
-              />
+              <div className="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center p-1.5 shadow-sm overflow-hidden flex-shrink-0">
+                <img
+                  src="/logo.png"
+                  alt="QUE SOLUTIONS"
+                  className="w-full h-full object-contain"
+                />
+              </div>
             </a>
             <p className="text-xs font-semibold text-brand tracking-wider uppercase">
               Customer Care & Call Centre Services

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import PublicLayout from '../layouts/PublicLayout';
 import HeroSection from '../components/HeroSection';
 import ServicesSection from '../components/ServicesSection';
@@ -10,43 +10,8 @@ import ProcessSection from '../components/ProcessSection';
 import AboutSection from '../components/AboutSection';
 import TestimonialsSection from '../components/TestimonialsSection';
 import ContactSection from '../components/ContactSection';
-import { CanvasScrollProvider, useCanvasScroll } from '../context/CanvasScrollContext';
 import { api, FALLBACK_SITE_DATA } from '../services/api';
 import Lenis from 'lenis';
-
-const Hero3DCanvas = React.lazy(() => import('../components/3d/Hero3DCanvas'));
-
-function PersistentHeroCanvas() {
-  const {
-    clipPathStyle,
-    springMorph,
-    springOpacity,
-    springScale,
-    springPosX,
-    springDisperse,
-  } = useCanvasScroll();
-
-  const scrollControls = useMemo(
-    () => ({
-      springMorph,
-      springOpacity,
-      springScale,
-      springPosX,
-      springDisperse,
-    }),
-    [springMorph, springOpacity, springScale, springPosX, springDisperse]
-  );
-
-  return (
-    <Suspense fallback={null}>
-      <Hero3DCanvas
-        isPersistent={true}
-        clipPath={clipPathStyle}
-        scrollControls={scrollControls}
-      />
-    </Suspense>
-  );
-}
 
 export default function HomePage() {
   const [siteData, setSiteData] = useState(FALLBACK_SITE_DATA);
@@ -95,9 +60,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <CanvasScrollProvider>
-      <PersistentHeroCanvas />
-      <PublicLayout settings={siteData.settings}>
+    <PublicLayout settings={siteData.settings}>
       {/* 1. Hero (100dvh) */}
       <HeroSection hero={siteData.hero} settings={siteData.settings} />
 
@@ -130,6 +93,5 @@ export default function HomePage() {
       {/* 9. Contact (Lead form with honeypot & 60s cooldown, direct contact) */}
       <ContactSection settings={siteData.settings} />
     </PublicLayout>
-    </CanvasScrollProvider>
   );
 }

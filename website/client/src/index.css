@@ -7,35 +7,44 @@
   --bg: #FFFFFF;
   --surface: #F6F8F4;
   --elevated: #FFFFFF;
-  --border: #E2EADA;
+  --border: #D5E0CB;
   --text: #000000;
-  --accent: #54703F;
+  --brand: #54703F;
+  --brand-text: #FFFFFF;
+  --accent: #425832;
   --accent-contrast: #FFFFFF;
   --inverse-bg: #000000;
   --inverse-text: #FFFFFF;
   --hover: #EBF1E6;
-  --hero-gradient: radial-gradient(ellipse 90% 70% at 50% 0%, #FFFFFF 0%, #F6F8F4 30%, #E4EDDC 65%, #D3E2C6 100%);
+  --hero-gradient: radial-gradient(ellipse 90% 70% at 50% 0%, #F6F8F4 0%, #E4EDDC 50%, #D3E2C6 100%);
   --hero-cone: radial-gradient(ellipse 65% 85% at 50% -10%, rgba(255, 255, 255, 0.95) 0%, rgba(246, 248, 244, 0.5) 45%, transparent 75%);
   --accent-dot: #54703F;
+  --particle-a: #425832;
+  --particle-b: #54703F;
+  --particle-c: #94B380;
   color-scheme: light;
 }
 
-.dark {
-  /* DARK MODE TOKENS (Pure neutral black & dark grey) */
+.dark, [data-theme='dark'] {
+  /* DARK MODE TOKENS */
   --bg: #000000;
   --surface: #0A0A0A;
   --elevated: #141414;
   --border: #262626;
   --text: #FFFFFF;
-  --accent: #94B380; /* Lightened olive for high contrast */
+  --brand: #94B380;
+  --brand-text: #000000;
+  --accent: #B8E08A;
   --accent-contrast: #000000;
   --inverse-bg: #FFFFFF;
   --inverse-text: #000000;
   --hover: #171717;
-  /* Deep green gradient: radial from top centre (#1E6B2A at ~35%) through #031208 to #000000 */
-  --hero-gradient: radial-gradient(ellipse 90% 70% at 50% 0%, rgba(30, 107, 42, 0.55) 0%, rgba(30, 107, 42, 0.35) 35%, #031208 70%, #000000 100%);
+  --hero-gradient: radial-gradient(ellipse 90% 70% at 50% 0%, #1E6B2A 0%, #031208 55%, #000000 100%);
   --hero-cone: radial-gradient(ellipse 60% 85% at 50% -15%, rgba(184, 224, 138, 0.22) 0%, rgba(30, 107, 42, 0.12) 40%, transparent 75%);
   --accent-dot: #B8E08A;
+  --particle-a: #1F8A3A;
+  --particle-b: #5FBF4A;
+  --particle-c: #B8E08A;
   color-scheme: dark;
 }
 
@@ -78,9 +87,19 @@
 }
 
 .brand-inverse {
-  background-color: var(--accent) !important;
-  color: var(--accent-contrast) !important;
-  --text: var(--accent-contrast);
+  background-color: var(--brand) !important;
+  color: var(--brand-text) !important;
+  --text: var(--brand-text);
+  --bg: var(--brand);
+}
+
+/* Poppins Headline: 600 weight, clamp(2.4rem, 5.6vw, 4.8rem), line-height 1.04, letter-spacing -0.03em */
+.hero-headline {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: clamp(2.4rem, 5.6vw, 4.8rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
 }
 
 /* Accent dot helper */

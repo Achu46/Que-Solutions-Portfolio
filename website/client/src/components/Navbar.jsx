@@ -48,13 +48,15 @@ export default function Navbar({ settings }) {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
-          {/* Official Brand Logo */}
+          {/* Official Brand Logo in Neutral Rounded Container */}
           <a href="#home" className="flex items-center gap-3 group">
-            <img
-              src="/logo.png"
-              alt="QUE SOLUTIONS"
-              className="h-11 sm:h-12 w-auto object-contain rounded-full border border-border transition-transform duration-200 group-hover:scale-105"
-            />
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-surface border border-border flex items-center justify-center p-1.5 shadow-sm overflow-hidden flex-shrink-0 transition-transform duration-200 group-hover:scale-105">
+              <img
+                src="/logo.png"
+                alt="QUE SOLUTIONS"
+                className="w-full h-full object-contain"
+              />
+            </div>
             <div className="hidden sm:block">
               <span className="text-base font-bold tracking-wider text-text block leading-tight">QUE SOLUTIONS</span>
               <span className="text-[10px] tracking-widest text-brand font-bold uppercase block">

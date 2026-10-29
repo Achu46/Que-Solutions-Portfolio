@@ -12,7 +12,8 @@ export default function HeroPostProcessing({ isDark, isHighTierDesktop, isPhone 
 
   useFrame((_, delta) => {
     // 600ms tween for bloom intensity and vignette
-    const targetBloom = isDark ? 0.65 : 0.02;
+    // Bloom ONLY in dark mode (intensity 0 in light mode)
+    const targetBloom = isDark ? 0.65 : 0.0;
     const targetVignette = isDark ? 0.55 : 0.22;
     const lerpSpeed = Math.min(delta * 5.2, 1.0);
 
@@ -34,10 +35,10 @@ export default function HeroPostProcessing({ isDark, isHighTierDesktop, isPhone 
 
   return (
     <EffectComposer multisampling={0} disableNormalPass>
-      {/* Subtle Bloom: dark mode glow, animated to ~0 in light mode */}
+      {/* Bloom ONLY active in dark mode; smoothly tweens to 0 in light mode */}
       <Bloom
         ref={bloomRef}
-        intensity={isDark ? 0.65 : 0.02}
+        intensity={isDark ? 0.65 : 0.0}
         luminanceThreshold={0.25}
         luminanceSmoothing={0.85}
         mipmapBlur={true}

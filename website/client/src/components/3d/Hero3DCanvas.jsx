@@ -154,7 +154,7 @@ function Hero3DScene({ isDark, isPersistent = false, clipPath = 'none', scrollCo
       aria-hidden="true"
     >
       <Canvas
-        camera={{ position: [0, 0, 5.4], fov: 45, near: 0.1, far: 50 }}
+        camera={{ position: [0, 0, 5.6], fov: 45, near: 0.1, far: 50 }}
         dpr={dprRange}
         frameloop={frameloop}
         gl={{
