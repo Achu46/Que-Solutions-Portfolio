@@ -1,9 +1,10 @@
 import React, { Suspense, lazy } from 'react';
 import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import HeroPosterFallback from './3d/HeroPosterFallback';
 
-// Lazy load the 3D WebGL particle cloud
-const OrganicParticleCloud = lazy(() => import('./3d/OrganicParticleCloud'));
+// Lazy load the full Phase 2 3D Particle Canvas
+const Hero3DCanvas = lazy(() => import('./3d/Hero3DCanvas'));
 
 export default function HeroSection({ hero, settings }) {
   const { isDark } = useTheme();
@@ -26,9 +27,9 @@ export default function HeroSection({ hero, settings }) {
         {/* Soft volumetric light cone from top centre */}
         <div className="absolute inset-0 volumetric-cone z-0 pointer-events-none" />
 
-        {/* 3D WebGL / GLSL Glowing Dots Particle Cloud - Back Layer (behind headline) */}
-        <Suspense fallback={null}>
-          <OrganicParticleCloud layer="back" />
+        {/* Phase 2 3D WebGL / GLSL Glowing Dots Particle System with Full Postprocessing */}
+        <Suspense fallback={<HeroPosterFallback isDark={isDark} />}>
+          <Hero3DCanvas />
         </Suspense>
 
         {/* ---------------- TOP BAR INSIDE HERO CARD ---------------- */}
@@ -118,11 +119,6 @@ export default function HeroSection({ hero, settings }) {
             Mon–Sat • 4 hrs/day (~104 hrs/mo)
           </div>
         </div>
-
-        {/* 3D WebGL / GLSL Glowing Dots Particle Cloud - Front Layer (passing IN FRONT of headline) */}
-        <Suspense fallback={null}>
-          <OrganicParticleCloud layer="front" />
-        </Suspense>
       </div>
 
       {/* Faint blurred reflection under the inset card */}

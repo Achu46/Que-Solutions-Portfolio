@@ -1,378 +1,232 @@
-import React, { useRef, useMemo, useState, useEffect, Suspense } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Float, ContactShadows } from '@react-three/drei';
+import React, { useRef, useState, useEffect, useMemo, Suspense } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { PerformanceMonitor } from '@react-three/drei';
 import * as THREE from 'three';
 import { useTheme } from '../../context/ThemeContext';
+import { getParticleGeometry } from './particleGeometry';
+import HeroParticleSystem from './HeroParticleSystem';
+import HeroPostProcessing from './HeroPostProcessing';
+import HeroPosterFallback from './HeroPosterFallback';
+import Hero3DErrorBoundary from './Hero3DErrorBoundary';
 
-// Procedural 3D Lemniscate (Infinity Loop) Curve echoing the Que logo
-class LemniscateCurve extends THREE.Curve {
-  constructor(scale = 2.2) {
-    super();
-    this.scale = scale;
-  }
-  getPoint(t, optionalTarget = new THREE.Vector3()) {
-    const point = optionalTarget;
-    const u = t * Math.PI * 2;
-    const a = this.scale;
-    const sinU = Math.sin(u);
-    const cosU = Math.cos(u);
-    const denom = 1 + sinU * sinU;
-    
-    const x = (a * cosU) / denom;
-    const y = 0.5 * Math.sin(u * 2);
-    const z = (a * sinU * cosU) / denom;
-    return point.set(x, y, z);
-  }
-}
+/**
+ * PHASE 2 Hero 3D Particle Canvas
+ * - Adaptive particle counts: 60k (desktop high), 30k (mid), 20k (tablet), 12k (phone)
+ * - drei PerformanceMonitor steps count/dpr down under 45 FPS
+ * - Postprocessing: animated Bloom, Vignette, DepthOfField (high-tier desktop only)
+ * - frameloop="always" when in view; "never" when off-screen or tab hidden
+ * - Strict fallbacks: no WebGL, prefers-reduced-motion, low-tier device, runtime ErrorBoundary
+ */
+function Hero3DScene({ isDark }) {
+  const containerRef = useRef(null);
+  const [geometry, setGeometry] = useState(null);
+  const [morphTarget, setMorphTarget] = useState(0.0);
+  const [frameloop, setFrameloop] = useState('always');
+  
+  // Device classification
+  const [deviceTier, setDeviceTier] = useState(() => {
+    if (typeof window === 'undefined') return { isPhone: false, isHighTier: true, maxCount: 60000, initialDpr: 1.75 };
+    const w = window.innerWidth;
+    const isPhone = w < 640;
+    const isTablet = w >= 640 && w < 1024;
+    const isMidDesktop = w >= 1024 && w < 1440;
+    const isHighTier = w >= 1440;
 
-// Orbiting Support Primitive 1: Stylized Headset
-function SupportHeadset({ color }) {
-  return (
-    <group scale={0.35}>
-      {/* Headband arch */}
-      <mesh rotation={[0, 0, Math.PI / 2]}>
-        <torusGeometry args={[1, 0.12, 16, 32, Math.PI]} />
-        <meshStandardMaterial color={color} roughness={0.3} metalness={0.2} />
-      </mesh>
-      {/* Earcups */}
-      <mesh position={[-1, 0, 0]}>
-        <cylinderGeometry args={[0.3, 0.3, 0.35, 16]} />
-        <meshStandardMaterial color={color} roughness={0.2} />
-      </mesh>
-      <mesh position={[1, 0, 0]}>
-        <cylinderGeometry args={[0.3, 0.3, 0.35, 16]} />
-        <meshStandardMaterial color={color} roughness={0.2} />
-      </mesh>
-      {/* Mic boom */}
-      <mesh position={[0.7, -0.4, 0.3]} rotation={[0.4, 0.4, 0]}>
-        <cylinderGeometry args={[0.04, 0.04, 0.8, 8]} />
-        <meshStandardMaterial color="#6C8C54" />
-      </mesh>
-    </group>
-  );
-}
-
-// Orbiting Support Primitive 2: Chat Bubble
-function SupportChatBubble({ color }) {
-  return (
-    <group scale={0.4}>
-      <mesh>
-        <sphereGeometry args={[0.8, 24, 24]} />
-        <meshStandardMaterial color={color} roughness={0.25} clearcoat={0.6} />
-      </mesh>
-      {/* Tail */}
-      <mesh position={[-0.5, -0.6, 0]} rotation={[0, 0, 0.8]}>
-        <coneGeometry args={[0.3, 0.5, 16]} />
-        <meshStandardMaterial color={color} roughness={0.25} />
-      </mesh>
-      {/* Internal Dots */}
-      <mesh position={[-0.28, 0, 0.72]}>
-        <sphereGeometry args={[0.09, 12, 12]} />
-        <meshBasicMaterial color="#FFFFFF" />
-      </mesh>
-      <mesh position={[0, 0, 0.78]}>
-        <sphereGeometry args={[0.09, 12, 12]} />
-        <meshBasicMaterial color="#FFFFFF" />
-      </mesh>
-      <mesh position={[0.28, 0, 0.72]}>
-        <sphereGeometry args={[0.09, 12, 12]} />
-        <meshBasicMaterial color="#FFFFFF" />
-      </mesh>
-    </group>
-  );
-}
-
-// Orbiting Support Primitive 3: Phone Handset
-function SupportPhone({ color }) {
-  return (
-    <group scale={0.35} rotation={[0.3, 0.2, 0.5]}>
-      {/* Central handle */}
-      <mesh>
-        <cylinderGeometry args={[0.16, 0.16, 1.2, 16]} />
-        <meshStandardMaterial color={color} roughness={0.3} />
-      </mesh>
-      {/* Earpiece */}
-      <mesh position={[0, 0.6, 0.2]} rotation={[0.5, 0, 0]}>
-        <sphereGeometry args={[0.32, 16, 16]} />
-        <meshStandardMaterial color={color} roughness={0.2} />
-      </mesh>
-      {/* Mouthpiece */}
-      <mesh position={[0, -0.6, 0.2]} rotation={[-0.5, 0, 0]}>
-        <sphereGeometry args={[0.32, 16, 16]} />
-        <meshStandardMaterial color={color} roughness={0.2} />
-      </mesh>
-    </group>
-  );
-}
-
-// Orbiting Support Primitive 4: Verified Badge
-function SupportBadge({ color }) {
-  return (
-    <group scale={0.32}>
-      <mesh>
-        <cylinderGeometry args={[0.8, 0.8, 0.15, 24]} />
-        <meshStandardMaterial color={color} roughness={0.2} metalness={0.3} />
-      </mesh>
-      {/* Check symbol tick */}
-      <mesh position={[0, 0, 0.1]} rotation={[0, 0, -Math.PI / 4]}>
-        <boxGeometry args={[0.15, 0.5, 0.08]} />
-        <meshBasicMaterial color="#FFFFFF" />
-      </mesh>
-      <mesh position={[0.2, 0.1, 0.1]} rotation={[0, 0, Math.PI / 4]}>
-        <boxGeometry args={[0.15, 0.8, 0.08]} />
-        <meshBasicMaterial color="#FFFFFF" />
-      </mesh>
-    </group>
-  );
-}
-
-// Main 3D Scene Inside Canvas
-function SceneContent({ isDark }) {
-  const groupRef = useRef();
-  const ribbonRef = useRef();
-  const mouseRef = useRef({ x: 0, y: 0 });
-
-  // Generate Lemniscate Tube Geometry once
-  const tubeGeometry = useMemo(() => {
-    const path = new LemniscateCurve(2.3);
-    return new THREE.TubeGeometry(path, 128, 0.22, 20, true);
-  }, []);
-
-  // Theme-aware material colors
-  const ribbonColor = isDark ? '#94B380' : '#54703F';
-  const emissiveColor = isDark ? '#2D3A24' : '#000000';
-  const emissiveIntensity = isDark ? 0.35 : 0;
-  const orbitItemColor = isDark ? '#B8CEA8' : '#6C8C54';
-
-  useEffect(() => {
-    const handlePointerMove = (e) => {
-      // Normalize pointer [-1, 1]
-      mouseRef.current.x = (e.clientX / window.innerWidth) * 2 - 1;
-      mouseRef.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    };
-    window.addEventListener('pointermove', handlePointerMove, { passive: true });
-    return () => window.removeEventListener('pointermove', handlePointerMove);
-  }, []);
-
-  useFrame((state, delta) => {
-    if (!groupRef.current) return;
-
-    // Slow floating rotation
-    groupRef.current.rotation.y += delta * 0.25;
-
-    // Pointer parallax (max 0.15 rad)
-    const targetRotX = mouseRef.current.y * 0.12;
-    const targetRotZ = mouseRef.current.x * 0.12;
-    groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, targetRotX, 0.05);
-    groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, targetRotZ, 0.05);
-
-    // Scroll linked tilt
-    const scrollY = window.scrollY || 0;
-    groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.8) * 0.15 - (scrollY * 0.001);
-
-    // Individual orbiting objects rotation
-    const t = state.clock.elapsedTime;
-    const obj1 = groupRef.current.getObjectByName('obj-headset');
-    if (obj1) {
-      obj1.position.set(Math.cos(t * 0.7) * 2.8, Math.sin(t * 1.1) * 0.6, Math.sin(t * 0.7) * 2.8);
-      obj1.rotation.y = t * 0.8;
+    let maxCount = 60000;
+    let initialDpr = 1.75;
+    if (isPhone) {
+      maxCount = 12000;
+      initialDpr = 1.35;
+    } else if (isTablet) {
+      maxCount = 20000;
+      initialDpr = 1.5;
+    } else if (isMidDesktop) {
+      maxCount = 30000;
+      initialDpr = 1.6;
     }
-    const obj2 = groupRef.current.getObjectByName('obj-chat');
-    if (obj2) {
-      obj2.position.set(Math.cos(t * 0.7 + Math.PI * 0.5) * 2.8, Math.sin(t * 0.9 + 1) * 0.5, Math.sin(t * 0.7 + Math.PI * 0.5) * 2.8);
-      obj2.rotation.y = -t * 0.6;
-    }
-    const obj3 = groupRef.current.getObjectByName('obj-phone');
-    if (obj3) {
-      obj3.position.set(Math.cos(t * 0.7 + Math.PI) * 2.8, Math.sin(t * 1.2 + 2) * 0.6, Math.sin(t * 0.7 + Math.PI) * 2.8);
-      obj3.rotation.z = t * 0.5;
-    }
-    const obj4 = groupRef.current.getObjectByName('obj-badge');
-    if (obj4) {
-      obj4.position.set(Math.cos(t * 0.7 + Math.PI * 1.5) * 2.8, Math.sin(t * 0.8 + 3) * 0.5, Math.sin(t * 0.7 + Math.PI * 1.5) * 2.8);
-      obj4.rotation.x = t * 0.7;
-    }
+
+    return { isPhone, isTablet, isHighTier, maxCount, initialDpr };
   });
 
+  const [activeCount, setActiveCount] = useState(deviceTier.maxCount);
+  const [dpr, setDpr] = useState(deviceTier.initialDpr);
+
+  // 1. Initialize morph targets geometry
+  useEffect(() => {
+    let active = true;
+    getParticleGeometry(deviceTier.maxCount).then((geo) => {
+      if (active) {
+        geo.setDrawRange(0, activeCount);
+        setGeometry(geo);
+      }
+    });
+
+    return () => {
+      active = false;
+      if (geometry) {
+        geometry.dispose();
+      }
+    };
+  }, [deviceTier.maxCount]);
+
+  // Update draw range when active count adapts
+  useEffect(() => {
+    if (geometry) {
+      geometry.setDrawRange(0, activeCount);
+    }
+  }, [geometry, activeCount]);
+
+  // 2. IntersectionObserver + Page Visibility to pause rendering when off-screen
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    let isIntersecting = true;
+    let isDocumentVisible = !document.hidden;
+
+    const updateFrameloop = () => {
+      if (isIntersecting && isDocumentVisible) {
+        setFrameloop('always');
+      } else {
+        setFrameloop('never');
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isIntersecting = entry.isIntersecting;
+          updateFrameloop();
+        });
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(el);
+
+    const handleVisibilityChange = () => {
+      isDocumentVisible = !document.hidden;
+      updateFrameloop();
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
+  // PerformanceMonitor fallback: step down under 45 FPS
+  const handlePerformanceDecline = () => {
+    setActiveCount((cur) => {
+      if (cur > 30000) return 30000;
+      if (cur > 20000) return 20000;
+      if (cur > 12000) return 12000;
+      return cur;
+    });
+    setDpr((cur) => Math.max(1.0, cur - 0.25));
+  };
+
+  const dprRange = useMemo(() => {
+    if (deviceTier.isPhone) return [1.0, 1.35];
+    return [1.0, Math.min(dpr, 1.75)];
+  }, [deviceTier.isPhone, dpr]);
+
   return (
-    <>
-      {/* Lighting tuned to theme */}
-      <ambientLight intensity={isDark ? 0.4 : 0.85} color={isDark ? '#EBF1E6' : '#FFFFFF'} />
-      <directionalLight position={[6, 8, 5]} intensity={isDark ? 1.0 : 1.4} color="#FFFFFF" castShadow />
-      <directionalLight position={[-6, -4, -5]} intensity={isDark ? 0.3 : 0.4} color={isDark ? '#54703F' : '#D7E3CD'} />
-
-      <group ref={groupRef} position={[0, 0, 0]}>
-        {/* Procedural Olive Ribbon Infinity Loop */}
-        <Float speed={2} rotationIntensity={0.2} floatIntensity={0.3}>
-          <mesh ref={ribbonRef} geometry={tubeGeometry} castShadow receiveShadow>
-            <meshPhysicalMaterial
-              color={ribbonColor}
-              emissive={emissiveColor}
-              emissiveIntensity={emissiveIntensity}
-              clearcoat={0.7}
-              clearcoatRoughness={0.2}
-              roughness={0.22}
-              metalness={0.12}
-            />
-          </mesh>
-        </Float>
-
-        {/* Orbiting Support Primitives */}
-        <group name="obj-headset">
-          <SupportHeadset color={orbitItemColor} />
-        </group>
-        <group name="obj-chat">
-          <SupportChatBubble color={orbitItemColor} />
-        </group>
-        <group name="obj-phone">
-          <SupportPhone color={orbitItemColor} />
-        </group>
-        <group name="obj-badge">
-          <SupportBadge color={orbitItemColor} />
-        </group>
-
-        {/* Soft Ground Contact Shadow */}
-        <ContactShadows
-          position={[0, -2.1, 0]}
-          opacity={isDark ? 0.35 : 0.22}
-          scale={8}
-          blur={2.4}
-          far={4}
-          color={isDark ? '#000000' : '#425832'}
+    <div
+      ref={containerRef}
+      className="absolute inset-0 z-0 pointer-events-none select-none"
+      aria-hidden="true"
+    >
+      <Canvas
+        camera={{ position: [0, 0, 5.4], fov: 45, near: 0.1, far: 50 }}
+        dpr={dprRange}
+        frameloop={frameloop}
+        gl={{
+          alpha: true,
+          antialias: false,
+          powerPreference: 'high-performance',
+          premultipliedAlpha: true,
+          depth: false,
+          stencil: false,
+        }}
+        style={{ background: 'transparent' }}
+      >
+        <PerformanceMonitor
+          onDecline={handlePerformanceDecline}
+          flipflops={3}
+          bounds={(fps) => [45, 60]}
         />
-      </group>
-    </>
-  );
-}
 
-// Fallback Poster Component for no-WebGL, reduced-motion, low-end devices & errors
-export function HeroPosterFallback({ isDark }) {
-  return (
-    <div className="relative w-full h-[400px] sm:h-[480px] lg:h-[540px] flex items-center justify-center select-none overflow-hidden" aria-hidden="true">
-      <div className="absolute inset-0 bg-gradient-to-tr from-brand-600/10 via-transparent to-brand-400/10 rounded-3xl blur-2xl pointer-events-none" />
-      
-      {/* Decorative CSS Float Animated Infinity Silhouette */}
-      <div className="relative w-72 h-72 sm:w-88 sm:h-88 flex items-center justify-center animate-float">
-        <svg viewBox="0 0 200 120" className="w-full h-auto drop-shadow-2xl">
-          <defs>
-            <linearGradient id="infinityGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor={isDark ? '#94B380' : '#54703F'} />
-              <stop offset="50%" stopColor={isDark ? '#B8CEA8' : '#6C8C54'} />
-              <stop offset="100%" stopColor={isDark ? '#94B380' : '#425832'} />
-            </linearGradient>
-            <filter id="glow">
-              <feGaussianBlur stdDeviation="3" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-          <path
-            d="M 50 60 C 20 20, 0 60, 50 100 C 100 140, 100 -20, 150 20 C 200 60, 180 100, 150 60 C 100 20, 100 100, 50 60 Z"
-            fill="none"
-            stroke="url(#infinityGrad)"
-            strokeWidth="12"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            filter="url(#glow)"
+        {geometry && (
+          <HeroParticleSystem
+            geometry={geometry}
+            isDark={isDark}
+            morphTarget={morphTarget}
           />
-        </svg>
+        )}
 
-        {/* Orbiting Badges */}
-        <div className="absolute -top-2 left-6 p-2 rounded-xl border border-border bg-elevated shadow-lg text-xs font-semibold text-text">
-          🎧 Live Voice
-        </div>
-        <div className="absolute top-1/2 -right-4 p-2 rounded-xl border border-border bg-elevated shadow-lg text-xs font-semibold text-text">
-          💬 Instant Chat
-        </div>
-        <div className="absolute -bottom-2 left-12 p-2 rounded-xl border border-border bg-elevated shadow-lg text-xs font-semibold text-text">
-          ✓ Verified SLA
-        </div>
-      </div>
+        <HeroPostProcessing
+          isDark={isDark}
+          isHighTierDesktop={deviceTier.isHighTier}
+          isPhone={deviceTier.isPhone}
+        />
+      </Canvas>
     </div>
   );
 }
 
-// Error Boundary for WebGL canvas
-class CanvasErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-  componentDidCatch(err) {
-    console.warn('[Hero3D Canvas Error, falling back to 2D poster]:', err.message);
-  }
-  render() {
-    if (this.state.hasError) {
-      return this.props.fallback;
-    }
-    return this.props.children;
-  }
-}
-
-// Main Exported Hero 3D Component with Hardware Detection & Fallback
+/**
+ * Main Export with Complete Fallback Guard:
+ * - Checks WebGL support
+ * - Respects prefers-reduced-motion
+ * - Checks low-tier hardware (hardwareConcurrency <= 4, deviceMemory <= 4, or Save-Data)
+ * - Wraps in Hero3DErrorBoundary
+ */
 export default function Hero3DCanvas() {
   const { isDark } = useTheme();
-  const [shouldRender3D, setShouldRender3D] = useState(true);
+  const [canRender3D, setCanRender3D] = useState(true);
 
   useEffect(() => {
-    // 1. Reduced motion check
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) {
-      setShouldRender3D(false);
-      return;
-    }
+    if (typeof window === 'undefined') return;
 
-    // 2. Low-tier device check (cores <= 4, memory <= 4, or Save-Data header)
-    const isLowTier = 
+    // 1. Respect prefers-reduced-motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    // 2. Low-tier device detection
+    const isLowTier =
       (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
       (navigator.deviceMemory && navigator.deviceMemory <= 4) ||
       (navigator.connection && navigator.connection.saveData);
 
-    if (isLowTier) {
-      setShouldRender3D(false);
+    if (prefersReducedMotion || isLowTier) {
+      setCanRender3D(false);
       return;
     }
 
-    // 3. WebGL support check
+    // 3. WebGL capability probe
     try {
-      const canvas = document.createElement('canvas');
-      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      const probeCanvas = document.createElement('canvas');
+      const gl =
+        probeCanvas.getContext('webgl2') ||
+        probeCanvas.getContext('webgl') ||
+        probeCanvas.getContext('experimental-webgl');
       if (!gl) {
-        setShouldRender3D(false);
-        return;
+        setCanRender3D(false);
       }
     } catch {
-      setShouldRender3D(false);
-      return;
+      setCanRender3D(false);
     }
   }, []);
 
-  if (!shouldRender3D) {
+  if (!canRender3D) {
     return <HeroPosterFallback isDark={isDark} />;
   }
 
   return (
-    <CanvasErrorBoundary fallback={<HeroPosterFallback isDark={isDark} />}>
-      <div 
-        className="relative w-full h-[400px] sm:h-[480px] lg:h-[560px] select-none pointer-events-auto"
-        aria-hidden="true"
-      >
-        <Suspense fallback={<HeroPosterFallback isDark={isDark} />}>
-          <Canvas
-            camera={{ position: [0, 0, 6.8], fov: 42 }}
-            dpr={[1, 1.75]} // Performance budget clamp
-            gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}
-            style={{ background: 'transparent' }}
-          >
-            <SceneContent isDark={isDark} />
-          </Canvas>
-        </Suspense>
-      </div>
-    </CanvasErrorBoundary>
+    <Hero3DErrorBoundary isDark={isDark}>
+      <Suspense fallback={<HeroPosterFallback isDark={isDark} />}>
+        <Hero3DScene isDark={isDark} />
+      </Suspense>
+    </Hero3DErrorBoundary>
   );
 }

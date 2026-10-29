@@ -1,49 +1,115 @@
 import React from 'react';
 
-// Fallback Poster Component for no-WebGL, reduced-motion, low-end devices & errors
+/**
+ * Fallback static pre-rendered poster of the particle form
+ * for no WebGL, prefers-reduced-motion, low-end devices, or ErrorBoundary fallbacks.
+ * Displays light and dark variants with only a subtle CSS float.
+ */
 export default function HeroPosterFallback({ isDark }) {
+  const primaryGlow = isDark ? '#1F8A3A' : '#54703F';
+  const highlightGlow = isDark ? '#B8E08A' : '#94B380';
+  const coreColor = isDark ? '#5FBF4A' : '#425832';
+
   return (
-    <div className="relative w-full h-[400px] sm:h-[480px] lg:h-[540px] flex items-center justify-center select-none overflow-hidden" aria-hidden="true">
-      <div className="absolute inset-0 bg-gradient-to-tr from-brand-600/10 via-transparent to-brand-400/10 rounded-3xl blur-2xl pointer-events-none" />
-      
-      {/* Decorative CSS Float Animated Infinity Silhouette */}
-      <div className="relative w-72 h-72 sm:w-88 sm:h-88 flex items-center justify-center animate-float">
-        <svg viewBox="0 0 200 120" className="w-full h-auto drop-shadow-2xl">
+    <div
+      className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
+      aria-hidden="true"
+    >
+      {/* Background Volumetric Glow Halo */}
+      <div
+        className="w-[320px] h-[320px] sm:w-[480px] sm:h-[480px] rounded-full blur-3xl opacity-35 transition-opacity duration-500"
+        style={{
+          background: isDark
+            ? `radial-gradient(circle, ${highlightGlow} 0%, ${primaryGlow} 45%, transparent 75%)`
+            : `radial-gradient(circle, ${highlightGlow} 0%, ${primaryGlow} 50%, transparent 75%)`,
+        }}
+      />
+
+      {/* Static Particle Form Poster with Subtle CSS Float */}
+      <div className="relative w-[340px] h-[340px] sm:w-[500px] sm:h-[500px] flex items-center justify-center animate-float">
+        <svg
+          viewBox="-100 -100 200 200"
+          className="w-full h-full drop-shadow-2xl"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <defs>
-            <linearGradient id="infinityGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor={isDark ? '#94B380' : '#54703F'} />
-              <stop offset="50%" stopColor={isDark ? '#B8CEA8' : '#6C8C54'} />
-              <stop offset="100%" stopColor={isDark ? '#94B380' : '#425832'} />
-            </linearGradient>
-            <filter id="glow">
-              <feGaussianBlur stdDeviation="3" result="blur" />
+            <radialGradient id="fallbackDotDark" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.95" />
+              <stop offset="35%" stopColor={highlightGlow} stopOpacity="0.85" />
+              <stop offset="70%" stopColor={coreColor} stopOpacity="0.5" />
+              <stop offset="100%" stopColor={primaryGlow} stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="fallbackDotLight" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#425832" stopOpacity="0.95" />
+              <stop offset="40%" stopColor="#54703F" stopOpacity="0.8" />
+              <stop offset="75%" stopColor="#94B380" stopOpacity="0.45" />
+              <stop offset="100%" stopColor="#94B380" stopOpacity="0" />
+            </radialGradient>
+            <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="1.5" result="blur" />
               <feMerge>
                 <feMergeNode in="blur" />
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
           </defs>
-          <path
-            d="M 50 60 C 20 20, 0 60, 50 100 C 100 140, 100 -20, 150 20 C 200 60, 180 100, 150 60 C 100 20, 100 100, 50 60 Z"
-            fill="none"
-            stroke="url(#infinityGrad)"
-            strokeWidth="12"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            filter="url(#glow)"
-          />
-        </svg>
 
-        {/* Orbiting Badges */}
-        <div className="absolute -top-2 left-6 p-2 rounded-xl border border-border bg-elevated shadow-lg text-xs font-semibold text-text">
-          🎧 Live Voice
-        </div>
-        <div className="absolute top-1/2 -right-4 p-2 rounded-xl border border-border bg-elevated shadow-lg text-xs font-semibold text-text">
-          💬 Instant Chat
-        </div>
-        <div className="absolute -bottom-2 left-12 p-2 rounded-xl border border-border bg-elevated shadow-lg text-xs font-semibold text-text">
-          ✓ Verified SLA
-        </div>
+          {/* Organic Core Cluster of Glowing Dots */}
+          <g filter="url(#softGlow)" fill={isDark ? 'url(#fallbackDotDark)' : 'url(#fallbackDotLight)'}>
+            {/* Clustered Toroid / Organic Ring Dots */}
+            {Array.from({ length: 96 }).map((_, i) => {
+              const u = (i / 96) * Math.PI * 2;
+              const rMajor = 52 + Math.sin(u * 3) * 6;
+              const rMinor = 18 + Math.cos(u * 4) * 4;
+              const cx = rMajor * Math.cos(u);
+              const cy = (rMajor * Math.sin(u) * 0.65) + Math.sin(u * 2) * 8;
+              const radius = 2.4 + (i % 5) * 0.6;
+              return (
+                <circle
+                  key={`core-${i}`}
+                  cx={cx}
+                  cy={cy}
+                  r={radius}
+                  opacity={0.65 + (i % 4) * 0.08}
+                />
+              );
+            })}
+
+            {/* Inner Dense Mass */}
+            {Array.from({ length: 64 }).map((_, i) => {
+              const u = (i / 64) * Math.PI * 2;
+              const r = 32 + (i % 7) * 3;
+              const cx = r * Math.cos(u);
+              const cy = r * Math.sin(u) * 0.75;
+              return (
+                <circle
+                  key={`inner-${i}`}
+                  cx={cx}
+                  cy={cy}
+                  r={2.2 + (i % 3) * 0.5}
+                  opacity={0.75}
+                />
+              );
+            })}
+
+            {/* Trailing Dispersal Particles Shedding to +X Right Side */}
+            {Array.from({ length: 42 }).map((_, i) => {
+              const progress = (i / 42);
+              const driftX = 35 + progress * 55 + (i % 5) * 4;
+              const driftY = -15 + progress * 32 + Math.sin(progress * 6) * 12;
+              const radius = 3.2 * (1.0 - progress * 0.5);
+              return (
+                <circle
+                  key={`dispersal-${i}`}
+                  cx={driftX}
+                  cy={driftY}
+                  r={Math.max(radius, 1.2)}
+                  opacity={Math.max(0.2, (1.0 - progress * 0.7))}
+                />
+              );
+            })}
+          </g>
+        </svg>
       </div>
     </div>
   );
