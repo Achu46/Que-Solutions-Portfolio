@@ -12,7 +12,7 @@ const iconMap = {
 
 export default function TargetClientsSection({ targetClients }) {
   return (
-    <section id="who-we-serve" className="py-24 sm:py-32 bg-transparent relative z-10">
+    <section id="who-we-serve" className="py-24 sm:py-32 bg-transparent relative z-10 content-visibility-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -43,7 +43,7 @@ export default function TargetClientsSection({ targetClients }) {
             const Icon = iconMap[client.icon] || CheckCircle2;
             return (
               <Reveal key={client.id || idx} delay={idx * 0.08} className="h-full">
-                <div className="h-full rounded-2xl sm:rounded-3xl border border-border/80 bg-surface/80 backdrop-blur-xl p-6 sm:p-7 flex flex-col justify-between space-y-3 shadow-2xl hover:border-brand/50 hover:bg-surface/90 transition-all duration-300 group">
+                <div className="h-full rounded-2xl sm:rounded-3xl border border-border/80 bg-surface p-6 sm:p-7 flex flex-col justify-between space-y-3 shadow-md hover:border-brand/50 hover:bg-surface/95 transition-all duration-300 group">
                   <div className="space-y-3">
                     <div className="w-12 h-12 rounded-2xl bg-elevated border border-border flex items-center justify-center text-brand transition-transform group-hover:scale-110 shadow-sm">
                       <Icon className="w-6 h-6" />

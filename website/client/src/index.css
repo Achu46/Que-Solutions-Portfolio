@@ -52,16 +52,24 @@
   html {
     scroll-behavior: smooth;
     font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    scrollbar-gutter: stable;
+    overscroll-behavior-y: none;
   }
   
   html, body, #root {
     background-color: var(--bg);
     color: var(--text);
     min-height: 100dvh;
+    scrollbar-color: var(--border) var(--bg);
   }
 
   body {
     overflow-x: clip; /* Prevents horizontal scroll without breaking position: sticky */
+  }
+
+  /* Anchor link smooth scroll margin offset equal to nav height */
+  section[id] {
+    scroll-margin-top: 5rem;
   }
 
   button, input, select, textarea {
@@ -75,6 +83,20 @@
 .theme-transitioning *::before,
 .theme-transitioning *::after {
   transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease, fill 200ms ease, stroke 200ms ease !important;
+}
+
+/* Below-the-fold content visibility for zero layout cost on initial paint */
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+/* Mobile performance guard: disable costly multi-pass backdrop-filters on small viewports */
+@media (max-width: 640px) {
+  .mobile-no-blur {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
 }
 
 /* THE PAIRING RULE: Inverse container pairs */
@@ -114,12 +136,11 @@
   pointer-events: none;
 }
 
-/* Faint blurred reflection under hero card */
+/* Faint reflection under hero card using pre-rendered radial-gradient (no GPU raster blur filter) */
 .hero-reflection-blur {
-  filter: blur(28px);
-  opacity: 0.35;
-  mask-image: linear-gradient(to top, transparent 15%, black 100%);
-  -webkit-mask-image: linear-gradient(to top, transparent 15%, black 100%);
+  background: radial-gradient(ellipse 60% 40% at 50% 50%, var(--border) 0%, transparent 70%);
+  opacity: 0.25;
+  pointer-events: none;
 }
 
 /* Theme-Aware Glass Panel */
@@ -131,13 +152,12 @@
 }
 
 .glass-panel-hover {
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease;
 }
 
 .glass-panel-hover:hover {
   border-color: var(--accent);
-  box-shadow: 0 10px 30px -4px rgba(84, 112, 63, 0.16);
-  transform: translateY(-4px);
+  transform: translateY(-3px);
 }
 
 /* Theme-aware background grid pattern */

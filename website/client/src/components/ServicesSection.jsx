@@ -48,10 +48,10 @@ function ServiceTiltCard({ service, index, isActive, onSelectService }) {
           rotateY,
           transformStyle: 'preserve-3d',
         }}
-        className={`relative h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border transition-all duration-300 p-7 sm:p-9 overflow-hidden shadow-2xl backdrop-blur-xl group ${
+        className={`relative h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border transition-all duration-300 p-7 sm:p-9 overflow-hidden shadow-md group ${
           isActive
-            ? 'border-brand/70 bg-surface/90 shadow-brand/10 ring-1 ring-brand/30'
-            : 'border-border/80 bg-surface/80 hover:border-brand/40 hover:bg-surface/90'
+            ? 'border-brand/70 bg-surface shadow-brand/10 ring-1 ring-brand/30'
+            : 'border-border/80 bg-surface hover:border-brand/40'
         }`}
       >
         {/* Dynamic Pointer Glare Overlay */}
@@ -127,7 +127,7 @@ export default function ServicesSection({ services }) {
   };
 
   return (
-    <section id="services" className="py-24 sm:py-32 bg-transparent relative z-10">
+    <section id="services" className="py-24 sm:py-32 bg-transparent relative z-10 content-visibility-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}

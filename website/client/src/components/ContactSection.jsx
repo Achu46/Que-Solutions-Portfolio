@@ -76,7 +76,7 @@ export default function ContactSection({ settings }) {
   };
 
   return (
-    <section id="contact" className="py-24 sm:py-32 bg-transparent relative z-10">
+    <section id="contact" className="py-24 sm:py-32 bg-transparent relative z-10 content-visibility-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -106,7 +106,7 @@ export default function ContactSection({ settings }) {
           {/* Left Column: Direct Contact Details & WhatsApp */}
           <div className="lg:col-span-5 space-y-6">
             <Reveal delay={0.2}>
-              <div className="rounded-3xl border border-border/80 bg-surface/85 backdrop-blur-xl p-8 sm:p-10 space-y-6 shadow-2xl">
+              <div className="rounded-3xl border border-border/80 bg-surface p-8 sm:p-10 space-y-6 shadow-md">
                 <h3 className="text-2xl font-light text-text tracking-tight">Direct Contact</h3>
                 
                 <div className="space-y-4">
@@ -181,7 +181,7 @@ export default function ContactSection({ settings }) {
           {/* Right Column: Lead Capture Form */}
           <div className="lg:col-span-7">
             <Reveal delay={0.25}>
-              <div className="rounded-3xl border border-border/80 bg-surface/85 backdrop-blur-xl p-8 sm:p-10 shadow-2xl">
+              <div className="rounded-3xl border border-border/80 bg-surface p-8 sm:p-10 shadow-md">
               
               {/* Live Accessible Notification State */}
               <div aria-live="polite">

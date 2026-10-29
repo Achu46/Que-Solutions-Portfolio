@@ -21,7 +21,7 @@ export default function PricingSection({ pricing }) {
   };
 
   return (
-    <section id="pricing" className="py-24 sm:py-32 bg-transparent relative z-10">
+    <section id="pricing" className="py-24 sm:py-32 bg-transparent relative z-10 content-visibility-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -56,10 +56,10 @@ export default function PricingSection({ pricing }) {
             return (
               <Reveal key={plan.id || plan.name || idx} delay={idx * 0.08} className="h-full">
                 <div
-                  className={`relative h-full flex flex-col justify-between rounded-3xl p-8 sm:p-9 transition-all duration-300 backdrop-blur-xl shadow-2xl ${
+                  className={`relative h-full flex flex-col justify-between rounded-3xl p-8 sm:p-9 transition-all duration-300 shadow-md ${
                     isRec
-                      ? 'border-2 border-brand/80 bg-surface/90 shadow-brand/10 lg:-translate-y-3'
-                      : 'border border-border/80 bg-surface/80 hover:border-brand/40'
+                      ? 'border-2 border-brand/80 bg-surface shadow-brand/10 lg:-translate-y-3'
+                      : 'border border-border/80 bg-surface hover:border-brand/40'
                   }`}
                 >
                   {/* Recommended Badge */}
@@ -133,7 +133,7 @@ export default function PricingSection({ pricing }) {
 
         {/* Operating Conditions Box */}
         <Reveal delay={0.28} className="mt-14">
-          <div className="p-6 sm:p-8 rounded-2xl border border-border/80 bg-surface/80 backdrop-blur-xl text-xs text-text space-y-2 shadow-lg">
+          <div className="p-6 sm:p-8 rounded-2xl border border-border/80 bg-surface text-xs text-text space-y-2 shadow-sm">
             <div className="flex items-center gap-2 font-bold text-text">
               <ShieldAlert className="w-4 h-4 text-brand" />
               <span>Standard Operational Terms & Capacity Agreement</span>

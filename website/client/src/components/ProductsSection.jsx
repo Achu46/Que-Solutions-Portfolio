@@ -23,7 +23,7 @@ export default function ProductsSection({ products, projects, settings }) {
   const showArabicErp = settings?.show_arabic_erp_card !== false;
 
   return (
-    <section id="products" className="py-24 sm:py-32 bg-transparent relative z-10">
+    <section id="products" className="py-24 sm:py-32 bg-transparent relative z-10 content-visibility-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -50,7 +50,7 @@ export default function ProductsSection({ products, projects, settings }) {
 
         {/* Featured QueFlow CRM Showcase */}
         <Reveal delay={0.2} className="mb-14">
-          <div className="rounded-3xl border border-border/80 bg-surface/85 backdrop-blur-xl p-8 sm:p-12 lg:p-14 shadow-2xl">
+          <div className="rounded-3xl border border-border/80 bg-surface p-8 sm:p-12 lg:p-14 shadow-md">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
               
               {/* Left Column: Product Details */}
@@ -168,7 +168,7 @@ export default function ProductsSection({ products, projects, settings }) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {showHrms && (
             <Reveal delay={0.25} className="h-full">
-              <div className="rounded-2xl sm:rounded-3xl border border-border/80 bg-surface/80 backdrop-blur-xl p-8 flex flex-col justify-between space-y-4 shadow-xl h-full">
+              <div className="rounded-2xl sm:rounded-3xl border border-border/80 bg-surface p-8 flex flex-col justify-between space-y-4 shadow-md h-full">
                 <div className="space-y-3">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-elevated border border-border text-[11px] font-mono font-bold text-text opacity-80">
                     <Clock className="w-3 h-3 text-brand" />
@@ -188,7 +188,7 @@ export default function ProductsSection({ products, projects, settings }) {
 
           {showArabicErp && (
             <Reveal delay={0.3} className="h-full">
-              <div className="rounded-2xl sm:rounded-3xl border border-border/80 bg-surface/80 backdrop-blur-xl p-8 flex flex-col justify-between space-y-4 shadow-xl h-full">
+              <div className="rounded-2xl sm:rounded-3xl border border-border/80 bg-surface p-8 flex flex-col justify-between space-y-4 shadow-md h-full">
                 <div className="space-y-3">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-elevated border border-border text-[11px] font-mono font-bold text-text opacity-80">
                     <Clock className="w-3 h-3 text-brand" />

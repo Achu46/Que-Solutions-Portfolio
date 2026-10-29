@@ -23,26 +23,29 @@ export default function FloatingGlassNav({ settings }) {
     { name: 'Chat Support (Web & WhatsApp)', href: '#services' },
   ];
 
-  // Intersection observer to track active section while scrolling
+  // IntersectionObserver to track active section with zero scroll overhead
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['home', 'services', 'products', 'pricing', 'about', 'contact'];
-      const scrollPos = window.scrollY + 200;
+    const sections = ['home', 'services', 'products', 'pricing', 'about', 'contact'];
+    const elements = sections.map((id) => document.getElementById(id)).filter(Boolean);
 
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i]);
-        if (el) {
-          const top = el.getBoundingClientRect().top + window.scrollY;
-          if (top <= scrollPos) {
-            setActiveSection(sections[i]);
-            break;
+    if (elements.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
           }
-        }
+        });
+      },
+      {
+        rootMargin: '-30% 0px -50% 0px',
+        threshold: 0,
       }
-    };
+    );
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -129,20 +132,6 @@ export default function FloatingGlassNav({ settings }) {
             </a>
           );
         })}
-
-        {/* Vertical divider */}
-        <div className="w-[1px] h-4 sm:h-5 bg-border mx-0.5 sm:mx-1 flex-shrink-0" />
-
-        {/* Theme Toggle Sun / Moon */}
-        <button
-          onClick={toggleTheme}
-          type="button"
-          aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-          title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-          className="p-1.5 sm:p-2 rounded-full text-text hover:bg-elevated transition-colors flex-shrink-0"
-        >
-          {isDark ? <Sun className="w-3.5 h-3.5 text-brand-lime" /> : <Moon className="w-3.5 h-3.5 text-brand" />}
-        </button>
       </div>
     </nav>
   );

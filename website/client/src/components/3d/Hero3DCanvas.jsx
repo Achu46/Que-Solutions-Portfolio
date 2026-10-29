@@ -23,26 +23,26 @@ function Hero3DScene({ isDark, isPersistent = false, clipPath = 'none', scrollCo
   const [morphTarget, setMorphTarget] = useState(0.0);
   const [frameloop, setFrameloop] = useState('always');
   
-  // Device classification
+  // Device classification & Particle budget: 20k high, 12k mid, 8k tablet, 5k phone
   const [deviceTier, setDeviceTier] = useState(() => {
-    if (typeof window === 'undefined') return { isPhone: false, isHighTier: true, maxCount: 60000, initialDpr: 1.75 };
+    if (typeof window === 'undefined') return { isPhone: false, isHighTier: true, maxCount: 20000, initialDpr: 1.5 };
     const w = window.innerWidth;
     const isPhone = w < 640;
     const isTablet = w >= 640 && w < 1024;
     const isMidDesktop = w >= 1024 && w < 1440;
     const isHighTier = w >= 1440;
 
-    let maxCount = 60000;
-    let initialDpr = 1.75;
+    let maxCount = 20000;
+    let initialDpr = 1.5;
     if (isPhone) {
-      maxCount = 12000;
-      initialDpr = 1.35;
+      maxCount = 5000;
+      initialDpr = 1.25;
     } else if (isTablet) {
-      maxCount = 20000;
-      initialDpr = 1.5;
+      maxCount = 8000;
+      initialDpr = 1.35;
     } else if (isMidDesktop) {
-      maxCount = 30000;
-      initialDpr = 1.6;
+      maxCount = 12000;
+      initialDpr = 1.45;
     }
 
     return { isPhone, isTablet, isHighTier, maxCount, initialDpr };
@@ -127,17 +127,17 @@ function Hero3DScene({ isDark, isPersistent = false, clipPath = 'none', scrollCo
   // PerformanceMonitor fallback: step down under 45 FPS
   const handlePerformanceDecline = () => {
     setActiveCount((cur) => {
-      if (cur > 30000) return 30000;
-      if (cur > 20000) return 20000;
       if (cur > 12000) return 12000;
+      if (cur > 8000) return 8000;
+      if (cur > 5000) return 5000;
       return cur;
     });
-    setDpr((cur) => Math.max(1.0, cur - 0.25));
+    setDpr((cur) => Math.max(1.0, cur - 0.2));
   };
 
   const dprRange = useMemo(() => {
-    if (deviceTier.isPhone) return [1.0, 1.35];
-    return [1.0, Math.min(dpr, 1.75)];
+    if (deviceTier.isPhone) return [1.0, 1.25];
+    return [1.0, Math.min(dpr, 1.5)];
   }, [deviceTier.isPhone, dpr]);
 
   const containerClasses = isPersistent
@@ -185,7 +185,6 @@ function Hero3DScene({ isDark, isPersistent = false, clipPath = 'none', scrollCo
         <HeroPostProcessing
           isDark={isDark}
           isHighTierDesktop={deviceTier.isHighTier}
-          isPhone={deviceTier.isPhone}
         />
       </Canvas>
     </div>

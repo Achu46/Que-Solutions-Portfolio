@@ -10,7 +10,7 @@ export default function AboutSection({ about }) {
   ];
 
   return (
-    <section id="about" className="py-24 sm:py-32 bg-transparent relative z-10">
+    <section id="about" className="py-24 sm:py-32 bg-transparent relative z-10 content-visibility-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -39,7 +39,7 @@ export default function AboutSection({ about }) {
 
             {/* Strategic Vision Glass Card */}
             <Reveal delay={0.24}>
-              <div className="p-7 sm:p-8 rounded-2xl sm:rounded-3xl border border-border/80 bg-surface/80 backdrop-blur-xl space-y-3 shadow-2xl">
+              <div className="p-7 sm:p-8 rounded-2xl sm:rounded-3xl border border-border/80 bg-surface space-y-3 shadow-md">
                 <div className="flex items-center gap-2.5 font-light text-text text-base sm:text-lg tracking-tight">
                   <Target className="w-5 h-5 text-brand" />
                   <span>Our Strategic Vision</span>
@@ -53,7 +53,7 @@ export default function AboutSection({ about }) {
 
             {/* Future Scope Glass Card */}
             <Reveal delay={0.32}>
-              <div className="p-7 sm:p-8 rounded-2xl sm:rounded-3xl border border-border/80 bg-surface/80 backdrop-blur-xl space-y-3 shadow-2xl">
+              <div className="p-7 sm:p-8 rounded-2xl sm:rounded-3xl border border-border/80 bg-surface space-y-3 shadow-md">
                 <div className="flex items-center gap-2.5 font-light text-text text-base sm:text-lg tracking-tight">
                   <Compass className="w-5 h-5 text-brand" />
                   <span>Future Scope & Technology Expansion</span>
@@ -69,7 +69,7 @@ export default function AboutSection({ about }) {
           {/* Right Column: 3 Core Pillars Showcase */}
           <div className="lg:col-span-5 space-y-6">
             <Reveal delay={0.2}>
-              <div className="p-8 sm:p-10 rounded-3xl border border-border/80 bg-surface/85 backdrop-blur-xl space-y-6 shadow-2xl">
+              <div className="p-8 sm:p-10 rounded-3xl border border-border/80 bg-surface space-y-6 shadow-md">
                 <div className="space-y-2 border-b border-border/70 pb-4">
                   <span className="text-xs font-mono font-bold uppercase tracking-widest text-brand">[ FOUNDATION ]</span>
                   <h3 className="text-2xl sm:text-3xl font-light text-text tracking-tight">The Three Pillars</h3>

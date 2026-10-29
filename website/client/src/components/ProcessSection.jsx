@@ -40,7 +40,7 @@ export default function ProcessSection() {
   const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
-    <section id="process" ref={containerRef} className="py-24 sm:py-32 bg-transparent relative z-10 overflow-hidden">
+    <section id="process" ref={containerRef} className="py-24 sm:py-32 bg-transparent relative z-10 overflow-hidden content-visibility-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -80,7 +80,7 @@ export default function ProcessSection() {
               const Icon = st.icon;
               return (
                 <Reveal key={st.num} delay={idx * 0.08} className="h-full">
-                  <div className="h-full rounded-2xl sm:rounded-3xl border border-border/80 bg-surface/80 backdrop-blur-xl p-7 sm:p-8 flex flex-col justify-between space-y-4 shadow-2xl hover:border-brand/50 hover:bg-surface/90 transition-all duration-300 group">
+                  <div className="h-full rounded-2xl sm:rounded-3xl border border-border/80 bg-surface p-7 sm:p-8 flex flex-col justify-between space-y-4 shadow-md hover:border-brand/50 hover:bg-surface/95 transition-all duration-300 group">
                     <div className="space-y-4">
                       {/* Number circle badge & Icon */}
                       <div className="flex items-center justify-between">

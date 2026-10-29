@@ -275,6 +275,15 @@ export default function HeroParticleSystem({
     };
   }, []);
 
+  // Clean up shader material on unmount
+  useEffect(() => {
+    return () => {
+      if (materialRef.current) {
+        materialRef.current.dispose();
+      }
+    };
+  }, []);
+
   // Detect touch device
   useEffect(() => {
     isTouchRef.current = 'ontouchstart' in window || navigator.maxTouchPoints > 0;

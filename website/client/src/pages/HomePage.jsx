@@ -11,52 +11,28 @@ import AboutSection from '../components/AboutSection';
 import TestimonialsSection from '../components/TestimonialsSection';
 import ContactSection from '../components/ContactSection';
 import { api, FALLBACK_SITE_DATA } from '../services/api';
-import Lenis from 'lenis';
 
 export default function HomePage() {
+  // Render with FALLBACK data instantly to never block first paint
   const [siteData, setSiteData] = useState(FALLBACK_SITE_DATA);
-  const [loading, setLoading] = useState(true);
 
-  // Initialize Lenis smooth scroll (respecting prefers-reduced-motion)
+  // Background hydration of live site data from Firestore without blocking first paint
   useEffect(() => {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) return;
-
-    const lenis = new Lenis({
-      duration: 1.1,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 0.85,
-    });
-
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    const rafId = requestAnimationFrame(raf);
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      lenis.destroy();
-    };
-  }, []);
-
-  // Fetch live site data from Firestore
-  useEffect(() => {
+    let mounted = true;
     async function loadData() {
       try {
         const data = await api.getSiteData();
-        if (data) {
+        if (data && mounted) {
           setSiteData(data);
         }
       } catch (err) {
         console.warn('[HomePage] Using fallback content:', err.message);
-      } finally {
-        setLoading(false);
       }
     }
     loadData();
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return (

@@ -12,7 +12,7 @@ export default function TestimonialsSection({ testimonials }) {
   }
 
   return (
-    <section id="testimonials" className="py-24 sm:py-32 bg-transparent relative z-10">
+    <section id="testimonials" className="py-24 sm:py-32 bg-transparent relative z-10 content-visibility-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <Reveal>
@@ -31,7 +31,7 @@ export default function TestimonialsSection({ testimonials }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {approvedList.map((item, idx) => (
             <Reveal key={item.id || idx} delay={idx * 0.08}>
-              <div className="rounded-2xl sm:rounded-3xl border border-border/80 bg-surface/80 backdrop-blur-xl p-7 sm:p-8 flex flex-col justify-between space-y-4 shadow-2xl">
+              <div className="rounded-2xl sm:rounded-3xl border border-border/80 bg-surface p-7 sm:p-8 flex flex-col justify-between space-y-4 shadow-md">
                 <div className="space-y-3">
                   <Quote className="w-8 h-8 text-brand opacity-60" />
                   <p className="text-sm text-text opacity-90 leading-relaxed italic font-normal">

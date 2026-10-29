@@ -10,7 +10,7 @@ export default function Footer({ settings }) {
   const whatsappUrl = settings?.social_whatsapp || 'https://wa.me/917092490337';
 
   return (
-    <footer className="w-full bg-surface/85 backdrop-blur-xl border-t border-border/80 pt-16 pb-12 text-text relative z-10 transition-colors">
+    <footer className="w-full bg-surface border-t border-border/80 pt-16 pb-12 text-text relative z-10 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-border">
           
@@ -21,6 +21,9 @@ export default function Footer({ settings }) {
                 <img
                   src="/logo.png"
                   alt="QUE SOLUTIONS"
+                  width="40"
+                  height="40"
+                  loading="lazy"
                   className="w-full h-full object-contain"
                 />
               </div>
