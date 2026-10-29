@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, Phone, MapPin, Send, CheckCircle2, AlertCircle, MessageCircle, Clock, ShieldCheck } from 'lucide-react';
 import { api } from '../services/api';
+import Reveal from './common/Reveal';
 
 export default function ContactSection({ settings }) {
   const [formData, setFormData] = useState({
@@ -75,100 +76,112 @@ export default function ContactSection({ settings }) {
   };
 
   return (
-    <section id="contact" className="py-24 sm:py-28 bg-surface/50 border-t border-border relative">
+    <section id="contact" className="py-24 sm:py-32 bg-transparent relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface border border-border text-brand text-xs font-bold uppercase tracking-wider">
-            Start Your Consultation
-          </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-text tracking-tight">
-            Request a <span className="gradient-text">Personalized Quote</span>
-          </h2>
-          <p className="text-base text-text opacity-80 leading-relaxed">
-            Tell us about your product store, daily inquiry volumes, and preferred channels. We respond with a structured onboarding proposal within 24 hours.
-          </p>
+          <Reveal>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface/90 backdrop-blur-md border border-border text-xs font-mono font-semibold text-text uppercase tracking-widest">
+              [ INQUIRY | REQUEST A QUOTE ]
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.08}>
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-light tracking-[-0.035em] text-text leading-tight">
+              Request a <br />
+              <span className="font-semibold text-brand">Personalized Proposal.</span>
+            </h2>
+          </Reveal>
+
+          <Reveal delay={0.16}>
+            <p className="text-sm sm:text-base text-text opacity-85 leading-relaxed max-w-2xl mx-auto">
+              Tell us about your product store, daily inquiry volumes, and preferred channels. We respond with a structured onboarding proposal within 24 hours.
+            </p>
+          </Reveal>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           
           {/* Left Column: Direct Contact Details & WhatsApp */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="rounded-3xl border border-border bg-surface p-8 space-y-6 shadow-soft">
-              <h3 className="text-2xl font-bold text-text">Direct Contact</h3>
-              
-              <div className="space-y-4">
-                <a
-                  href={`tel:${phone}`}
-                  className="p-4 rounded-2xl border border-border bg-elevated flex items-center gap-4 hover:border-brand transition-colors group"
-                >
-                  <div className="w-11 h-11 rounded-xl bg-surface border border-border flex items-center justify-center text-brand shrink-0 group-hover:scale-105 transition-transform">
-                    <Phone className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-xs text-text opacity-70">Direct Phone</div>
-                    <div className="text-sm font-bold text-text">{phone}</div>
-                  </div>
-                </a>
+            <Reveal delay={0.2}>
+              <div className="rounded-3xl border border-border/80 bg-surface/85 backdrop-blur-xl p-8 sm:p-10 space-y-6 shadow-2xl">
+                <h3 className="text-2xl font-light text-text tracking-tight">Direct Contact</h3>
+                
+                <div className="space-y-4">
+                  <a
+                    href={`tel:${phone}`}
+                    className="p-4 rounded-2xl border border-border/70 bg-elevated/70 flex items-center gap-4 hover:border-brand transition-colors group"
+                  >
+                    <div className="w-11 h-11 rounded-xl bg-surface border border-border flex items-center justify-center text-brand shrink-0 group-hover:scale-105 transition-transform">
+                      <Phone className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-text opacity-70">Direct Phone</div>
+                      <div className="text-sm font-bold text-text">{phone}</div>
+                    </div>
+                  </a>
 
-                <a
-                  href={`mailto:${email}`}
-                  className="p-4 rounded-2xl border border-border bg-elevated flex items-center gap-4 hover:border-brand transition-colors group"
-                >
-                  <div className="w-11 h-11 rounded-xl bg-surface border border-border flex items-center justify-center text-brand shrink-0 group-hover:scale-105 transition-transform">
-                    <Mail className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-xs text-text opacity-70">Official Email</div>
-                    <div className="text-sm font-bold text-text break-all">{email}</div>
-                  </div>
-                </a>
+                  <a
+                    href={`mailto:${email}`}
+                    className="p-4 rounded-2xl border border-border/70 bg-elevated/70 flex items-center gap-4 hover:border-brand transition-colors group"
+                  >
+                    <div className="w-11 h-11 rounded-xl bg-surface border border-border flex items-center justify-center text-brand shrink-0 group-hover:scale-105 transition-transform">
+                      <Mail className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-text opacity-70">Official Email</div>
+                      <div className="text-sm font-bold text-text break-all">{email}</div>
+                    </div>
+                  </a>
 
-                <a
-                  href="https://maps.google.com/?q=Erode,+Tamil+Nadu"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-4 rounded-2xl border border-border bg-elevated flex items-center gap-4 hover:border-brand transition-colors group"
-                >
-                  <div className="w-11 h-11 rounded-xl bg-surface border border-border flex items-center justify-center text-brand shrink-0 group-hover:scale-105 transition-transform">
-                    <MapPin className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-xs text-text opacity-70">Headquarters</div>
-                    <div className="text-sm font-bold text-text">{location}</div>
-                  </div>
-                </a>
+                  <a
+                    href="https://maps.google.com/?q=Erode,+Tamil+Nadu"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-4 rounded-2xl border border-border/70 bg-elevated/70 flex items-center gap-4 hover:border-brand transition-colors group"
+                  >
+                    <div className="w-11 h-11 rounded-xl bg-surface border border-border flex items-center justify-center text-brand shrink-0 group-hover:scale-105 transition-transform">
+                      <MapPin className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-text opacity-70">Headquarters</div>
+                      <div className="text-sm font-bold text-text">{location}</div>
+                    </div>
+                  </a>
 
-                <div className="p-4 rounded-2xl border border-border bg-elevated flex items-center gap-4">
-                  <div className="w-11 h-11 rounded-xl bg-surface border border-border flex items-center justify-center text-brand shrink-0">
-                    <Clock className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-xs text-text opacity-70">Operating Hours</div>
-                    <div className="text-sm font-bold text-text">Mon – Sat: 4 hrs/day (~104 hrs/mo)</div>
+                  <div className="p-4 rounded-2xl border border-border/70 bg-elevated/70 flex items-center gap-4">
+                    <div className="w-11 h-11 rounded-xl bg-surface border border-border flex items-center justify-center text-brand shrink-0">
+                      <Clock className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-text opacity-70">Operating Hours</div>
+                      <div className="text-sm font-bold text-text">Mon – Sat: 4 hrs/day (~104 hrs/mo)</div>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Instant WhatsApp Action */}
-              <div className="pt-2">
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2.5 py-4 px-6 rounded-2xl brand-inverse text-xs font-bold uppercase tracking-wider shadow-soft hover:opacity-95 transition-all"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>Chat on WhatsApp</span>
-                </a>
+                {/* Instant WhatsApp Action */}
+                <div className="pt-2">
+                  <a
+                    href={whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full inline-flex items-center justify-center gap-2.5 py-4 px-6 rounded-2xl inverse text-xs font-bold uppercase tracking-wider shadow-lg hover:opacity-95 active:scale-95 transition-all"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>Chat on WhatsApp</span>
+                  </a>
+                </div>
               </div>
-            </div>
+            </Reveal>
           </div>
 
           {/* Right Column: Lead Capture Form */}
           <div className="lg:col-span-7">
-            <div className="rounded-3xl border border-border bg-surface p-8 sm:p-10 shadow-soft">
+            <Reveal delay={0.25}>
+              <div className="rounded-3xl border border-border/80 bg-surface/85 backdrop-blur-xl p-8 sm:p-10 shadow-2xl">
               
               {/* Live Accessible Notification State */}
               <div aria-live="polite">
@@ -340,14 +353,15 @@ export default function ContactSection({ settings }) {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="brand-inverse w-full py-4 px-8 rounded-full text-xs font-bold uppercase tracking-wider shadow-md hover:opacity-95 active:scale-95 transition-all flex items-center justify-center gap-2"
+                    className="inverse w-full py-4 px-8 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg hover:opacity-95 active:scale-95 transition-all flex items-center justify-center gap-2"
                   >
                     {loading ? (
                       <span>Sending Your Request...</span>
                     ) : (
                       <>
+                        <span className="w-2 h-2 rounded-full accent-dot" />
                         <span>Submit Quote Request</span>
-                        <Send className="w-4 h-4" />
+                        <Send className="w-4 h-4 ml-1" />
                       </>
                     )}
                   </button>
@@ -359,6 +373,7 @@ export default function ContactSection({ settings }) {
                 </div>
               </form>
             </div>
+            </Reveal>
           </div>
         </div>
       </div>

@@ -17,7 +17,7 @@ import Hero3DErrorBoundary from './Hero3DErrorBoundary';
  * - frameloop="always" when in view; "never" when off-screen or tab hidden
  * - Strict fallbacks: no WebGL, prefers-reduced-motion, low-tier device, runtime ErrorBoundary
  */
-function Hero3DScene({ isDark }) {
+function Hero3DScene({ isDark, isPersistent = false, clipPath = 'none', scrollControls }) {
   const containerRef = useRef(null);
   const [geometry, setGeometry] = useState(null);
   const [morphTarget, setMorphTarget] = useState(0.0);
@@ -78,6 +78,15 @@ function Hero3DScene({ isDark }) {
 
   // 2. IntersectionObserver + Page Visibility to pause rendering when off-screen
   useEffect(() => {
+    if (isPersistent) {
+      // In persistent full-page mode, pause only when tab is hidden
+      const handleVisibilityChange = () => {
+        setFrameloop(!document.hidden ? 'always' : 'never');
+      };
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+    }
+
     const el = containerRef.current;
     if (!el) return;
 
@@ -113,7 +122,7 @@ function Hero3DScene({ isDark }) {
       observer.disconnect();
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, []);
+  }, [isPersistent]);
 
   // PerformanceMonitor fallback: step down under 45 FPS
   const handlePerformanceDecline = () => {
@@ -131,10 +140,17 @@ function Hero3DScene({ isDark }) {
     return [1.0, Math.min(dpr, 1.75)];
   }, [deviceTier.isPhone, dpr]);
 
+  const containerClasses = isPersistent
+    ? "fixed inset-0 z-[5] pointer-events-none select-none transition-[clip-path] duration-75"
+    : "absolute inset-0 z-0 pointer-events-none select-none";
+
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 z-0 pointer-events-none select-none"
+      className={containerClasses}
+      style={{
+        clipPath: isPersistent ? clipPath : undefined,
+      }}
       aria-hidden="true"
     >
       <Canvas
@@ -162,6 +178,7 @@ function Hero3DScene({ isDark }) {
             geometry={geometry}
             isDark={isDark}
             morphTarget={morphTarget}
+            scrollControls={scrollControls}
           />
         )}
 
@@ -182,7 +199,7 @@ function Hero3DScene({ isDark }) {
  * - Checks low-tier hardware (hardwareConcurrency <= 4, deviceMemory <= 4, or Save-Data)
  * - Wraps in Hero3DErrorBoundary
  */
-export default function Hero3DCanvas() {
+export default function Hero3DCanvas({ isPersistent = false, clipPath = 'none', scrollControls }) {
   const { isDark } = useTheme();
   const [canRender3D, setCanRender3D] = useState(true);
 
@@ -219,13 +236,19 @@ export default function Hero3DCanvas() {
   }, []);
 
   if (!canRender3D) {
+    if (isPersistent) return null;
     return <HeroPosterFallback isDark={isDark} />;
   }
 
   return (
     <Hero3DErrorBoundary isDark={isDark}>
-      <Suspense fallback={<HeroPosterFallback isDark={isDark} />}>
-        <Hero3DScene isDark={isDark} />
+      <Suspense fallback={isPersistent ? null : <HeroPosterFallback isDark={isDark} />}>
+        <Hero3DScene
+          isDark={isDark}
+          isPersistent={isPersistent}
+          clipPath={clipPath}
+          scrollControls={scrollControls}
+        />
       </Suspense>
     </Hero3DErrorBoundary>
   );

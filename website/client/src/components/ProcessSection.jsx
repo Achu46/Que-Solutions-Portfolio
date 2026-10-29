@@ -40,54 +40,63 @@ export default function ProcessSection() {
   const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
-    <section id="process" ref={containerRef} className="py-24 sm:py-28 bg-surface/40 border-t border-border relative overflow-hidden">
+    <section id="process" ref={containerRef} className="py-24 sm:py-32 bg-transparent relative z-10 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface border border-border text-brand text-xs font-bold uppercase tracking-wider">
-            Simple 4-Step Onboarding
-          </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-text tracking-tight">
-            How It <span className="gradient-text">Works</span>
-          </h2>
-          <p className="text-base text-text opacity-80 leading-relaxed">
-            From initial enquiry to active customer care, our onboarding process is transparent, structured, and rapid.
-          </p>
+          <Reveal>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface/90 backdrop-blur-md border border-border text-xs font-mono font-semibold text-text uppercase tracking-widest">
+              [ ONBOARDING | HOW IT WORKS ]
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.08}>
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-light tracking-[-0.035em] text-text leading-tight">
+              Simple 4-Step <br />
+              <span className="font-semibold text-brand">Integration Flow.</span>
+            </h2>
+          </Reveal>
+
+          <Reveal delay={0.16}>
+            <p className="text-sm sm:text-base text-text opacity-85 leading-relaxed max-w-2xl mx-auto">
+              From initial enquiry to active customer care, our onboarding process is transparent, structured, and rapid.
+            </p>
+          </Reveal>
         </div>
 
         {/* Desktop Connecting Line that draws on scroll */}
         <div className="relative">
-          <div className="hidden lg:block absolute top-12 left-12 right-12 h-1 bg-border -z-0">
+          <div className="hidden lg:block absolute top-12 left-12 right-12 h-0.5 bg-border/80 -z-0">
             <motion.div
               style={{ scaleX, transformOrigin: 'left' }}
               className="h-full bg-brand"
             />
           </div>
 
-          {/* 4 Step Cards */}
+          {/* 4 Step Glass Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
             {steps.map((st, idx) => {
               const Icon = st.icon;
               return (
-                <Reveal key={st.num} delay={idx * 0.1} className="h-full">
-                  <div className="h-full rounded-2xl border border-border bg-surface p-7 flex flex-col justify-between space-y-4 shadow-soft hover:shadow-soft-lg transition-all group">
+                <Reveal key={st.num} delay={idx * 0.08} className="h-full">
+                  <div className="h-full rounded-2xl sm:rounded-3xl border border-border/80 bg-surface/80 backdrop-blur-xl p-7 sm:p-8 flex flex-col justify-between space-y-4 shadow-2xl hover:border-brand/50 hover:bg-surface/90 transition-all duration-300 group">
                     <div className="space-y-4">
-                      {/* Number circle badge */}
+                      {/* Number circle badge & Icon */}
                       <div className="flex items-center justify-between">
                         <div className="w-12 h-12 rounded-2xl bg-elevated border border-border flex items-center justify-center text-brand shadow-sm font-extrabold text-sm group-hover:scale-110 transition-transform">
                           <Icon className="w-5 h-5" />
                         </div>
-                        <span className="text-2xl font-black text-brand tracking-widest font-mono">
+                        <span className="text-xl font-bold text-brand tracking-widest font-mono">
                           {st.num}
                         </span>
                       </div>
 
-                      <h3 className="text-lg font-bold text-text">
+                      <h3 className="text-lg font-light text-text tracking-tight">
                         {st.title}
                       </h3>
 
-                      <p className="text-xs text-text opacity-80 leading-relaxed">
+                      <p className="text-xs text-text opacity-85 leading-relaxed font-normal">
                         {st.desc}
                       </p>
                     </div>

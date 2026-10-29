@@ -1,13 +1,47 @@
-import React, { Suspense, lazy } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useCanvasScroll } from '../context/CanvasScrollContext';
 import HeroPosterFallback from './3d/HeroPosterFallback';
-
-// Lazy load the full Phase 2 3D Particle Canvas
-const Hero3DCanvas = lazy(() => import('./3d/Hero3DCanvas'));
 
 export default function HeroSection({ hero, settings }) {
   const { isDark } = useTheme();
+  const cardRef = useRef(null);
+  const { setHeroCardEl } = useCanvasScroll();
+  const [canRender3D, setCanRender3D] = useState(true);
+
+  // Register card element for dynamic clip-path computation
+  useEffect(() => {
+    if (cardRef.current && setHeroCardEl) {
+      setHeroCardEl(cardRef.current);
+    }
+  }, [setHeroCardEl]);
+
+  // Check fallback criteria
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isLowTier =
+      (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
+      (navigator.deviceMemory && navigator.deviceMemory <= 4) ||
+      (navigator.connection && navigator.connection.saveData);
+
+    if (prefersReducedMotion || isLowTier) {
+      setCanRender3D(false);
+      return;
+    }
+
+    try {
+      const probeCanvas = document.createElement('canvas');
+      const gl =
+        probeCanvas.getContext('webgl2') ||
+        probeCanvas.getContext('webgl') ||
+        probeCanvas.getContext('experimental-webgl');
+      if (!gl) setCanRender3D(false);
+    } catch {
+      setCanRender3D(false);
+    }
+  }, []);
 
   return (
     <section 
@@ -16,9 +50,11 @@ export default function HeroSection({ hero, settings }) {
       className="relative min-h-[100dvh] w-full flex flex-col justify-between p-3 sm:p-4 md:p-6 bg-bg overflow-hidden"
     >
       {/* =========================================================================
-          THE INSET HERO CARD (Radius ~24-28px on pure black/white canvas)
+          THE INSET HERO CARD (Radius ~24-32px on pure black/white canvas)
           ========================================================================= */}
       <div 
+        ref={cardRef}
+        id="hero-card"
         className="relative flex-1 w-full rounded-[26px] sm:rounded-[32px] border border-border/60 overflow-hidden flex flex-col justify-between p-6 sm:p-10 lg:p-14 transition-colors duration-300 shadow-2xl"
         style={{
           background: 'var(--hero-gradient)',
@@ -27,10 +63,8 @@ export default function HeroSection({ hero, settings }) {
         {/* Soft volumetric light cone from top centre */}
         <div className="absolute inset-0 volumetric-cone z-0 pointer-events-none" />
 
-        {/* Phase 2 3D WebGL / GLSL Glowing Dots Particle System with Full Postprocessing */}
-        <Suspense fallback={<HeroPosterFallback isDark={isDark} />}>
-          <Hero3DCanvas />
-        </Suspense>
+        {/* 2D Fallback poster rendered only if 3D is disabled on low-tier or reduced motion */}
+        {!canRender3D && <HeroPosterFallback isDark={isDark} />}
 
         {/* ---------------- TOP BAR INSIDE HERO CARD ---------------- */}
         <div className="relative z-20 flex items-center justify-between w-full">
@@ -57,7 +91,7 @@ export default function HeroSection({ hero, settings }) {
         </div>
 
         {/* ---------------- MAIN CONTENT: SPLIT HEADLINE & CONTENT ---------------- */}
-        <div className="relative z-10 my-auto py-8 lg:py-12 flex flex-col justify-center max-w-7xl mx-auto w-full">
+        <div className="relative z-20 my-auto py-8 lg:py-12 flex flex-col justify-center max-w-7xl mx-auto w-full">
           
           {/* Bracketed Eyebrow */}
           <div className="mb-4 sm:mb-6">

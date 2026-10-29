@@ -225,6 +225,7 @@ export default function HeroParticleSystem({
   geometry,
   isDark,
   morphTarget = 0,
+  scrollControls,
 }) {
   const meshRef = useRef();
   const materialRef = useRef();
@@ -233,7 +234,7 @@ export default function HeroParticleSystem({
   const isTouchRef = useRef(false);
   const assembleProgressRef = useRef(0);
 
-  const { camera, size, viewport } = useThree();
+  const { camera } = useThree();
 
   // Target theme color definitions
   // Dark:  #1F8A3A -> #5FBF4A -> #B8E08A core
@@ -317,8 +318,27 @@ export default function HeroParticleSystem({
       u.uAssemble.value = assembleProgressRef.current;
     }
 
-    // 3. Smooth morph progression towards active morph target
-    u.uMorph.value = THREE.MathUtils.lerp(u.uMorph.value, morphTarget, 0.05);
+    // 3. Read spring values driven by useScroll + useSpring
+    let targetMorphVal = morphTarget;
+    let targetScaleVal = 1.0;
+    let targetPosXVal = 0.4;
+    let targetDisperseVal = 1.0;
+    let targetOpacityMult = 1.0;
+
+    if (scrollControls) {
+      if (scrollControls.springMorph) targetMorphVal = scrollControls.springMorph.get();
+      if (scrollControls.springScale) targetScaleVal = scrollControls.springScale.get();
+      if (scrollControls.springPosX) targetPosXVal = scrollControls.springPosX.get();
+      if (scrollControls.springDisperse) targetDisperseVal = scrollControls.springDisperse.get();
+      if (scrollControls.springOpacity) targetOpacityMult = scrollControls.springOpacity.get();
+    }
+
+    u.uMorph.value = targetMorphVal;
+    u.uDisperse.value = targetDisperseVal;
+
+    // Smooth position and scale on mesh
+    meshRef.current.position.x = targetPosXVal;
+    meshRef.current.scale.setScalar(targetScaleVal);
 
     // 4. Pointer repulsion lerping / Autonomous drift on touch devices
     if (isTouchRef.current) {
@@ -333,7 +353,7 @@ export default function HeroParticleSystem({
       u.uPointer.value.copy(pointerWorldRef.current);
     }
 
-    // 5. Theme change tweening over ~600ms (delta * 5.0 gives half-life ~140ms, ~600ms total)
+    // 5. Theme change tweening over ~600ms
     const targetThemeVal = isDark ? 0.0 : 1.0;
     const lerpSpeed = Math.min(delta * 5.2, 1.0);
     u.uTheme.value = THREE.MathUtils.lerp(u.uTheme.value, targetThemeVal, lerpSpeed);
@@ -342,7 +362,11 @@ export default function HeroParticleSystem({
     u.uColorA.value.lerp(activeTheme.colorA, lerpSpeed);
     u.uColorB.value.lerp(activeTheme.colorB, lerpSpeed);
     u.uColorC.value.lerp(activeTheme.colorC, lerpSpeed);
-    u.uOpacity.value = THREE.MathUtils.lerp(u.uOpacity.value, activeTheme.opacity, lerpSpeed);
+    u.uOpacity.value = THREE.MathUtils.lerp(
+      u.uOpacity.value,
+      activeTheme.opacity * targetOpacityMult,
+      lerpSpeed
+    );
 
     // 6. Slow organic mesh tilt & floating breathing
     meshRef.current.rotation.y = time * 0.12;
