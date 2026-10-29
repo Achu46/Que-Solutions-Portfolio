@@ -75,6 +75,7 @@ uniform float uTime;
 uniform float uMorph;
 uniform float uAssemble;
 uniform float uDisperse;
+uniform float uPulse;
 uniform vec3 uPointer;
 uniform float uPixelRatio;
 uniform float uTheme;
@@ -92,6 +93,7 @@ varying float vBlur;
 varying float vSeed;
 varying float vDispersal;
 varying float vDepthFactor;
+varying float vPulseGlow;
 
 ${simplexNoiseGLSL}
 
@@ -118,59 +120,76 @@ void main() {
   // 1. Morph interpolation between active targets
   vec3 targetPos = getMorphPosition(uMorph);
 
-  // 2. Low-frequency 3D noise for organic bumpy surface
-  vec3 noiseCoord = targetPos * 0.7 + vec3(uTime * 0.16, uTime * 0.12, uTime * 0.08) + vec3(aSeed * 0.5);
-  float bump = snoise(noiseCoord) * 0.38;
+  // 2. Low-frequency 3D noise for organic texture
+  vec3 noiseCoord = targetPos * 0.65 + vec3(uTime * 0.12, uTime * 0.1, uTime * 0.08) + vec3(aSeed * 0.4);
+  float bump = snoise(noiseCoord) * 0.28;
   vec3 norm = normalize(targetPos + vec3(0.001));
   vec3 pos = targetPos + norm * bump;
 
-  // 3. Dispersal: particles with high aSeed on the +X / edge side drift outward with looping lifetime
+  // 3. Sound-wave pulses: 2-3 concentric ripples expanding from ear cups every ~2.5s
+  vec3 cupL = vec3(-1.02, -0.38, 0.0);
+  vec3 cupR = vec3(1.02, -0.38, 0.0);
+  float distL = length(targetPos - cupL);
+  float distR = length(targetPos - cupR);
+  float distCup = min(distL, distR);
+
+  float waveFront = uPulse * 1.35;
+  float waveDist = distCup - waveFront;
+  float ripple = sin(waveDist * 28.0) * smoothstep(0.35, 0.0, abs(waveDist)) * (1.0 - uPulse);
+
+  vec3 nearestCup = distL < distR ? cupL : cupR;
+  vec3 rippleDir = normalize(targetPos - nearestCup + vec3(0.001));
+  pos += rippleDir * ripple * 0.07;
+
+  // Pulse glow factor: cups glow on pulse and expanding ripples highlight
+  vPulseGlow = max(0.0, ripple * 0.8) + smoothstep(0.42, 0.0, distCup) * sin(uPulse * 3.14159) * 0.55;
+
+  // 4. Shed particles drifting off the microphone side (-X, +Z)
   vDispersal = 0.0;
-  if (aSeed > 0.68 && pos.x > -0.6) {
-    float lifetime = fract(uTime * 0.22 + aSeed * 6.2831);
+  if (aSeed > 0.84 && pos.x < -0.15 && pos.z > 0.15) {
+    float lifetime = fract(uTime * 0.28 + aSeed * 6.2831);
     vDispersal = lifetime;
     
-    vec3 driftDir = vec3(1.7, 0.65, 0.45);
+    vec3 driftDir = vec3(-0.9, -0.22, 1.2);
     vec3 turbulence = vec3(
       snoise(pos * 0.4 + vec3(uTime * 0.15)),
       snoise(pos * 0.4 + vec3(uTime * 0.15 + 10.0)),
       snoise(pos * 0.4 + vec3(uTime * 0.15 + 20.0))
-    ) * 0.65;
+    ) * 0.45;
     
-    pos += (driftDir + turbulence) * (lifetime * 2.8 * uDisperse);
+    pos += (driftDir + turbulence) * (lifetime * 2.0 * uDisperse);
   }
 
-  // 4. Pointer repulsion (radius ~0.6 world units, smoothly eased)
+  // 5. Pointer repulsion (radius ~0.65 world units, smoothly eased)
   vec3 toPointer = pos - uPointer;
   float distToPointer = length(toPointer.xy);
   float repulsionRadius = 0.65;
   if (distToPointer < repulsionRadius) {
     float factor = smoothstep(repulsionRadius, 0.0, distToPointer);
-    pos += normalize(vec3(toPointer.xy, 0.3)) * factor * 0.52;
+    pos += normalize(vec3(toPointer.xy, 0.3)) * factor * 0.45;
   }
 
-  // 5. Intro assembly from scattered noise over ~1.6s
+  // 6. Intro assembly from scattered noise over ~1.6s
   if (uAssemble < 1.0) {
     float easeAssemble = smoothstep(0.0, 1.0, uAssemble);
     vec3 scatter = vec3(
       snoise(targetPos * 1.5 + vec3(aSeed * 12.0)),
       snoise(targetPos * 1.5 + vec3(aSeed * 24.0)),
       snoise(targetPos * 1.5 + vec3(aSeed * 36.0))
-    ) * 7.5;
+    ) * 7.0;
     pos = mix(scatter, pos, easeAssemble);
   }
 
-  // 6. View space projection
+  // 7. View space projection
   vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
   gl_Position = projectionMatrix * mvPosition;
 
-  // 7. Depth of Field fake blur based on distance from uFocus
+  // 8. Depth of Field fake blur: far points are larger and softer for depth
   float distFromFocus = abs(-mvPosition.z - uFocus);
   vBlur = clamp(distFromFocus * 0.32, 0.0, 1.0);
   vDepthFactor = clamp((-mvPosition.z - 3.5) / 4.0, 0.0, 1.0);
 
-  // 8. gl_PointSize scaled by distance, blur factor, and theme
-  // In light theme: points slightly larger for rich depth
+  // gl_PointSize scaled by distance, blur factor, and theme
   float themeSizeBoost = mix(1.0, 1.15, uTheme);
   float sizeBoost = (1.0 + vBlur * 1.5) * themeSizeBoost;
   gl_PointSize = (aSize * sizeBoost * uPixelRatio * 38.0) / -mvPosition.z;
@@ -188,6 +207,7 @@ varying float vBlur;
 varying float vSeed;
 varying float vDispersal;
 varying float vDepthFactor;
+varying float vPulseGlow;
 
 void main() {
   // Soft circular sprite (distance from point center [0.0, 0.5])
@@ -206,6 +226,12 @@ void main() {
   vec3 col = mix(uColorA, uColorB, smoothstep(0.0, 0.7, vSeed));
   col = mix(col, uColorC, core * 0.65 + pow(max(0.0, 1.0 - dist * 2.0), 2.2) * 0.35);
 
+  // Sound-wave pulse glow: cups and concentric ripples highlight
+  if (vPulseGlow > 0.0) {
+    col = mix(col, uColorC, clamp(vPulseGlow * 0.75, 0.0, 1.0));
+    alpha = clamp(alpha + vPulseGlow * 0.25, 0.0, 1.0);
+  }
+
   // Shed particles luminescence and fade at end of cycle
   if (vDispersal > 0.0) {
     col = mix(col, uColorC, 0.45);
@@ -216,7 +242,6 @@ void main() {
   alpha *= uOpacity;
 
   // NormalBlending with Premultiplied Alpha for BOTH themes (NO additive blending)
-  // Transparent = true, depthWrite = false
   gl_FragColor = vec4(col * alpha, alpha);
 }
 `;
@@ -264,8 +289,9 @@ export default function HeroParticleSystem({
       uMorph: { value: morphTarget },
       uAssemble: { value: 0.0 }, // Intro assemble starts at 0.0
       uDisperse: { value: 1.0 },
+      uPulse: { value: 0.0 }, // Sound-wave ripple cycle (2.5s)
       uPointer: { value: new THREE.Vector3(999, 999, 0) },
-      uPixelRatio: { value: Math.min(window.devicePixelRatio || 1, 1.75) },
+      uPixelRatio: { value: Math.min(window.devicePixelRatio || 1, 1.5) },
       uTheme: { value: isDark ? 0.0 : 1.0 },
       uColorA: { value: curTheme.colorA.clone() },
       uColorB: { value: curTheme.colorB.clone() },
@@ -321,13 +347,16 @@ export default function HeroParticleSystem({
     const time = state.clock.getElapsedTime();
     u.uTime.value = time;
 
-    // 2. Intro assembly over ~1.6s
+    // 2. Sound-wave pulse cycle: every ~2.5s
+    u.uPulse.value = (time % 2.5) / 2.5;
+
+    // 3. Intro assembly over ~1.6s
     if (assembleProgressRef.current < 1.0) {
       assembleProgressRef.current = Math.min(assembleProgressRef.current + delta / 1.6, 1.0);
       u.uAssemble.value = assembleProgressRef.current;
     }
 
-    // 3. Read spring values driven by useScroll + useSpring (if persistent)
+    // 4. Read spring values driven by useScroll + useSpring (if persistent)
     let targetMorphVal = morphTarget;
     let targetScaleVal = 1.0;
     let targetPosXVal = 0.0;
@@ -349,11 +378,11 @@ export default function HeroParticleSystem({
     meshRef.current.position.x = targetPosXVal;
     meshRef.current.scale.setScalar(targetScaleVal);
 
-    // 4. Pointer repulsion lerping / Autonomous drift on touch devices
+    // 5. Pointer repulsion lerping / Autonomous drift on touch devices
     if (isTouchRef.current) {
-      // Slow autonomous organic drift
-      const autoX = Math.sin(time * 0.45) * 1.2;
-      const autoY = Math.cos(time * 0.35) * 0.8;
+      // Autonomous gentle organic drift on touch devices
+      const autoX = Math.sin(time * 0.45) * 1.1;
+      const autoY = Math.cos(time * 0.35) * 0.7;
       pointerWorldRef.current.set(autoX, autoY, 0);
       u.uPointer.value.copy(pointerWorldRef.current);
     } else {
@@ -362,7 +391,7 @@ export default function HeroParticleSystem({
       u.uPointer.value.copy(pointerWorldRef.current);
     }
 
-    // 5. Theme change tweening over ~600ms
+    // 6. Theme change tweening over ~600ms
     const targetThemeVal = isDark ? 0.0 : 1.0;
     const lerpSpeed = Math.min(delta * 5.2, 1.0);
     u.uTheme.value = THREE.MathUtils.lerp(u.uTheme.value, targetThemeVal, lerpSpeed);
@@ -377,14 +406,23 @@ export default function HeroParticleSystem({
       lerpSpeed
     );
 
-    // 6. Slow organic mesh tilt with pointer tilt & gentle breathing
-    const tiltX = isTouchRef.current ? 0 : pointerWorldRef.current.x * 0.08;
-    const tiltY = isTouchRef.current ? 0 : pointerWorldRef.current.y * 0.08;
+    // 7. Idle Motion:
+    // - Slow yaw oscillation of ~+/-35 degrees (+/-0.61 rad) so mic stays visible
+    // - Gentle vertical float
+    // - Pointer tilt lerped with max ~0.25 rad
+    const yawBase = Math.sin(time * 0.42) * 0.61;
+    const maxTilt = 0.25;
+    const targetTiltX = isTouchRef.current
+      ? 0
+      : THREE.MathUtils.clamp(pointerWorldRef.current.x * 0.09, -maxTilt, maxTilt);
+    const targetTiltY = isTouchRef.current
+      ? 0
+      : THREE.MathUtils.clamp(pointerWorldRef.current.y * 0.09, -maxTilt, maxTilt);
 
-    meshRef.current.rotation.y = time * 0.14 + tiltX;
-    meshRef.current.rotation.x = Math.sin(time * 0.25) * 0.07 - tiltY;
-    meshRef.current.rotation.z = Math.sin(time * 0.3) * 0.04;
-    meshRef.current.position.y = Math.sin(time * 0.5) * 0.08;
+    meshRef.current.rotation.y = yawBase + targetTiltX;
+    meshRef.current.rotation.x = -targetTiltY + Math.sin(time * 0.3) * 0.04;
+    meshRef.current.rotation.z = Math.sin(time * 0.4) * 0.03;
+    meshRef.current.position.y = Math.sin(time * 0.7) * 0.07;
   });
 
   return (

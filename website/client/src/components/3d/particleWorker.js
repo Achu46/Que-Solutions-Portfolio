@@ -1,14 +1,14 @@
 /**
  * Web Worker for Procedurally Pre-sampling the 5 Morph Targets:
- * Shape 0: Noisy Organic Mass (Hero)
- * Shape 1: Que Infinity / Ligature Loop (Lemniscate Tube)
- * Shape 2: Customer Care Headset
- * Shape 3: Phone Handset
- * Shape 4: Chat Speech Bubble
+ * Shape 0: Customer Care Headset (Hero)
+ * Shape 1: Customer Care Headset (Products / Finale)
+ * Shape 2: Customer Care Headset (Inbound Support)
+ * Shape 3: Phone Handset (Outbound Support)
+ * Shape 4: Chat Speech Bubble (Chat Support)
  */
 
 self.onmessage = function (e) {
-  const { maxCount = 60000 } = e.data || {};
+  const { maxCount = 20000 } = e.data || {};
   const buffers = generateParticleBuffers(maxCount);
   
   // Post back transferable ArrayBuffers
@@ -26,6 +26,111 @@ self.onmessage = function (e) {
   );
 };
 
+/**
+ * Procedural Customer Care Headset point sampler
+ * - Headband: ~200-deg half-torus arc (radius ~1.0, tube ~0.07), slightly flattened
+ * - Ear cups: two flattened cylinders/capsules (radius ~0.38, depth ~0.22) at arc ends with cushion ring (torus radius ~0.30, tube ~0.08) and small hinge connectors
+ * - Microphone boom: thin curved tube (quadratic bezier, tube ~0.035, length ~0.9) from lower left cup toward front, ending in small capsule (radius ~0.07, length ~0.16)
+ */
+function sampleHeadsetPoint() {
+  const choice = Math.random();
+
+  // 1. Headband: ~200-degree half-torus arc (radius ~1.0, tube ~0.07), slightly flattened (28% of points)
+  if (choice < 0.28) {
+    const minAngle = -10 * (Math.PI / 180);
+    const maxAngle = 190 * (Math.PI / 180);
+    const theta = minAngle + Math.random() * (maxAngle - minAngle);
+
+    const phi = Math.random() * Math.PI * 2;
+    const rTube = 0.07 * Math.sqrt(Math.random());
+
+    const R = 1.05;
+    const x = (R + rTube * Math.cos(phi)) * Math.cos(theta);
+    const y = (R + rTube * Math.cos(phi)) * Math.sin(theta) - 0.22;
+    const z = rTube * Math.sin(phi) * 0.85; // slightly flattened in Z
+    return [x, y, z];
+  }
+
+  // 2. Ear Cups: two flattened cylinders/capsules (radius ~0.38, depth ~0.22) at arc ends (54% of points)
+  if (choice < 0.82) {
+    const isLeft = Math.random() < 0.5;
+    const sideSign = isLeft ? -1 : 1;
+    const cupCenterX = sideSign * 1.02;
+    const cupCenterY = -0.38;
+    const cupCenterZ = 0.0;
+
+    const subChoice = Math.random();
+
+    if (subChoice < 0.12) {
+      // Hinge connector connecting arc ends to cups
+      const tHinge = Math.random();
+      const hY = -0.18 - tHinge * 0.14;
+      const phiH = Math.random() * Math.PI * 2;
+      const rH = 0.045 * Math.sqrt(Math.random());
+      const hX = cupCenterX + rH * Math.cos(phiH);
+      const hZ = rH * Math.sin(phiH);
+      return [hX, hY, hZ];
+    } else if (subChoice < 0.55) {
+      // Outer cup cylinder / casing: radius ~0.38, depth ~0.22
+      const angle = Math.random() * Math.PI * 2;
+      const rad = 0.38 * Math.sqrt(Math.random());
+      const depth = (Math.random() - 0.5) * 0.22;
+      const x = cupCenterX + depth;
+      const y = cupCenterY + rad * Math.sin(angle);
+      const z = cupCenterZ + rad * Math.cos(angle);
+      return [x, y, z];
+    } else {
+      // Cushion ring: torus (radius ~0.30, tube ~0.08) on inner face
+      const angle = Math.random() * Math.PI * 2;
+      const phiC = Math.random() * Math.PI * 2;
+      const rRing = 0.30;
+      const tRing = 0.08 * Math.sqrt(Math.random());
+
+      const innerOffset = sideSign * -0.06;
+      const x = cupCenterX + innerOffset + tRing * Math.cos(phiC);
+      const y = cupCenterY + (rRing + tRing * Math.sin(phiC)) * Math.sin(angle);
+      const z = cupCenterZ + (rRing + tRing * Math.sin(phiC)) * Math.cos(angle);
+      return [x, y, z];
+    }
+  }
+
+  // 3. Microphone boom: thin curved tube (quadratic bezier) ending in small capsule (18% of points)
+  {
+    const sub = Math.random();
+    if (sub < 0.65) {
+      // Curved boom tube
+      const u = Math.random();
+      const p0 = [-1.02, -0.48, 0.05];
+      const p1 = [-0.68, -0.65, 0.45];
+      const p2 = [-0.22, -0.52, 0.78];
+
+      const invU = 1.0 - u;
+      const bx = invU * invU * p0[0] + 2 * invU * u * p1[0] + u * u * p2[0];
+      const by = invU * invU * p0[1] + 2 * invU * u * p1[1] + u * u * p2[1];
+      const bz = invU * invU * p0[2] + 2 * invU * u * p1[2] + u * u * p2[2];
+
+      const phiB = Math.random() * Math.PI * 2;
+      const rB = 0.035 * Math.sqrt(Math.random());
+      return [bx + rB * Math.cos(phiB), by + rB * Math.sin(phiB), bz + (Math.random() - 0.5) * 0.03];
+    } else {
+      // Microphone tip capsule: radius ~0.07, length ~0.16 at (-0.22, -0.52, 0.78)
+      const tipCenter = [-0.22, -0.52, 0.78];
+      const tipAngle = Math.random() * Math.PI * 2;
+      const tipRad = 0.07 * Math.sqrt(Math.random());
+      const tipLen = (Math.random() - 0.5) * 0.16;
+
+      const dirX = 0.75;
+      const dirY = 0.15;
+      const dirZ = 0.64;
+
+      const x = tipCenter[0] + dirX * tipLen + tipRad * Math.cos(tipAngle) * 0.6;
+      const y = tipCenter[1] + dirY * tipLen + tipRad * Math.sin(tipAngle);
+      const z = tipCenter[2] + dirZ * tipLen + tipRad * Math.cos(tipAngle) * 0.8;
+      return [x, y, z];
+    }
+  }
+}
+
 export function generateParticleBuffers(count) {
   const positionA = new Float32Array(count * 3);
   const positionB = new Float32Array(count * 3);
@@ -42,112 +147,20 @@ export function generateParticleBuffers(count) {
     aSize[i] = Math.random() * 0.7 + 0.65;
 
     // -------------------------------------------------------------
-    // SHAPE 0 & 1: Que Infinity Loop (Lemniscate Tube echoing the logo)
+    // SHAPE 0, 1, 2: Customer Care Headset
     // -------------------------------------------------------------
-    const t0 = Math.random() * Math.PI * 2;
-    const sinT0 = Math.sin(t0);
-    const cosT0 = Math.cos(t0);
-    const denom0 = 1 + sinT0 * sinT0;
-    const scale0 = 2.35;
-    
-    // Lemniscate centerline in XY plane (facing camera) with Z depth wave
-    const cx0 = (scale0 * cosT0) / denom0;
-    const cy0 = (scale0 * sinT0 * cosT0) / denom0;
-    const cz0 = 0.42 * Math.sin(t0 * 2.0);
+    const [hx, hy, hz] = sampleHeadsetPoint();
+    positionA[i3] = hx;
+    positionA[i3 + 1] = hy;
+    positionA[i3 + 2] = hz;
 
-    // Tangent vector
-    const dt = 0.005;
-    const tNext = t0 + dt;
-    const sinTN = Math.sin(tNext);
-    const cosTN = Math.cos(tNext);
-    const denomN = 1 + sinTN * sinTN;
-    const cxNext = (scale0 * cosTN) / denomN;
-    const cyNext = (scale0 * sinTN * cosTN) / denomN;
-    const czNext = 0.42 * Math.sin(tNext * 2.0);
+    positionB[i3] = hx;
+    positionB[i3 + 1] = hy;
+    positionB[i3 + 2] = hz;
 
-    let tx = cxNext - cx0;
-    let ty = cyNext - cy0;
-    let tz = czNext - cz0;
-    const tLen = Math.sqrt(tx * tx + ty * ty + tz * tz) || 1;
-    tx /= tLen;
-    ty /= tLen;
-    tz /= tLen;
-
-    // Normal & Binormal
-    let ux = 0, uy = 0, uz = 1;
-    if (Math.abs(tz) > 0.9) {
-      ux = 0; uy = 1; uz = 0;
-    }
-    let nx = ty * uz - tz * uy;
-    let ny = tz * ux - tx * uz;
-    let nz = tx * uy - ty * ux;
-    const nLen = Math.sqrt(nx * nx + ny * ny + nz * nz) || 1;
-    nx /= nLen;
-    ny /= nLen;
-    nz /= nLen;
-
-    const bx = ty * nz - tz * ny;
-    const by = tz * nx - tx * nz;
-    const bz = tx * ny - ty * nx;
-
-    // Volumetric tube cross-section with natural density distribution
-    const phi0 = Math.random() * Math.PI * 2;
-    const tubeRadius0 = (0.24 + (Math.random() - 0.5) * 0.06) * Math.sqrt(Math.random());
-    const cosPhi0 = Math.cos(phi0);
-    const sinPhi0 = Math.sin(phi0);
-
-    const px0 = cx0 + (nx * cosPhi0 + bx * sinPhi0) * tubeRadius0;
-    const py0 = cy0 + (ny * cosPhi0 + by * sinPhi0) * tubeRadius0;
-    const pz0 = cz0 + (nz * cosPhi0 + bz * sinPhi0) * tubeRadius0;
-
-    positionA[i3] = px0;
-    positionA[i3 + 1] = py0;
-    positionA[i3 + 2] = pz0;
-
-    positionB[i3] = px0;
-    positionB[i3 + 1] = py0;
-    positionB[i3 + 2] = pz0;
-
-    // -------------------------------------------------------------
-    // SHAPE 2: Customer Support Headset
-    // -------------------------------------------------------------
-    const part2 = Math.random();
-    if (part2 < 0.48) {
-      // Arch headband (half-torus)
-      const tArch = Math.random() * Math.PI; // 0 to PI
-      const phiArch = Math.random() * Math.PI * 2;
-      const archR = 1.65;
-      const tubeR = 0.14;
-      positionC[i3] = (archR + tubeR * Math.cos(phiArch)) * Math.cos(tArch);
-      positionC[i3 + 1] = (archR + tubeR * Math.cos(phiArch)) * Math.sin(tArch) - 0.2;
-      positionC[i3 + 2] = tubeR * Math.sin(phiArch);
-    } else if (part2 < 0.72) {
-      // Left earcup cylinder / pad
-      const thetaCup = Math.random() * Math.PI * 2;
-      const radCup = Math.sqrt(Math.random()) * 0.48;
-      const hCup = (Math.random() - 0.5) * 0.35;
-      positionC[i3] = -1.65 + hCup;
-      positionC[i3 + 1] = -0.2 + radCup * Math.cos(thetaCup);
-      positionC[i3 + 2] = radCup * Math.sin(thetaCup);
-    } else if (part2 < 0.94) {
-      // Right earcup cylinder / pad
-      const thetaCup = Math.random() * Math.PI * 2;
-      const radCup = Math.sqrt(Math.random()) * 0.48;
-      const hCup = (Math.random() - 0.5) * 0.35;
-      positionC[i3] = 1.65 + hCup;
-      positionC[i3 + 1] = -0.2 + radCup * Math.cos(thetaCup);
-      positionC[i3 + 2] = radCup * Math.sin(thetaCup);
-    } else {
-      // Mic boom arm extending forward towards mouth
-      const tBoom = Math.random();
-      const boomX = 1.6 - tBoom * 1.1;
-      const boomY = -0.2 - tBoom * 0.6;
-      const boomZ = tBoom * 1.1;
-      const jBoom = (Math.random() - 0.5) * 0.08;
-      positionC[i3] = boomX + jBoom;
-      positionC[i3 + 1] = boomY + jBoom;
-      positionC[i3 + 2] = boomZ + jBoom;
-    }
+    positionC[i3] = hx;
+    positionC[i3 + 1] = hy;
+    positionC[i3 + 2] = hz;
 
     // -------------------------------------------------------------
     // SHAPE 3: Phone Handset

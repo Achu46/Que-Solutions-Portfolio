@@ -54,63 +54,105 @@ export default function HeroPosterFallback({ isDark }) {
             </filter>
           </defs>
 
-          {/* Organic Core Cluster of Glowing Dots */}
+          {/* Customer Care Headset Form of Glowing Dots */}
           <g filter="url(#softGlow)" fill={isDark ? 'url(#fallbackDotDark)' : 'url(#fallbackDotLight)'}>
-            {/* Lemniscate Infinity Loop Primary Ribbon */}
-            {Array.from({ length: 110 }).map((_, i) => {
-              const u = (i / 110) * Math.PI * 2;
-              const sinU = Math.sin(u);
-              const cosU = Math.cos(u);
-              const denom = 1 + sinU * sinU;
-              const scale = 72;
-              const jitter = (i % 3 - 1) * 2.2;
-              const cx = (scale * cosU) / denom + jitter;
-              const cy = (scale * sinU * cosU) / denom + jitter;
-              const radius = 2.4 + (i % 5) * 0.5;
+            {/* 1. Headband Arc (~200 degrees) */}
+            {Array.from({ length: 70 }).map((_, i) => {
+              const theta = (-10 + (i / 70) * 200) * (Math.PI / 180);
+              const R = 58;
+              const jitter = ((i % 3) - 1) * 1.5;
+              const cx = (R + jitter) * Math.cos(theta);
+              const cy = -(R + jitter) * Math.sin(theta) + 12;
               return (
                 <circle
-                  key={`loop-${i}`}
+                  key={`arc-${i}`}
                   cx={cx}
                   cy={cy}
-                  r={radius}
-                  opacity={0.7 + (i % 4) * 0.08}
+                  r={2.6 + (i % 3) * 0.4}
+                  opacity={0.85}
                 />
               );
             })}
 
-            {/* Inner Volumetric Fill Points */}
-            {Array.from({ length: 80 }).map((_, i) => {
-              const u = (i / 80) * Math.PI * 2;
-              const sinU = Math.sin(u);
-              const cosU = Math.cos(u);
-              const denom = 1 + sinU * sinU;
-              const scale = 66 + (i % 4) * 2;
-              const cx = (scale * cosU) / denom;
-              const cy = (scale * sinU * cosU) / denom;
+            {/* 2. Left Ear Cup & Cushion */}
+            {Array.from({ length: 45 }).map((_, i) => {
+              const angle = (i / 45) * Math.PI * 2;
+              const r = 18 * Math.sqrt((i % 15) / 15 + 0.1);
+              const cx = -56 + (i % 3 - 1) * 3;
+              const cy = 20 + r * Math.sin(angle);
               return (
                 <circle
-                  key={`inner-${i}`}
+                  key={`left-cup-${i}`}
                   cx={cx}
                   cy={cy}
-                  r={2.0 + (i % 3) * 0.4}
+                  r={2.2 + (i % 4) * 0.4}
+                  opacity={0.88}
+                />
+              );
+            })}
+
+            {/* 3. Right Ear Cup & Cushion */}
+            {Array.from({ length: 45 }).map((_, i) => {
+              const angle = (i / 45) * Math.PI * 2;
+              const r = 18 * Math.sqrt((i % 15) / 15 + 0.1);
+              const cx = 56 + (i % 3 - 1) * 3;
+              const cy = 20 + r * Math.sin(angle);
+              return (
+                <circle
+                  key={`right-cup-${i}`}
+                  cx={cx}
+                  cy={cy}
+                  r={2.2 + (i % 4) * 0.4}
+                  opacity={0.88}
+                />
+              );
+            })}
+
+            {/* 4. Microphone Boom (Curving from lower left cup forward) */}
+            {Array.from({ length: 30 }).map((_, i) => {
+              const u = i / 30;
+              const invU = 1.0 - u;
+              // Bezier from (-56, 26) through (-36, 48) to (-12, 38)
+              const bx = invU * invU * -56 + 2 * invU * u * -36 + u * u * -12;
+              const by = invU * invU * 26 + 2 * invU * u * 48 + u * u * 38;
+              return (
+                <circle
+                  key={`boom-${i}`}
+                  cx={bx}
+                  cy={by}
+                  r={2.0 + (i % 2) * 0.3}
                   opacity={0.82}
                 />
               );
             })}
 
-            {/* Trailing Dispersal Particles Shedding to +X Right Side */}
-            {Array.from({ length: 42 }).map((_, i) => {
-              const progress = (i / 42);
-              const driftX = 35 + progress * 55 + (i % 5) * 4;
-              const driftY = -15 + progress * 32 + Math.sin(progress * 6) * 12;
-              const radius = 3.2 * (1.0 - progress * 0.5);
+            {/* 5. Microphone Tip Capsule */}
+            {Array.from({ length: 14 }).map((_, i) => {
+              const tipX = -12 + (i % 5 - 2) * 2;
+              const tipY = 38 + (i % 3 - 1) * 2.5;
               return (
                 <circle
-                  key={`dispersal-${i}`}
+                  key={`tip-${i}`}
+                  cx={tipX}
+                  cy={tipY}
+                  r={2.8}
+                  opacity={0.95}
+                />
+              );
+            })}
+
+            {/* 6. Shed particles drifting off microphone side */}
+            {Array.from({ length: 20 }).map((_, i) => {
+              const progress = i / 20;
+              const driftX = -12 - progress * 40 + (i % 4) * 3;
+              const driftY = 38 + progress * 24 + Math.sin(progress * 5) * 6;
+              return (
+                <circle
+                  key={`shed-${i}`}
                   cx={driftX}
                   cy={driftY}
-                  r={Math.max(radius, 1.2)}
-                  opacity={Math.max(0.2, (1.0 - progress * 0.7))}
+                  r={Math.max(1.2, 2.5 * (1.0 - progress * 0.6))}
+                  opacity={Math.max(0.2, 0.8 - progress * 0.6)}
                 />
               );
             })}
