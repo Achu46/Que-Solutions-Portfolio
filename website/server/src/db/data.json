@@ -1,0 +1,1082 @@
+{
+  "admins": [
+    {
+      "id": 1,
+      "email": "admin@quesolutions.com",
+      "password_hash": "$2a$10$F/MWzqFkNDKqj6R31yRKT.MBPb/RZcK6EEaXQWnlDpYU9GipgzSre",
+      "name": "Que Solutions Admin",
+      "role": "superadmin",
+      "created_at": "2026-09-12T09:29:42.312Z",
+      "updated_at": "2026-09-12T09:29:42.314Z"
+    }
+  ],
+  "sessions": [
+    {
+      "id": 1,
+      "created_at": "2026-09-12T09:48:32.618Z",
+      "updated_at": "2026-09-12T09:48:32.618Z",
+      "admin_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBxdWVzb2x1dGlvbnMuY29tIiwibmFtZSI6IlF1ZSBTb2x1dGlvbnMgQWRtaW4iLCJyb2xlIjoic3VwZXJhZG1pbiIsImlhdCI6MTc4OTIwNjUxMiwiZXhwIjoxNzg5ODExMzEyfQ.BdZZrXI_7587jHP9VKCCEB7-Jp0nvHkRJYJxm3Q3ZsY",
+      "ip_address": "::1",
+      "user_agent": "node",
+      "expires_at": "2026-09-19T09:48:32.618Z"
+    }
+  ],
+  "site_settings": [
+    {
+      "id": 1,
+      "site_name": "QUE SOLUTIONS",
+      "tagline": "Customer Care & Call Centre Services",
+      "phone": "7092490337",
+      "email": "que.solutions.services@gmail.com",
+      "location": "Erode, Tamil Nadu",
+      "working_hours": "Mon – Sat: 4 hrs/day (~104 hrs/mo)",
+      "footer_text": "Delivering reliable, technology-driven outsourced customer care and call centre services for growing businesses.",
+      "social_whatsapp": "https://wa.me/917092490337",
+      "social_linkedin": "",
+      "social_instagram": "",
+      "updated_at": "2026-09-12T09:29:42.314Z"
+    }
+  ],
+  "hero_content": [
+    {
+      "id": 1,
+      "badge_text": "SUPPORT | TECHNOLOGY | GROWTH",
+      "headline": "Reliable Customer Support for Growing Businesses",
+      "subheadline": "Affordable outsourced customer care, call centre and chat support for small and growing product-based businesses.",
+      "primary_cta_text": "Get a Quote",
+      "primary_cta_link": "#contact",
+      "secondary_cta_text": "Talk to Us",
+      "secondary_cta_link": "tel:7092490337",
+      "updated_at": "2026-09-12T09:29:42.314Z"
+    }
+  ],
+  "services": [
+    {
+      "id": 1,
+      "title": "Inbound Call Support",
+      "slug": "inbound-call-support",
+      "description": "Professional handling of customer enquiries, product questions, order-related queries and support requests.",
+      "icon": "PhoneIncoming",
+      "features": [
+        "Professional customer query handling",
+        "Order status & tracking assistance",
+        "Product information guidance",
+        "Escalation & ticket logging",
+        "Daily summary & interaction reporting"
+      ],
+      "display_order": 1,
+      "is_active": true,
+      "created_at": "2026-09-12T09:29:42.314Z",
+      "updated_at": "2026-09-12T09:29:42.314Z"
+    },
+    {
+      "id": 2,
+      "title": "Outbound Call Support",
+      "slug": "outbound-call-support",
+      "description": "Existing lead follow-ups, callbacks, order confirmations and customer feedback.",
+      "icon": "PhoneOutgoing",
+      "features": [
+        "Lead follow-ups & callback scheduling",
+        "Pre-dispatch order confirmation",
+        "Customer feedback & satisfaction surveys",
+        "Abandoned inquiry re-engagement",
+        "Structured call logs & feedback recording"
+      ],
+      "display_order": 2,
+      "is_active": true,
+      "created_at": "2026-09-12T09:29:42.314Z",
+      "updated_at": "2026-09-12T09:29:42.314Z"
+    },
+    {
+      "id": 3,
+      "title": "Chat Support",
+      "slug": "chat-support",
+      "description": "Responsive customer assistance via website chat, WhatsApp and other agreed channels.",
+      "icon": "MessageSquareText",
+      "features": [
+        "Real-time website live chat",
+        "Official WhatsApp Business assistance",
+        "Quick response time SLA",
+        "Pre-purchase inquiry assistance",
+        "Post-sales troubleshooting & FAQs"
+      ],
+      "display_order": 3,
+      "is_active": true,
+      "created_at": "2026-09-12T09:29:42.314Z",
+      "updated_at": "2026-09-12T09:29:42.314Z"
+    }
+  ],
+  "pricing_plans": [
+    {
+      "id": 1,
+      "name": "Starter",
+      "price": "₹11,999",
+      "numeric_price": 11999,
+      "billing_period": "/mo",
+      "hours_desc": "4 hrs/day, Mon–Sat (~104 hrs/mo)",
+      "includes_summary": "Chat Support",
+      "features": [
+        "Dedicated Chat Support Agent",
+        "4 hours/day, Monday to Saturday",
+        "~104 productive hours per month",
+        "Website Live Chat & WhatsApp",
+        "Weekly interaction & query reports",
+        "Agreed onboarding volume limits"
+      ],
+      "is_recommended": false,
+      "is_active": true,
+      "display_order": 1,
+      "cta_text": "Get a Quote",
+      "created_at": "2026-09-12T09:29:42.314Z",
+      "updated_at": "2026-09-12T09:29:42.314Z"
+    },
+    {
+      "id": 2,
+      "name": "Growth",
+      "price": "₹15,999",
+      "numeric_price": 15999,
+      "billing_period": "/mo",
+      "hours_desc": "4 hrs/day, Mon–Sat (~104 hrs/mo)",
+      "includes_summary": "Chat + Inbound Call Support",
+      "features": [
+        "Chat + Inbound Call Handling",
+        "4 hours/day, Monday to Saturday",
+        "~104 productive hours per month",
+        "Order verification & inquiries",
+        "Call logging & ticket management",
+        "Bi-weekly performance review",
+        "Agreed onboarding volume limits"
+      ],
+      "is_recommended": true,
+      "is_active": true,
+      "display_order": 2,
+      "cta_text": "Get a Quote",
+      "created_at": "2026-09-12T09:29:42.314Z",
+      "updated_at": "2026-09-12T09:29:42.314Z"
+    },
+    {
+      "id": 3,
+      "name": "Business",
+      "price": "₹21,999",
+      "numeric_price": 21999,
+      "billing_period": "/mo",
+      "hours_desc": "4 hrs/day, Mon–Sat (~104 hrs/mo)",
+      "includes_summary": "Chat + Inbound + Outbound Call Support",
+      "features": [
+        "Chat + Inbound + Outbound Calling",
+        "4 hours/day, Monday to Saturday",
+        "~104 productive hours per month",
+        "Lead follow-ups & feedback surveys",
+        "Dedicated Team Lead supervision",
+        "Custom workflows & monthly SLA audits",
+        "Agreed onboarding volume limits"
+      ],
+      "is_recommended": false,
+      "is_active": true,
+      "display_order": 3,
+      "cta_text": "Get a Quote",
+      "created_at": "2026-09-12T09:29:42.314Z",
+      "updated_at": "2026-09-12T09:29:42.314Z"
+    }
+  ],
+  "about_content": [
+    {
+      "id": 1,
+      "headline": "People Today. A Brighter Tomorrow.",
+      "description": "Que Solutions is a customer care and call centre service provider focused on delivering professional, responsive and reliable customer support solutions for businesses.",
+      "vision": "To become an affordable customer support partner for small product-based businesses, helping them provide professional customer experiences without the cost of building a large in-house support team.",
+      "future_scope": "Que Solutions plans to expand its service capabilities over time, including technology and IT-enabled business solutions, while continuing to build strong customer support capabilities.",
+      "updated_at": "2026-09-12T09:29:42.314Z"
+    }
+  ],
+  "why_us": [
+    {
+      "id": 1,
+      "title": "Affordable Support",
+      "description": "Transparent pricing with zero hidden costs, tailor-made for small product businesses.",
+      "icon": "BadgePercent",
+      "display_order": 1,
+      "is_active": true,
+      "created_at": "2026-09-12T09:29:42.314Z",
+      "updated_at": "2026-09-12T09:29:42.314Z"
+    },
+    {
+      "id": 2,
+      "title": "Flexible Working Model",
+      "description": "Structured 4 hrs/day schedule that adapts to your peak customer traffic hours.",
+      "icon": "Clock",
+      "display_order": 2,
+      "is_active": true,
+      "created_at": "2026-09-12T09:29:42.314Z",
+      "updated_at": "2026-09-12T09:29:42.314Z"
+    },
+    {
+      "id": 3,
+      "title": "Professional Interaction",
+      "description": "Courteous, well-trained agents representing your business with brand dignity.",
+      "icon": "Award",
+      "display_order": 3,
+      "is_active": true,
+      "created_at": "2026-09-12T09:29:42.314Z",
+      "updated_at": "2026-09-12T09:29:42.314Z"
+    },
+    {
+      "id": 4,
+      "title": "Scalable Support",
+      "description": "Easily transition from Chat to Inbound & Outbound calling as your volume grows.",
+      "icon": "TrendingUp",
+      "display_order": 4,
+      "is_active": true,
+      "created_at": "2026-09-12T09:29:42.314Z",
+      "updated_at": "2026-09-12T09:29:42.314Z"
+    },
+    {
+      "id": 5,
+      "title": "Customer-Focused Approach",
+      "description": "Dedicated focus on fast resolution times, clear answers, and happy repeat buyers.",
+      "icon": "HeartHandshake",
+      "display_order": 5,
+      "is_active": true,
+      "created_at": "2026-09-12T09:29:42.314Z",
+      "updated_at": "2026-09-12T09:29:42.314Z"
+    },
+    {
+      "id": 6,
+      "title": "Easy Business Communication",
+      "description": "Direct communication channels with our team, daily call summaries, and hassle-free updates.",
+      "icon": "MessageCircle",
+      "display_order": 6,
+      "is_active": true,
+      "created_at": "2026-09-12T09:29:42.314Z",
+      "updated_at": "2026-09-12T09:29:42.314Z"
+    }
+  ],
+  "target_clients": [
+    {
+      "id": 1,
+      "title": "Small D2C Brands",
+      "description": "Provide responsive customer support for direct-to-consumer store orders and queries.",
+      "icon": "ShoppingBag",
+      "display_order": 1,
+      "is_active": true,
+      "created_at": "2026-09-12T09:29:42.314Z",
+      "updated_at": "2026-09-12T09:29:42.314Z"
+    },
+    {
+      "id": 2,
+      "title": "Instagram & Social Sellers",
+      "description": "Quick DM and WhatsApp response support to convert inquiries into paid orders.",
+      "icon": "Camera",
+      "display_order": 2,
+      "is_active": true,
+      "created_at": "2026-09-12T09:29:42.314Z",
+      "updated_at": "2026-09-12T09:29:42.314Z"
+    },
+    {
+      "id": 3,
+      "title": "Online Product Businesses",
+      "description": "Professional enquiry handling, tracking updates, and return assistance.",
+      "icon": "Globe",
+      "display_order": 3,
+      "is_active": true,
+      "created_at": "2026-09-12T09:29:42.314Z",
+      "updated_at": "2026-09-12T09:29:42.314Z"
+    },
+    {
+      "id": 4,
+      "title": "Amazon & Marketplace Sellers",
+      "description": "Buyer message responses and customer satisfaction follow-ups on marketplaces.",
+      "icon": "Store",
+      "display_order": 4,
+      "is_active": true,
+      "created_at": "2026-09-12T09:29:42.314Z",
+      "updated_at": "2026-09-12T09:29:42.314Z"
+    },
+    {
+      "id": 5,
+      "title": "Local Brands Moving Online",
+      "description": "Reliable customer care partner to handle your phone & chat inquiries as you expand.",
+      "icon": "Building2",
+      "display_order": 5,
+      "is_active": true,
+      "created_at": "2026-09-12T09:29:42.314Z",
+      "updated_at": "2026-09-12T09:29:42.314Z"
+    }
+  ],
+  "leads": [
+    {
+      "id": 1,
+      "updated_at": "2026-09-12T09:48:32.463Z",
+      "lead_code": "QUE-64B532",
+      "name": "Priya Sundaram",
+      "company_name": "Sundaram Organics",
+      "email": "priya@sundaramorganics.com",
+      "phone": "+91 9876543210",
+      "service_interested": "Chat Support",
+      "monthly_requirement": "Starter Plan (₹11,999/mo)",
+      "message": "Looking for 4 hours daily chat assistance on WhatsApp Business.",
+      "status": "/",
+      "source_page": "::1",
+      "ip_address": "node"
+    }
+  ],
+  "lead_notes": [],
+  "email_logs": [
+    {
+      "id": 1,
+      "created_at": "2026-09-12T09:48:32.466Z",
+      "updated_at": "2026-09-12T09:48:32.466Z",
+      "lead_id": null,
+      "recipient_email": "que.solutions.services@gmail.com",
+      "subject": "[New Quote Request] QUE-64B532 - Sundaram Organics (Chat Support)",
+      "body": "\nNew Lead Received on QUE SOLUTIONS Website:\n---------------------------------------------\nLead ID: QUE-64B532\nName: Priya Sundaram\nCompany: Sundaram Organics\nEmail: priya@sundaramorganics.com\nPhone: +91 9876543210\nService: Chat Support\nMonthly Requirement: Starter Plan (₹11,999/mo)\nMessage: Looking for 4 hours daily chat assistance on WhatsApp Business.\n---------------------------------------------\nAccess Admin Dashboard: http://localhost:5173/que\n",
+      "status": "SENT",
+      "error_message": null
+    }
+  ],
+  "visitor_sessions": [
+    {
+      "id": 1,
+      "created_at": "2026-09-12T09:52:17.728Z",
+      "updated_at": "2026-09-12T09:52:17.731Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "Direct",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 2,
+      "created_at": "2026-09-12T09:52:17.764Z",
+      "updated_at": "2026-09-12T09:52:17.764Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "Direct",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 3,
+      "created_at": "2026-09-12T09:53:23.842Z",
+      "updated_at": "2026-09-12T09:53:23.842Z",
+      "session_id": "qs_jhbsbhx6l7mmty7j9eu",
+      "referrer": "Direct",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 4,
+      "created_at": "2026-09-12T09:53:23.849Z",
+      "updated_at": "2026-09-12T09:53:23.849Z",
+      "session_id": "qs_jhbsbhx6l7mmty7j9eu",
+      "referrer": "Direct",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 5,
+      "created_at": "2026-09-12T09:59:30.833Z",
+      "updated_at": "2026-09-12T09:59:30.833Z",
+      "session_id": "qs_jhbsbhx6l7mmty7j9eu",
+      "referrer": "Direct",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 6,
+      "created_at": "2026-09-12T09:59:30.843Z",
+      "updated_at": "2026-09-12T09:59:30.843Z",
+      "session_id": "qs_jhbsbhx6l7mmty7j9eu",
+      "referrer": "Direct",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 7,
+      "created_at": "2026-09-12T10:01:28.533Z",
+      "updated_at": "2026-09-12T10:01:28.533Z",
+      "session_id": "qs_jhbsbhx6l7mmty7j9eu",
+      "referrer": "http://localhost:5173/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 8,
+      "created_at": "2026-09-12T10:01:28.540Z",
+      "updated_at": "2026-09-12T10:01:28.540Z",
+      "session_id": "qs_jhbsbhx6l7mmty7j9eu",
+      "referrer": "http://localhost:5173/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 9,
+      "created_at": "2026-09-12T10:01:29.726Z",
+      "updated_at": "2026-09-12T10:01:29.726Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 10,
+      "created_at": "2026-09-12T10:01:29.756Z",
+      "updated_at": "2026-09-12T10:01:29.756Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 11,
+      "created_at": "2026-09-12T10:01:52.804Z",
+      "updated_at": "2026-09-12T10:01:52.804Z",
+      "session_id": "qs_jhbsbhx6l7mmty7j9eu",
+      "referrer": "http://localhost:5173/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 12,
+      "created_at": "2026-09-12T10:01:52.809Z",
+      "updated_at": "2026-09-12T10:01:52.809Z",
+      "session_id": "qs_jhbsbhx6l7mmty7j9eu",
+      "referrer": "http://localhost:5173/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 13,
+      "created_at": "2026-09-12T10:01:58.647Z",
+      "updated_at": "2026-09-12T10:01:58.647Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 14,
+      "created_at": "2026-09-12T10:01:58.669Z",
+      "updated_at": "2026-09-12T10:01:58.669Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 15,
+      "created_at": "2026-09-12T10:02:09.548Z",
+      "updated_at": "2026-09-12T10:02:09.548Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 16,
+      "created_at": "2026-09-12T10:02:09.563Z",
+      "updated_at": "2026-09-12T10:02:09.563Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 17,
+      "created_at": "2026-09-12T10:02:17.563Z",
+      "updated_at": "2026-09-12T10:02:17.563Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 18,
+      "created_at": "2026-09-12T10:02:17.615Z",
+      "updated_at": "2026-09-12T10:02:17.615Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 19,
+      "created_at": "2026-09-12T10:02:18.270Z",
+      "updated_at": "2026-09-12T10:02:18.270Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 20,
+      "created_at": "2026-09-12T10:02:18.303Z",
+      "updated_at": "2026-09-12T10:02:18.304Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 21,
+      "created_at": "2026-09-12T10:03:30.193Z",
+      "updated_at": "2026-09-12T10:03:30.193Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 22,
+      "created_at": "2026-09-12T10:03:30.211Z",
+      "updated_at": "2026-09-12T10:03:30.212Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 23,
+      "created_at": "2026-09-12T10:03:59.511Z",
+      "updated_at": "2026-09-12T10:03:59.512Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 24,
+      "created_at": "2026-09-12T10:03:59.529Z",
+      "updated_at": "2026-09-12T10:03:59.530Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 25,
+      "created_at": "2026-09-12T10:04:44.768Z",
+      "updated_at": "2026-09-12T10:04:44.768Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 26,
+      "created_at": "2026-09-12T10:04:44.780Z",
+      "updated_at": "2026-09-12T10:04:44.780Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 27,
+      "created_at": "2026-09-12T10:10:17.683Z",
+      "updated_at": "2026-09-12T10:10:17.683Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 28,
+      "created_at": "2026-09-12T10:10:17.705Z",
+      "updated_at": "2026-09-12T10:10:17.705Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 29,
+      "created_at": "2026-09-12T10:10:48.954Z",
+      "updated_at": "2026-09-12T10:10:48.954Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 30,
+      "created_at": "2026-09-12T10:10:48.966Z",
+      "updated_at": "2026-09-12T10:10:48.966Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 31,
+      "created_at": "2026-09-12T10:11:00.337Z",
+      "updated_at": "2026-09-12T10:11:00.337Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 32,
+      "created_at": "2026-09-12T10:12:03.588Z",
+      "updated_at": "2026-09-12T10:12:03.588Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 33,
+      "created_at": "2026-09-12T10:12:03.619Z",
+      "updated_at": "2026-09-12T10:12:03.619Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 34,
+      "created_at": "2026-09-12T10:19:29.673Z",
+      "updated_at": "2026-09-12T10:19:29.673Z",
+      "session_id": "qs_rfoo4pmja19mty8gtmk",
+      "referrer": "Direct",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 35,
+      "created_at": "2026-09-12T10:19:29.681Z",
+      "updated_at": "2026-09-12T10:19:29.681Z",
+      "session_id": "qs_rfoo4pmja19mty8gtmk",
+      "referrer": "Direct",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 36,
+      "created_at": "2026-09-13T12:09:46.662Z",
+      "updated_at": "2026-09-13T12:09:46.663Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/#contact",
+      "ip_hash": "270cf5cbb54ca8e4"
+    },
+    {
+      "id": 37,
+      "created_at": "2026-09-13T12:09:46.686Z",
+      "updated_at": "2026-09-13T12:09:46.686Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "referrer": "http://localhost:5174/",
+      "device": "Desktop",
+      "browser": "Chrome",
+      "os": "Windows",
+      "landing_page": "/#contact",
+      "ip_hash": "270cf5cbb54ca8e4"
+    }
+  ],
+  "page_views": [
+    {
+      "id": 1,
+      "created_at": "2026-09-12T09:52:17.734Z",
+      "updated_at": "2026-09-12T09:52:17.734Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": ""
+    },
+    {
+      "id": 2,
+      "created_at": "2026-09-12T09:52:17.766Z",
+      "updated_at": "2026-09-12T09:52:17.766Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": ""
+    },
+    {
+      "id": 3,
+      "created_at": "2026-09-12T09:53:23.844Z",
+      "updated_at": "2026-09-12T09:53:23.844Z",
+      "session_id": "qs_jhbsbhx6l7mmty7j9eu",
+      "page_path": "/",
+      "referrer": ""
+    },
+    {
+      "id": 4,
+      "created_at": "2026-09-12T09:53:23.853Z",
+      "updated_at": "2026-09-12T09:53:23.853Z",
+      "session_id": "qs_jhbsbhx6l7mmty7j9eu",
+      "page_path": "/",
+      "referrer": ""
+    },
+    {
+      "id": 5,
+      "created_at": "2026-09-12T09:59:30.836Z",
+      "updated_at": "2026-09-12T09:59:30.836Z",
+      "session_id": "qs_jhbsbhx6l7mmty7j9eu",
+      "page_path": "/",
+      "referrer": ""
+    },
+    {
+      "id": 6,
+      "created_at": "2026-09-12T09:59:30.845Z",
+      "updated_at": "2026-09-12T09:59:30.845Z",
+      "session_id": "qs_jhbsbhx6l7mmty7j9eu",
+      "page_path": "/",
+      "referrer": ""
+    },
+    {
+      "id": 7,
+      "created_at": "2026-09-12T10:01:28.535Z",
+      "updated_at": "2026-09-12T10:01:28.535Z",
+      "session_id": "qs_jhbsbhx6l7mmty7j9eu",
+      "page_path": "/",
+      "referrer": "http://localhost:5173/"
+    },
+    {
+      "id": 8,
+      "created_at": "2026-09-12T10:01:28.542Z",
+      "updated_at": "2026-09-12T10:01:28.542Z",
+      "session_id": "qs_jhbsbhx6l7mmty7j9eu",
+      "page_path": "/",
+      "referrer": "http://localhost:5173/"
+    },
+    {
+      "id": 9,
+      "created_at": "2026-09-12T10:01:29.729Z",
+      "updated_at": "2026-09-12T10:01:29.729Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 10,
+      "created_at": "2026-09-12T10:01:29.757Z",
+      "updated_at": "2026-09-12T10:01:29.757Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 11,
+      "created_at": "2026-09-12T10:01:52.806Z",
+      "updated_at": "2026-09-12T10:01:52.806Z",
+      "session_id": "qs_jhbsbhx6l7mmty7j9eu",
+      "page_path": "/",
+      "referrer": "http://localhost:5173/"
+    },
+    {
+      "id": 12,
+      "created_at": "2026-09-12T10:01:52.811Z",
+      "updated_at": "2026-09-12T10:01:52.811Z",
+      "session_id": "qs_jhbsbhx6l7mmty7j9eu",
+      "page_path": "/",
+      "referrer": "http://localhost:5173/"
+    },
+    {
+      "id": 13,
+      "created_at": "2026-09-12T10:01:58.651Z",
+      "updated_at": "2026-09-12T10:01:58.651Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 14,
+      "created_at": "2026-09-12T10:01:58.672Z",
+      "updated_at": "2026-09-12T10:01:58.672Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 15,
+      "created_at": "2026-09-12T10:02:09.549Z",
+      "updated_at": "2026-09-12T10:02:09.549Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 16,
+      "created_at": "2026-09-12T10:02:09.564Z",
+      "updated_at": "2026-09-12T10:02:09.564Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 17,
+      "created_at": "2026-09-12T10:02:17.565Z",
+      "updated_at": "2026-09-12T10:02:17.565Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 18,
+      "created_at": "2026-09-12T10:02:17.620Z",
+      "updated_at": "2026-09-12T10:02:17.620Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 19,
+      "created_at": "2026-09-12T10:02:18.272Z",
+      "updated_at": "2026-09-12T10:02:18.273Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 20,
+      "created_at": "2026-09-12T10:02:18.306Z",
+      "updated_at": "2026-09-12T10:02:18.306Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 21,
+      "created_at": "2026-09-12T10:03:30.196Z",
+      "updated_at": "2026-09-12T10:03:30.196Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 22,
+      "created_at": "2026-09-12T10:03:30.213Z",
+      "updated_at": "2026-09-12T10:03:30.213Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 23,
+      "created_at": "2026-09-12T10:03:59.514Z",
+      "updated_at": "2026-09-12T10:03:59.514Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 24,
+      "created_at": "2026-09-12T10:03:59.533Z",
+      "updated_at": "2026-09-12T10:03:59.533Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 25,
+      "created_at": "2026-09-12T10:04:44.775Z",
+      "updated_at": "2026-09-12T10:04:44.775Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 26,
+      "created_at": "2026-09-12T10:04:44.783Z",
+      "updated_at": "2026-09-12T10:04:44.783Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 27,
+      "created_at": "2026-09-12T10:10:17.684Z",
+      "updated_at": "2026-09-12T10:10:17.684Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 28,
+      "created_at": "2026-09-12T10:10:17.707Z",
+      "updated_at": "2026-09-12T10:10:17.707Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 29,
+      "created_at": "2026-09-12T10:10:48.955Z",
+      "updated_at": "2026-09-12T10:10:48.955Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 30,
+      "created_at": "2026-09-12T10:10:48.968Z",
+      "updated_at": "2026-09-12T10:10:48.968Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 31,
+      "created_at": "2026-09-12T10:11:00.338Z",
+      "updated_at": "2026-09-12T10:11:00.338Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 32,
+      "created_at": "2026-09-12T10:12:03.591Z",
+      "updated_at": "2026-09-12T10:12:03.591Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 33,
+      "created_at": "2026-09-12T10:12:03.623Z",
+      "updated_at": "2026-09-12T10:12:03.623Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 34,
+      "created_at": "2026-09-12T10:19:29.675Z",
+      "updated_at": "2026-09-12T10:19:29.675Z",
+      "session_id": "qs_rfoo4pmja19mty8gtmk",
+      "page_path": "/",
+      "referrer": ""
+    },
+    {
+      "id": 35,
+      "created_at": "2026-09-12T10:19:29.683Z",
+      "updated_at": "2026-09-12T10:19:29.683Z",
+      "session_id": "qs_rfoo4pmja19mty8gtmk",
+      "page_path": "/",
+      "referrer": ""
+    },
+    {
+      "id": 36,
+      "created_at": "2026-09-13T12:09:46.665Z",
+      "updated_at": "2026-09-13T12:09:46.665Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/#contact",
+      "referrer": "http://localhost:5174/"
+    },
+    {
+      "id": 37,
+      "created_at": "2026-09-13T12:09:46.687Z",
+      "updated_at": "2026-09-13T12:09:46.687Z",
+      "session_id": "qs_qhqpaqzqtonmty7hubz",
+      "page_path": "/#contact",
+      "referrer": "http://localhost:5174/"
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && request.auth.token.admin == true;
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Single-doc content collections (siteSettings, heroContent, aboutContent)
+    match /siteSettings/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /heroContent/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /aboutContent/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Public active content collections
+    match /services/{serviceId} {
+      allow read: if resource.data.active == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /pricingPlans/{planId} {
+      allow read: if resource.data.active == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /whyUs/{id} {
+      allow read: if resource.data.active == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /targetClients/{id} {
+      allow read: if resource.data.active == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /processSteps/{id} {
+      allow read: if resource.data.active == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /products/{id} {
+      allow read: if resource.data.active == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /projects/{id} {
+      allow read: if resource.data.active == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Testimonials: public read ONLY where approved == true; write admin only
+    match /testimonials/{id} {
+      allow read: if resource.data.approved == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Leads: Public CREATE only with strict schema validation
+    match /leads/{leadId} {
+      allow create: if 
+        // Force status to "new"
+        request.resource.data.status == "new" &&
+        // Required server timestamp
+        request.resource.data.createdAt == request.time &&
+        // Name: 2 - 100 characters string
+        request.resource.data.name is string &&
+        request.resource.data.name.size() >= 2 &&
+        request.resource.data.name.size() <= 100 &&
+        // Email: string with @ and size limit
+        request.resource.data.email is string &&
+        request.resource.data.email.size() >= 5 &&
+        request.resource.data.email.size() <= 100 &&
+        request.resource.data.email.matches('^[^@]+@[^@]+\\.[a-zA-Z]{2,}$') &&
+        // Phone: 7 - 15 digits
+        request.resource.data.phone is string &&
+        request.resource.data.phone.size() >= 7 &&
+        request.resource.data.phone.size() <= 15 &&
+        // Message under 2000 chars
+        request.resource.data.message is string &&
+        request.resource.data.message.size() <= 2000 &&
+        // Optional company, serviceInterested, monthlyRequirement, source
+        (!('company' in request.resource.data) || request.resource.data.company is string) &&
+        (!('serviceInterested' in request.resource.data) || request.resource.data.serviceInterested is string) &&
+        (!('monthlyRequirement' in request.resource.data) || request.resource.data.monthlyRequirement is string) &&
+        // Honeypot field must be empty if present
+        (!('website_url' in request.resource.data) || request.resource.data.website_url == "");
+
+      allow read, update, delete: if isAdmin();
+
+      // Lead Notes subcollection
+      match /notes/{noteId} {
+        allow read, write: if isAdmin();
+      }
+    }
+
+    // Mail Queue and Analytics: Admin only
+    match /mailQueue/{id} {
+      allow read, write: if isAdmin();
+    }
+
+    match /analyticsDaily/{day} {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+    }
+  }
+}

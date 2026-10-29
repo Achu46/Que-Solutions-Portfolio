@@ -1,0 +1,182 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* LIGHT MODE TOKENS */
+  --bg: #FFFFFF;
+  --surface: #F6F8F4;
+  --elevated: #FFFFFF;
+  --border: #E2EADA;
+  --text: #000000;
+  --accent: #54703F;
+  --accent-contrast: #FFFFFF;
+  --inverse-bg: #000000;
+  --inverse-text: #FFFFFF;
+  --hover: #EBF1E6;
+  --hero-gradient: radial-gradient(ellipse 90% 70% at 50% 0%, #FFFFFF 0%, #F6F8F4 30%, #E4EDDC 65%, #D3E2C6 100%);
+  --hero-cone: radial-gradient(ellipse 65% 85% at 50% -10%, rgba(255, 255, 255, 0.95) 0%, rgba(246, 248, 244, 0.5) 45%, transparent 75%);
+  --accent-dot: #54703F;
+  color-scheme: light;
+}
+
+.dark {
+  /* DARK MODE TOKENS (Pure neutral black & dark grey) */
+  --bg: #000000;
+  --surface: #0A0A0A;
+  --elevated: #141414;
+  --border: #262626;
+  --text: #FFFFFF;
+  --accent: #94B380; /* Lightened olive for high contrast */
+  --accent-contrast: #000000;
+  --inverse-bg: #FFFFFF;
+  --inverse-text: #000000;
+  --hover: #171717;
+  /* Deep green gradient: radial from top centre (#1E6B2A at ~35%) through #031208 to #000000 */
+  --hero-gradient: radial-gradient(ellipse 90% 70% at 50% 0%, rgba(30, 107, 42, 0.55) 0%, rgba(30, 107, 42, 0.35) 35%, #031208 70%, #000000 100%);
+  --hero-cone: radial-gradient(ellipse 60% 85% at 50% -15%, rgba(184, 224, 138, 0.22) 0%, rgba(30, 107, 42, 0.12) 40%, transparent 75%);
+  --accent-dot: #B8E08A;
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+  }
+  
+  html, body, #root {
+    background-color: var(--bg);
+    color: var(--text);
+    min-height: 100dvh;
+  }
+
+  body {
+    overflow-x: clip; /* Prevents horizontal scroll without breaking position: sticky */
+  }
+
+  button, input, select, textarea {
+    font-family: inherit;
+  }
+}
+
+/* 200ms transitions on theme toggle only */
+.theme-transitioning,
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease, fill 200ms ease, stroke 200ms ease !important;
+}
+
+/* THE PAIRING RULE: Inverse container pairs */
+/* Dark mode = white pill + black text; Light mode = black pill + white text */
+.inverse {
+  background-color: var(--inverse-bg) !important;
+  color: var(--inverse-text) !important;
+  --text: var(--inverse-text);
+  --bg: var(--inverse-bg);
+}
+
+.brand-inverse {
+  background-color: var(--accent) !important;
+  color: var(--accent-contrast) !important;
+  --text: var(--accent-contrast);
+}
+
+/* Accent dot helper */
+.accent-dot {
+  background-color: var(--accent-dot);
+  box-shadow: 0 0 10px var(--accent-dot);
+}
+
+/* Hero volumetric light cone */
+.volumetric-cone {
+  background: var(--hero-cone);
+  pointer-events: none;
+}
+
+/* Faint blurred reflection under hero card */
+.hero-reflection-blur {
+  filter: blur(28px);
+  opacity: 0.35;
+  mask-image: linear-gradient(to top, transparent 15%, black 100%);
+  -webkit-mask-image: linear-gradient(to top, transparent 15%, black 100%);
+}
+
+/* Theme-Aware Glass Panel */
+.glass-panel {
+  background-color: var(--elevated);
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 20px -2px rgba(84, 112, 63, 0.06);
+}
+
+.glass-panel-hover {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.glass-panel-hover:hover {
+  border-color: var(--accent);
+  box-shadow: 0 10px 30px -4px rgba(84, 112, 63, 0.16);
+  transform: translateY(-4px);
+}
+
+/* Theme-aware background grid pattern */
+.bg-grid-pattern {
+  background-size: 36px 36px;
+  background-image: 
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+}
+
+/* Theme-aware gradient headings */
+.gradient-text {
+  background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Form disabled & placeholder states */
+input::placeholder,
+textarea::placeholder {
+  color: var(--text);
+  opacity: 0.6;
+}
+
+input:disabled,
+textarea:disabled,
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Modern sleek scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}

@@ -1,0 +1,23 @@
+{
+  "name": "que-solutions-fullstack",
+  "version": "1.0.0",
+  "description": "QUE SOLUTIONS — Production-ready Full-Stack Website & Admin CMS",
+  "scripts": {
+    "dev:server": "node --prefix server --watch src/server.js",
+    "dev:client": "npm --prefix client run dev",
+    "build:client": "npm --prefix client run build",
+    "migrate": "node server/src/db/migrate.js",
+    "seed": "node server/src/db/seed.js",
+    "start": "node server/src/server.js"
+  },
+  "keywords": [
+    "que-solutions",
+    "call-centre",
+    "fullstack",
+    "react",
+    "express",
+    "postgresql"
+  ],
+  "author": "Que Solutions",
+  "license": "ISC"
+}
