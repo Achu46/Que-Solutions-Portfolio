@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import PublicLayout from '../layouts/PublicLayout';
 import HeroSection from '../components/HeroSection';
 import ServicesSection from '../components/ServicesSection';
-import ProductsSection from '../components/ProductsSection';
 import PricingSection from '../components/PricingSection';
 import WhyUsSection from '../components/WhyUsSection';
 import TargetClientsSection from '../components/TargetClientsSection';
@@ -43,14 +42,7 @@ export default function HomePage() {
       {/* 2. Services */}
       <ServicesSection services={siteData.services} />
 
-      {/* 3. Products / Portfolio (Commented out per user request) */}
-      {/* <ProductsSection 
-        products={siteData.products} 
-        projects={siteData.projects} 
-        settings={siteData.settings} 
-      /> */}
-
-      {/* 4. Pricing */}
+      {/* 3. Pricing */}
       <PricingSection pricing={siteData.pricing} />
 
       {/* 5. Why Us & Who We Serve */}
