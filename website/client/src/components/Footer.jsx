@@ -2,6 +2,7 @@ import React from 'react';
 import { Mail, Phone, MapPin, Clock, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Logo3D from './common/Logo3D';
+import Reveal from './common/Reveal';
 
 export default function Footer({ settings }) {
   const currentYear = new Date().getFullYear();
@@ -12,7 +13,7 @@ export default function Footer({ settings }) {
 
   return (
     <footer className="w-full bg-surface border-t border-border/80 pt-16 pb-[calc(6rem+env(safe-area-inset-bottom,0px))] sm:pb-16 text-text relative z-10 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Reveal variant="fade-in" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-border">
           
           {/* Brand Info */}
@@ -103,7 +104,7 @@ export default function Footer({ settings }) {
             <Link to="/terms" className="hover:text-brand transition-colors">Terms of Service</Link>
           </div>
         </div>
-      </div>
+      </Reveal>
     </footer>
   );
 }

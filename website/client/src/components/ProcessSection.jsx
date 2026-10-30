@@ -40,7 +40,7 @@ export default function ProcessSection() {
   const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
-    <section id="process" ref={containerRef} className="py-24 sm:py-32 bg-transparent relative z-10 overflow-hidden content-visibility-auto">
+    <section id="process" ref={containerRef} className="py-24 sm:py-32 bg-transparent relative z-10 overflow-x-clip">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}

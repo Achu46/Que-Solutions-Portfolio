@@ -10,20 +10,20 @@ export default function AboutSection({ about }) {
   ];
 
   return (
-    <section id="about" className="py-24 sm:py-32 bg-transparent relative z-10 content-visibility-auto">
+    <section id="about" className="py-24 sm:py-32 bg-transparent relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           {/* Left Column: Brand Story & Pillars */}
           <div className="lg:col-span-7 space-y-8">
-            <Reveal>
+            <Reveal variant="slide-left">
               <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface/90 backdrop-blur-md border border-border text-xs font-mono font-semibold text-text uppercase tracking-widest">
                 [ ABOUT | PEOPLE TODAY. A BRIGHTER TOMORROW. ]
               </div>
             </Reveal>
 
-            <Reveal delay={0.08}>
+            <Reveal variant="slide-left" delay={0.08}>
               <h2 className="text-3xl sm:text-5xl lg:text-6xl font-light tracking-[-0.035em] text-text leading-tight">
                 Empowering Brands with <br />
                 <span className="font-semibold text-brand">Dedicated Human Care.</span>
@@ -68,7 +68,7 @@ export default function AboutSection({ about }) {
 
           {/* Right Column: 3 Core Pillars Showcase */}
           <div className="lg:col-span-5 space-y-6">
-            <Reveal delay={0.2}>
+            <Reveal variant="slide-right" delay={0.2}>
               <div className="p-8 sm:p-10 rounded-3xl border border-border/80 bg-surface space-y-6 shadow-md">
                 <div className="space-y-2 border-b border-border/70 pb-4">
                   <span className="text-xs font-mono font-bold uppercase tracking-widest text-brand">[ FOUNDATION ]</span>

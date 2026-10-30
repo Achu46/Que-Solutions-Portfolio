@@ -21,7 +21,7 @@ export default function PricingSection({ pricing }) {
   };
 
   return (
-    <section id="pricing" className="py-24 sm:py-32 bg-transparent relative z-10 content-visibility-auto">
+    <section id="pricing" className="py-24 sm:py-32 bg-transparent relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -54,7 +54,12 @@ export default function PricingSection({ pricing }) {
             const priceDisplay = formatINR(priceVal);
 
             return (
-              <Reveal key={plan.id || plan.name || idx} delay={idx * 0.08} className="h-full">
+              <Reveal 
+                key={plan.id || plan.name || idx} 
+                variant={isRec ? 'scale-in' : 'fade-up'} 
+                delay={idx * 0.08} 
+                className="h-full"
+              >
                 <div
                   className={`relative h-full flex flex-col justify-between rounded-3xl p-8 sm:p-9 transition-all duration-300 shadow-md ${
                     isRec

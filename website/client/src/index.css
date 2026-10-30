@@ -94,11 +94,7 @@
   transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease, fill 200ms ease, stroke 200ms ease !important;
 }
 
-/* Below-the-fold content visibility for zero layout cost on initial paint */
-.content-visibility-auto {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 600px;
-}
+
 
 /* Mobile performance guard: disable costly multi-pass backdrop-filters on small viewports */
 @media (max-width: 640px) {
@@ -217,14 +213,12 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* Respect prefers-reduced-motion */
+/* Respect prefers-reduced-motion: smooth 200ms opacity fade, disable heavy transforms & loops */
 @media (prefers-reduced-motion: reduce) {
   *,
   ::before,
   ::after {
-    animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
 }

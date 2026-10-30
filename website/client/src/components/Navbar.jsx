@@ -56,14 +56,9 @@ export default function Navbar({ settings }) {
           {/* Official Brand Logo with 3D Effect */}
           <a href="#home" className="flex items-center gap-3 group select-none">
             <Logo3D size="md" variant="circle" />
-            <div className="hidden sm:block">
-              <span className="text-base font-bold tracking-wider text-text block leading-tight group-hover:text-brand transition-colors">
-                QUE SOLUTIONS
-              </span>
-              <span className="text-[10px] tracking-widest text-brand font-bold uppercase block">
-                People Today. A Brighter Tomorrow.
-              </span>
-            </div>
+            <span className="hidden sm:inline-block text-base font-bold tracking-wider text-text group-hover:text-brand transition-colors">
+              QUE SOLUTIONS
+            </span>
           </a>
 
           {/* Desktop Nav Links with Animated Underline */}

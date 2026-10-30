@@ -84,7 +84,7 @@ export default function ServicesSection({ services }) {
   };
 
   return (
-    <section id="services" className="py-24 sm:py-32 bg-transparent relative z-10 content-visibility-auto">
+    <section id="services" className="py-24 sm:py-32 bg-transparent relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
