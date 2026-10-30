@@ -225,25 +225,7 @@ export default function ContactSection({ settings }) {
                 )}
               </div>
 
-                {/* Official Google Form Direct Link Banner */}
-                <div className="mb-6 p-4 sm:p-5 rounded-2xl border border-brand/40 bg-brand/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                  <div className="space-y-0.5">
-                    <span className="inline-block text-[10px] font-mono font-bold tracking-widest text-brand uppercase">Official Google Quote Form</span>
-                    <h4 className="text-sm font-bold text-text">Que Solutions Client Inquiry & Service Request</h4>
-                    <p className="text-xs text-text opacity-75">Prefer filling our official form on Google Forms directly?</p>
-                  </div>
-                  <a
-                    href={googleFormUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="brand-inverse inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap shadow-sm hover:opacity-95 active:scale-95 transition-all shrink-0"
-                  >
-                    <span>Open Quote Form</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
-                </div>
-
-                <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-5">
                 
                 {/* Honeypot anti-spam field hidden from humans */}
                 <div className="hidden" aria-hidden="true">

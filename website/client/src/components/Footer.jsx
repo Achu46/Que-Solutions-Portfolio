@@ -43,7 +43,7 @@ export default function Footer({ settings }) {
                 <a href="#services" className="hover:text-brand transition-colors">Services</a>
               </li>
               <li>
-                <a href="#products" className="hover:text-brand transition-colors">Products & Software</a>
+                <a href="#work" className="hover:text-brand transition-colors">Work Done By Us</a>
               </li>
               <li>
                 <a href="#pricing" className="hover:text-brand transition-colors">Pricing Plans</a>

@@ -64,7 +64,7 @@ export default function HeroSection({ hero, settings }) {
               </a>
 
               <a
-                href="#services"
+                href="#work"
                 className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3.5 sm:py-4 min-h-[44px] w-full sm:w-auto rounded-full text-xs sm:text-sm font-semibold border border-border/70 bg-surface/70 hover:bg-hover text-text transition-all active:scale-95 shadow-sm"
               >
                 <span>View Our Work</span>
