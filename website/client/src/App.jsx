@@ -11,6 +11,8 @@ const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 const TermsPage = lazy(() => import('./pages/TermsPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
+import QueLoader from './components/common/QueLoader';
+
 // Code-Split Admin Console & Sub-Routes (completely excluded from public bundle)
 const AdminLoginPage = lazy(() => import('./admin/AdminLoginPage'));
 const AdminLayout = lazy(() => import('./admin/AdminLayout'));
@@ -25,6 +27,8 @@ export default function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
+        {/* Official QUE Loading Splash Animation on Initial Load & Refresh */}
+        <QueLoader />
         <Suspense fallback={<div className="min-h-screen bg-bg" />}>
           <Routes>
             {/* Public Routes */}

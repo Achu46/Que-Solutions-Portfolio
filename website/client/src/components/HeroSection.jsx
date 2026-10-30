@@ -1,9 +1,7 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { ArrowDown, ArrowUpRight, Headphones, MessageSquare, PhoneOutgoing } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import HeroPosterFallback from './3d/HeroPosterFallback';
-
-const Hero3DCanvas = React.lazy(() => import('./3d/Hero3DCanvas'));
+import Hero3DCanvas from './3d/Hero3DCanvas';
 
 export default function HeroSection({ hero, settings }) {
   const { isDark } = useTheme();
@@ -82,10 +80,8 @@ export default function HeroSection({ hero, settings }) {
           <div className="min-[900px]:col-span-5 order-2 relative flex items-center justify-center w-full">
             <div className="headset-stage relative w-full h-[320px] max-h-[40svh] min-[641px]:h-[420px] min-[641px]:max-h-none min-[900px]:h-[480px] 2xl:h-[540px] flex items-center justify-center">
               
-              {/* Lazy-Loaded GPU Particle Headset Stage */}
-              <Suspense fallback={<HeroPosterFallback isDark={isDark} />}>
-                <Hero3DCanvas isDark={isDark} />
-              </Suspense>
+              {/* Direct Render GPU Particle Headset Stage */}
+              <Hero3DCanvas isDark={isDark} />
 
               {/* Chip 1: Inbound Support (Top Left - No white border or box-shadow ring) */}
               <div 
