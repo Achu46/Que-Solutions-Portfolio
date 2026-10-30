@@ -17,7 +17,7 @@ export default function HeroSection({ hero, settings }) {
           ========================================================================= */}
       <div 
         id="hero-card"
-        className="relative flex-1 w-full overflow-hidden flex flex-col justify-between px-5 sm:px-8 lg:px-12 pt-24 sm:pt-28 lg:pt-32 pb-6 sm:pb-8 lg:pb-10 transition-colors duration-300"
+        className="relative flex-1 w-full overflow-hidden flex flex-col justify-between px-5 sm:px-8 lg:px-12 pt-16 sm:pt-20 lg:pt-22 pb-4 sm:pb-6 lg:pb-8 transition-colors duration-300"
         style={{
           background: 'var(--hero-gradient)',
         }}
@@ -26,7 +26,7 @@ export default function HeroSection({ hero, settings }) {
         <div className="absolute inset-0 volumetric-cone z-0 pointer-events-none" />
 
         {/* ---------------- 2-COLUMN HERO BODY (Text Left, 3D Stage Right) ---------------- */}
-        <div className="relative z-20 my-auto py-4 sm:py-6 lg:py-8 grid grid-cols-1 min-[900px]:grid-cols-12 gap-8 lg:gap-10 items-center max-w-[1320px] mx-auto w-full">
+        <div className="relative z-20 mt-2 sm:mt-4 mb-auto py-1 sm:py-2 grid grid-cols-1 min-[900px]:grid-cols-12 gap-6 lg:gap-8 items-center max-w-[1320px] mx-auto w-full">
           
           {/* LEFT COLUMN: Text, Badge, Headline, Paragraph, CTAs (Order 1 on mobile) */}
           <div className="min-[900px]:col-span-7 order-1 flex flex-col justify-center text-left min-[641px]:max-[899px]:text-center min-[641px]:max-[899px]:items-center space-y-4 sm:space-y-6">

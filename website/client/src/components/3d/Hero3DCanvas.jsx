@@ -22,26 +22,26 @@ function Hero3DScene({ isDark, isPersistent = false, clipPath = 'none', scrollCo
   const [morphTarget, setMorphTarget] = useState(0.0);
   const [frameloop, setFrameloop] = useState('always');
   
-// Device classification & Particle budget: 12k high, 8k mid, 5k tablet, 3k phone for silky 60fps
+// Device classification & Particle budget: 6k high, 4.5k mid, 3k tablet, 1.8k phone for silky 60fps
   const [deviceTier, setDeviceTier] = useState(() => {
-    if (typeof window === 'undefined') return { isPhone: false, isHighTier: true, maxCount: 12000, initialDpr: 1.35 };
+    if (typeof window === 'undefined') return { isPhone: false, isHighTier: true, maxCount: 6000, initialDpr: 1.15 };
     const w = window.innerWidth;
     const isPhone = w < 640;
     const isTablet = w >= 640 && w < 1024;
     const isMidDesktop = w >= 1024 && w < 1440;
     const isHighTier = w >= 1440;
 
-    let maxCount = 12000;
-    let initialDpr = 1.35;
+    let maxCount = 6000;
+    let initialDpr = 1.15;
     if (isPhone) {
-      maxCount = 3000;
+      maxCount = 1800;
       initialDpr = 1.0;
     } else if (isTablet) {
-      maxCount = 5000;
-      initialDpr = 1.2;
+      maxCount = 3000;
+      initialDpr = 1.05;
     } else if (isMidDesktop) {
-      maxCount = 8000;
-      initialDpr = 1.25;
+      maxCount = 4500;
+      initialDpr = 1.1;
     }
 
     return { isPhone, isTablet, isHighTier, maxCount, initialDpr };

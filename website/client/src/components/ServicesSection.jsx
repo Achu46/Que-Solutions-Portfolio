@@ -5,55 +5,18 @@ import { useCanvasScroll } from '../context/CanvasScrollContext';
 import Reveal from './common/Reveal';
 
 function ServiceTiltCard({ service, index, isActive, onSelectService }) {
-  const cardRef = useRef(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  // Springs for physics-based 3D tilt (max 7 degrees)
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [7, -7]), { stiffness: 240, damping: 25 });
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-7, 7]), { stiffness: 240, damping: 25 });
-  const glareOpacity = useSpring(useTransform(x, [-0.5, 0, 0.5], [0.15, 0, 0.15]), { stiffness: 200, damping: 20 });
-
-  const handleMouseMove = (e) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    x.set(mouseX / rect.width - 0.5);
-    y.set(mouseY / rect.height - 0.5);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
   const IconComponent =
     index === 0 ? PhoneIncoming : index === 1 ? PhoneOutgoing : MessageSquareText;
 
   return (
-    <div style={{ perspective: 1000 }} className="h-full">
-      <motion.div
-        ref={cardRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        style={{
-          rotateX,
-          rotateY,
-          transformStyle: 'preserve-3d',
-        }}
-        className={`relative h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border transition-all duration-300 p-7 sm:p-9 overflow-hidden shadow-md group ${
+    <div className="h-full">
+      <div
+        className={`relative h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border transition-all duration-300 p-7 sm:p-9 overflow-hidden shadow-md group hover:-translate-y-1.5 hover:shadow-xl ${
           isActive
             ? 'border-brand/70 bg-surface shadow-brand/10 ring-1 ring-brand/30'
             : 'border-border/80 bg-surface hover:border-brand/40'
         }`}
       >
-        {/* Dynamic Pointer Glare Overlay */}
-        <motion.div
-          style={{ opacity: glareOpacity }}
-          className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-brand/15 pointer-events-none rounded-2xl sm:rounded-3xl"
-        />
-
         {/* Card Header */}
         <div className="space-y-4 relative z-10">
           <div className="flex items-center justify-between">
@@ -106,7 +69,7 @@ function ServiceTiltCard({ service, index, isActive, onSelectService }) {
             <ArrowRight className="w-4 h-4 text-brand transition-transform group-hover:translate-x-1" />
           </button>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

@@ -120,13 +120,11 @@ void main() {
   // 1. Morph interpolation between active targets
   vec3 targetPos = getMorphPosition(uMorph);
 
-  // 2. Low-frequency 3D noise for organic texture (subtle float so headset geometry stays crisp)
-  vec3 noiseCoord = targetPos * 0.65 + vec3(uTime * 0.12, uTime * 0.1, uTime * 0.08) + vec3(aSeed * 0.4);
-  float bump = snoise(noiseCoord) * 0.025;
-  vec3 norm = normalize(targetPos + vec3(0.001));
-  vec3 pos = targetPos + norm * bump;
+  // 2. Ultra-fast trigonometric wave jitter (1 ALU instruction cycle)
+  float bump = sin(targetPos.x * 4.0 + uTime * 0.8) * cos(targetPos.y * 4.0 + uTime * 0.6) * 0.02;
+  vec3 pos = targetPos + normalize(targetPos + vec3(0.001)) * bump;
 
-  // 3. Sound-wave pulses: 2-3 concentric ripples expanding from ear cups every ~2.5s
+  // 3. Sound-wave pulses: concentric ripples expanding from ear cups
   vec3 cupL = vec3(-1.02, -0.38, 0.0);
   vec3 cupR = vec3(1.02, -0.38, 0.0);
   float distL = length(targetPos - cupL);
@@ -141,7 +139,7 @@ void main() {
   vec3 rippleDir = normalize(targetPos - nearestCup + vec3(0.001));
   pos += rippleDir * ripple * 0.07;
 
-  // Pulse glow factor: cups glow on pulse and expanding ripples highlight
+  // Pulse glow factor
   vPulseGlow = max(0.0, ripple * 0.8) + smoothstep(0.42, 0.0, distCup) * sin(uPulse * 3.14159) * 0.55;
 
   // 4. Shed particles drifting off the microphone side (-X, +Z)
@@ -152,10 +150,10 @@ void main() {
     
     vec3 driftDir = vec3(-0.9, -0.22, 1.2);
     vec3 turbulence = vec3(
-      snoise(pos * 0.4 + vec3(uTime * 0.15)),
-      snoise(pos * 0.4 + vec3(uTime * 0.15 + 10.0)),
-      snoise(pos * 0.4 + vec3(uTime * 0.15 + 20.0))
-    ) * 0.45;
+      sin(pos.y * 3.0 + uTime * 0.8),
+      cos(pos.x * 3.0 + uTime * 0.8),
+      sin(pos.z * 3.0 + uTime * 0.8)
+    ) * 0.18;
     
     pos += (driftDir + turbulence) * (lifetime * 2.0 * uDisperse);
   }
@@ -170,13 +168,13 @@ void main() {
   }
 
   // 6. Intro assembly from scattered noise over ~1.6s
-  if (uAssemble < 1.0) {
+  if (uAssemble < 0.99) {
     float easeAssemble = smoothstep(0.0, 1.0, uAssemble);
     vec3 scatter = vec3(
-      snoise(targetPos * 1.5 + vec3(aSeed * 12.0)),
-      snoise(targetPos * 1.5 + vec3(aSeed * 24.0)),
-      snoise(targetPos * 1.5 + vec3(aSeed * 36.0))
-    ) * 7.0;
+      sin(targetPos.x * 2.0 + aSeed * 12.0),
+      cos(targetPos.y * 2.0 + aSeed * 24.0),
+      sin(targetPos.z * 2.0 + aSeed * 36.0)
+    ) * 6.0;
     pos = mix(scatter, pos, easeAssemble);
   }
 
@@ -326,6 +324,7 @@ export default function HeroParticleSystem({
     let rafId = null;
     const handlePointerMove = (e) => {
       if (rafId) return;
+      if (typeof window !== 'undefined' && window.scrollY > window.innerHeight * 1.05) return;
       const clientX = e.clientX;
       const clientY = e.clientY;
 
