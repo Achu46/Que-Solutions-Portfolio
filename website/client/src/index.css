@@ -49,6 +49,10 @@
 }
 
 @layer base {
+  *, ::before, ::after {
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+  }
+
   html {
     scroll-behavior: smooth;
     font-family: 'Poppins', system-ui, -apple-system, sans-serif;

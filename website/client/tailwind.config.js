@@ -34,7 +34,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Poppins', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        sans: ['Poppins', 'system-ui', '-apple-system', 'sans-serif'],
+        mono: ['Poppins', 'system-ui', 'monospace'],
       },
       boxShadow: {
         'soft': '0 4px 20px -2px rgba(84, 112, 63, 0.08)',
