@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /que
+Disallow: /que/*
+
+Sitemap: https://quesolutions.in/sitemap.xml

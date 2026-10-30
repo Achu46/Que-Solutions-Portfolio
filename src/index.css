@@ -1,0 +1,247 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* LIGHT MODE TOKENS */
+  --bg: #FFFFFF;
+  --surface: #F6F8F4;
+  --elevated: #FFFFFF;
+  --border: #D5E0CB;
+  --text: #000000;
+  --brand: #54703F;
+  --brand-text: #FFFFFF;
+  --accent: #425832;
+  --accent-contrast: #FFFFFF;
+  --inverse-bg: #000000;
+  --inverse-text: #FFFFFF;
+  --hover: #EBF1E6;
+  --hero-gradient: radial-gradient(ellipse 90% 70% at 50% 0%, #F6F8F4 0%, #E4EDDC 50%, #D3E2C6 100%);
+  --hero-cone: radial-gradient(ellipse 65% 85% at 50% -10%, rgba(255, 255, 255, 0.95) 0%, rgba(246, 248, 244, 0.5) 45%, transparent 75%);
+  --accent-dot: #54703F;
+  --particle-a: #425832;
+  --particle-b: #54703F;
+  --particle-c: #94B380;
+  color-scheme: light;
+}
+
+.dark, [data-theme='dark'] {
+  /* DARK MODE TOKENS */
+  --bg: #000000;
+  --surface: #0A0A0A;
+  --elevated: #141414;
+  --border: #262626;
+  --text: #FFFFFF;
+  --brand: #94B380;
+  --brand-text: #000000;
+  --accent: #B8E08A;
+  --accent-contrast: #000000;
+  --inverse-bg: #FFFFFF;
+  --inverse-text: #000000;
+  --hover: #171717;
+  --hero-gradient: radial-gradient(ellipse 90% 70% at 50% 0%, #1E6B2A 0%, #031208 55%, #000000 100%);
+  --hero-cone: radial-gradient(ellipse 60% 85% at 50% -15%, rgba(184, 224, 138, 0.22) 0%, rgba(30, 107, 42, 0.12) 40%, transparent 75%);
+  --accent-dot: #B8E08A;
+  --particle-a: #1F8A3A;
+  --particle-b: #5FBF4A;
+  --particle-c: #B8E08A;
+  color-scheme: dark;
+}
+
+@layer base {
+  *, ::before, ::after {
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    scrollbar-gutter: stable;
+    overscroll-behavior-y: none;
+    color-scheme: light;
+  }
+
+  html.dark, html[data-theme='dark'] {
+    color-scheme: dark;
+  }
+  
+  html, body, #root {
+    background-color: var(--bg);
+    color: var(--text);
+    min-height: 100dvh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    scrollbar-color: var(--border) var(--bg);
+  }
+
+  body {
+    overflow-x: clip; /* Prevents horizontal scroll without breaking position: sticky */
+    width: 100%;
+  }
+
+  /* Anchor link smooth scroll margin offset equal to nav height */
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
+
+  button, input, select, textarea {
+    font-family: inherit;
+  }
+}
+
+/* 200ms transitions on theme toggle only */
+.theme-transitioning,
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease, fill 200ms ease, stroke 200ms ease !important;
+}
+
+
+
+/* Mobile performance guard: disable costly multi-pass backdrop-filters on small viewports */
+@media (max-width: 640px) {
+  .mobile-no-blur {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+/* THE PAIRING RULE: Inverse container pairs */
+/* Dark mode = white pill + black text; Light mode = black pill + white text */
+.inverse {
+  background-color: var(--inverse-bg) !important;
+  color: var(--inverse-text) !important;
+  --text: var(--inverse-text);
+  --bg: var(--inverse-bg);
+}
+
+.brand-inverse {
+  background-color: var(--brand) !important;
+  color: var(--brand-text) !important;
+  --text: var(--brand-text);
+  --bg: var(--brand);
+}
+
+/* Poppins Headline: 600 weight, clamp(2.2rem, 9vw, 3rem) on mobile, clamp(2.6rem, 5.2vw, 4.8rem) on desktop */
+.hero-headline {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: clamp(2.2rem, 9vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+@media (min-width: 900px) {
+  .hero-headline {
+    font-size: clamp(2.6rem, 5.2vw, 4.8rem);
+    line-height: 1.04;
+  }
+}
+
+/* Landscape phone adaptation: prevent tall viewport cutoffs */
+@media (max-height: 540px) and (orientation: landscape) {
+  #home {
+    min-height: auto !important;
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+  .headset-stage {
+    height: 240px !important;
+  }
+}
+
+/* Accent dot helper */
+.accent-dot {
+  background-color: var(--accent-dot);
+  box-shadow: 0 0 10px var(--accent-dot);
+}
+
+/* Hero volumetric light cone */
+.volumetric-cone {
+  background: var(--hero-cone);
+  pointer-events: none;
+}
+
+/* Faint reflection under hero card using pre-rendered radial-gradient (no GPU raster blur filter) */
+.hero-reflection-blur {
+  background: radial-gradient(ellipse 60% 40% at 50% 50%, var(--border) 0%, transparent 70%);
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+/* Theme-Aware Glass Panel */
+.glass-panel {
+  background-color: var(--elevated);
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 20px -2px rgba(84, 112, 63, 0.06);
+}
+
+.glass-panel-hover {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease;
+}
+
+.glass-panel-hover:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+}
+
+/* Theme-aware background grid pattern */
+.bg-grid-pattern {
+  background-size: 36px 36px;
+  background-image: 
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+}
+
+/* Theme-aware gradient headings */
+.gradient-text {
+  background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Form disabled & placeholder states */
+input::placeholder,
+textarea::placeholder {
+  color: var(--text);
+  opacity: 0.6;
+}
+
+input:disabled,
+textarea:disabled,
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Respect prefers-reduced-motion: smooth 200ms opacity fade, disable heavy transforms & loops */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Modern sleek scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}

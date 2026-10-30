@@ -33,3 +33,5 @@ firebase-debug.log
 firestore-debug.log
 ui-debug.log
 .playwright-mcp/
+audit-screenshots/
+Que-Solutions/
