@@ -42,8 +42,8 @@ export default function HomePage() {
       {/* 2. Services */}
       <ServicesSection services={siteData.services} />
 
-      {/* 3. Pricing */}
-      <PricingSection pricing={siteData.pricing} />
+      {/* 3. Pricing (Commented out per user request) */}
+      {/* <PricingSection pricing={siteData.pricing} /> */}
 
       {/* 5. Why Us & Who We Serve */}
       <WhyUsSection whyUs={siteData.whyUs} />

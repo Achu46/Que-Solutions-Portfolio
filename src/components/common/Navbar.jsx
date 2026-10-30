@@ -1,180 +1,184 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import ThemeToggle from './ThemeToggle';
-import { NAV_LINKS, COMPANY_NAME } from '../../config/constants';
-import { trackEvent } from '../../services/firebase/analyticsService';
+import { Phone, Menu, X, ArrowRight, Sun, Moon } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import Logo3D from './common/Logo3D';
 
-export default function Navbar() {
+export default function Navbar({ settings }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('');
+  const { isDark, toggleTheme } = useTheme();
+
+  const phone = settings?.phone || '7092490337';
 
   useEffect(() => {
+    let lastScrolled = false;
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-
-      // Section active spy
-      const sections = NAV_LINKS.map(l => l.href.substring(1));
-      const scrollPos = window.scrollY + 200;
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i]);
-        if (el && el.offsetTop <= scrollPos) {
-          setActiveSection(sections[i]);
-          break;
-        }
+      const scrolled = window.scrollY > 24;
+      if (scrolled !== lastScrolled) {
+        lastScrolled = scrolled;
+        setIsScrolled(scrolled);
       }
     };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu on escape key
+  // Lock body scroll when mobile menu is open
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && mobileMenuOpen) {
-        setMobileMenuOpen(false);
-      }
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [mobileMenuOpen]);
 
-  const handleNavClick = (href, label) => {
-    setMobileMenuOpen(false);
-    trackEvent('nav_click', { link: label });
-    const target = document.querySelector(href);
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const handleCtaClick = () => {
-    setMobileMenuOpen(false);
-    trackEvent('cta_click', { location: 'navbar', label: 'Get a Quote' });
-    const contact = document.getElementById('contact');
-    if (contact) {
-      contact.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  const navLinks = [
+    { name: 'Home', href: '#home' },
+    { name: 'Services', href: '#services' },
+    // { name: 'Pricing', href: '#pricing' },
+    { name: 'About', href: '#about' },
+    { name: 'Contact', href: '#contact' },
+  ];
 
   return (
-    <header 
-      className={`sticky top-0 z-40 w-full transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-bg/85 backdrop-blur-md border-b border-border shadow-sm' 
-          : 'bg-transparent border-b border-border/40'
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? 'bg-surface/85 backdrop-blur-md border-b border-border shadow-soft py-2 sm:py-2.5'
+          : 'bg-transparent border-b border-transparent py-2.5 sm:py-3.5'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        {/* Brand Logo - Unmodified Official Logo */}
-        <Link 
-          to="/" 
-          className="flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-lg"
-          aria-label={`${COMPANY_NAME} Home`}
-        >
-          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-surface border border-border flex items-center justify-center p-1.5 shadow-sm overflow-hidden flex-shrink-0">
-            <img 
-              src="/logo.png" 
-              alt="QUE SOLUTIONS" 
-              className="w-full h-full object-contain"
-            />
-          </div>
-        </Link>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between">
+          {/* Official Brand Logo with 3D Effect */}
+          <a href="#home" className="flex items-center gap-3 group select-none">
+            <Logo3D size="md" variant="circle" />
+            <span className="hidden sm:inline-block text-base font-bold tracking-wider text-text group-hover:text-brand transition-colors">
+              QUE SOLUTIONS
+            </span>
+          </a>
 
-        {/* Desktop Navigation Links with animated indicator */}
-        <nav className="hidden lg:flex items-center gap-1 xl:gap-2" aria-label="Main Navigation">
-          {NAV_LINKS.map((link) => {
-            const isActive = activeSection === link.href.substring(1);
-            return (
+          {/* Desktop Nav Links with Animated Underline */}
+          <nav className="hidden md:flex items-center gap-7">
+            {navLinks.map((link) => (
               <a
-                key={link.label}
+                key={link.name}
                 href={link.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavClick(link.href, link.label);
-                }}
-                className={`relative px-3.5 py-1.5 text-sm font-medium transition-colors rounded-full ${
-                  isActive ? 'text-brand font-semibold' : 'text-text hover:text-brand'
-                }`}
+                className="relative text-sm font-medium text-text hover:text-brand transition-colors py-1 group"
               >
-                {link.label}
-                {isActive && (
-                  <span className="absolute bottom-0 left-3.5 right-3.5 h-0.5 bg-brand rounded-full transition-all" />
-                )}
+                <span>{link.name}</span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand transition-all duration-300 group-hover:w-full" />
               </a>
-            );
-          })}
-        </nav>
+            ))}
+          </nav>
 
-        {/* Action Controls: Theme Toggle & Get a Quote */}
-        <div className="hidden sm:flex items-center gap-3">
-          <ThemeToggle />
-          
-          <button
-            type="button"
-            onClick={handleCtaClick}
-            className="brand-inverse inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold tracking-wide shadow-md hover:bg-brand-deep transition-all duration-200 active:scale-95 focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
-          >
-            <span>Get a Quote</span>
-            <ArrowUpRight className="w-4 h-4" />
-          </button>
-        </div>
+          {/* Right Action CTAs & Theme Toggle */}
+          <div className="hidden md:flex items-center gap-4">
+            {/* Theme Toggle Sun / Moon */}
+            <button
+              onClick={toggleTheme}
+              type="button"
+              className="p-2 sm:p-2.5 rounded-full border border-border/80 bg-surface/90 hover:bg-hover text-text transition-all duration-200 cursor-pointer shadow-sm focus-visible:ring-2 focus-visible:ring-brand flex items-center justify-center min-w-[40px] min-h-[40px]"
+              aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+              title={isDark ? "Switch to light theme" : "Switch to dark theme"}
+            >
+              {isDark ? (
+                <Sun className="w-4 h-4 text-brand transition-transform hover:rotate-45" />
+              ) : (
+                <Moon className="w-4 h-4 text-brand transition-transform hover:-rotate-12" />
+              )}
+            </button>
 
-        {/* Mobile Hamburger & Theme Toggle */}
-        <div className="flex items-center gap-2 lg:hidden">
-          <ThemeToggle />
-          
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg border border-border bg-surface text-text hover:bg-hover focus-visible:ring-2 focus-visible:ring-brand"
-            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-            aria-expanded={mobileMenuOpen}
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+            <a
+              href={`tel:${phone}`}
+              className="flex items-center gap-2 text-xs font-semibold text-text bg-surface hover:bg-hover border border-border px-3.5 py-2 rounded-full transition-all"
+            >
+              <Phone className="w-3.5 h-3.5 text-brand" />
+              <span>{phone}</span>
+            </a>
+
+            <a
+              href="#contact"
+              className="flex items-center justify-center gap-2 text-xs uppercase tracking-wider font-bold px-5 py-2.5 min-h-[44px] rounded-full shadow-soft hover:opacity-95 active:scale-95 transition-all z-10"
+              style={{
+                backgroundColor: '#FFFFFF',
+                color: '#000000',
+              }}
+            >
+              <span className="font-bold tracking-wide text-black" style={{ color: '#000000' }}>Get a Quote</span>
+              <ArrowRight className="w-3.5 h-3.5 text-black" style={{ color: '#000000' }} />
+            </a>
+          </div>
+
+          {/* Mobile Right Controls */}
+          <div className="flex md:hidden items-center gap-2">
+            <button
+              onClick={toggleTheme}
+              type="button"
+              className="p-2 rounded-lg border border-border bg-surface text-text cursor-pointer flex items-center justify-center min-w-[40px] min-h-[40px]"
+              aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+              title={isDark ? "Switch to light theme" : "Switch to dark theme"}
+            >
+              {isDark ? <Sun className="w-4 h-4 text-brand" /> : <Moon className="w-4 h-4 text-brand" />}
+            </button>
+            <a
+              href={`tel:${phone}`}
+              className="p-2 text-text bg-surface border border-border rounded-lg"
+              title={`Call ${phone}`}
+            >
+              <Phone className="w-4 h-4 text-brand" />
+            </a>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 text-text hover:bg-surface rounded-lg focus:outline-none"
+              aria-label="Toggle navigation menu"
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div 
-          className="fixed inset-0 top-20 z-50 bg-bg/95 backdrop-blur-xl border-b border-border lg:hidden flex flex-col justify-between p-6 animate-fadeIn"
+          className="md:hidden fixed inset-x-0 top-[73px] bottom-0 bg-surface/98 backdrop-blur-xl border-b border-border px-6 pt-6 pb-10 shadow-2xl flex flex-col justify-between overflow-y-auto animate-fadeIn"
           role="dialog"
           aria-modal="true"
-          aria-label="Mobile Navigation"
         >
-          <div className="space-y-3">
-            {NAV_LINKS.map((link) => (
+          <div className="flex flex-col space-y-4">
+            {navLinks.map((link) => (
               <a
-                key={link.label}
+                key={link.name}
                 href={link.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavClick(link.href, link.label);
-                }}
-                className="block px-4 py-3 rounded-xl text-lg font-medium text-text hover:bg-surface border border-transparent hover:border-border transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-lg font-semibold text-text hover:text-brand py-2 border-b border-border/50"
               >
-                {link.label}
+                {link.name}
               </a>
             ))}
           </div>
 
-          <div className="pt-6 border-t border-border">
-            <button
-              type="button"
-              onClick={handleCtaClick}
-              className="brand-inverse w-full flex items-center justify-center gap-2 py-3.5 rounded-xl text-base font-semibold shadow-lg active:scale-98"
+          <div className="pt-6 flex flex-col gap-3">
+            <a
+              href={`tel:${phone}`}
+              className="flex items-center justify-center gap-2 text-sm font-semibold bg-elevated text-text py-3 rounded-xl border border-border"
+            >
+              <Phone className="w-4 h-4 text-brand" />
+              <span>Call {phone}</span>
+            </a>
+            <a
+              href="#contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="brand-inverse flex items-center justify-center gap-2 text-sm font-bold py-3.5 rounded-xl shadow-soft"
             >
               <span>Get a Quote</span>
-              <ArrowUpRight className="w-5 h-5" />
-            </button>
-            <p className="mt-4 text-center text-xs text-text/80">
-              4 hrs/day, Mon to Sat (~104 hrs/mo)
-            </p>
+              <ArrowRight className="w-4 h-4" />
+            </a>
           </div>
         </div>
       )}
