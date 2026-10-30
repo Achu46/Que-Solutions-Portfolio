@@ -246,6 +246,10 @@ void main() {
 }
 `;
 
+// Pre-allocated static vectors outside component to eliminate GC pressure during pointer movement
+const _tempVec = new THREE.Vector3();
+const _tempWorldPos = new THREE.Vector3();
+
 export default function HeroParticleSystem({
   geometry,
   isDark,
@@ -315,27 +319,38 @@ export default function HeroParticleSystem({
     isTouchRef.current = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   }, []);
 
-  // Listen to pointer movements on window and convert to world coordinates at z=0
+  // Listen to pointer movements on window and convert to world coordinates at z=0 without allocations
   useEffect(() => {
     if (isTouchRef.current) return;
 
+    let rafId = null;
     const handlePointerMove = (e) => {
-      // Normalized device coordinates [-1, 1]
-      const ndcX = (e.clientX / window.innerWidth) * 2 - 1;
-      const ndcY = -(e.clientY / window.innerHeight) * 2 + 1;
+      if (rafId) return;
+      const clientX = e.clientX;
+      const clientY = e.clientY;
 
-      // Project onto world z=0 plane
-      const vec = new THREE.Vector3(ndcX, ndcY, 0.5);
-      vec.unproject(camera);
-      vec.sub(camera.position).normalize();
-      const distance = -camera.position.z / vec.z;
-      const worldPos = camera.position.clone().add(vec.multiplyScalar(distance));
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        // Normalized device coordinates [-1, 1]
+        const ndcX = (clientX / window.innerWidth) * 2 - 1;
+        const ndcY = -(clientY / window.innerHeight) * 2 + 1;
 
-      pointerTargetRef.current.set(worldPos.x, worldPos.y, 0);
+        // Project onto world z=0 plane using pre-allocated vectors
+        _tempVec.set(ndcX, ndcY, 0.5);
+        _tempVec.unproject(camera);
+        _tempVec.sub(camera.position).normalize();
+        const distance = -camera.position.z / _tempVec.z;
+        _tempWorldPos.copy(camera.position).addScaledVector(_tempVec, distance);
+
+        pointerTargetRef.current.set(_tempWorldPos.x, _tempWorldPos.y, 0);
+      });
     };
 
     window.addEventListener('pointermove', handlePointerMove, { passive: true });
-    return () => window.removeEventListener('pointermove', handlePointerMove);
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      window.removeEventListener('pointermove', handlePointerMove);
+    };
   }, [camera]);
 
   useFrame((state, delta) => {
@@ -391,20 +406,22 @@ export default function HeroParticleSystem({
       u.uPointer.value.copy(pointerWorldRef.current);
     }
 
-    // 6. Theme change tweening over ~600ms
+    // 6. Theme change tweening over ~600ms (only compute when transitioning)
     const targetThemeVal = isDark ? 0.0 : 1.0;
-    const lerpSpeed = Math.min(delta * 5.2, 1.0);
-    u.uTheme.value = THREE.MathUtils.lerp(u.uTheme.value, targetThemeVal, lerpSpeed);
+    if (Math.abs(u.uTheme.value - targetThemeVal) > 0.001) {
+      const lerpSpeed = Math.min(delta * 5.2, 1.0);
+      u.uTheme.value = THREE.MathUtils.lerp(u.uTheme.value, targetThemeVal, lerpSpeed);
 
-    const activeTheme = isDark ? themeColors.dark : themeColors.light;
-    u.uColorA.value.lerp(activeTheme.colorA, lerpSpeed);
-    u.uColorB.value.lerp(activeTheme.colorB, lerpSpeed);
-    u.uColorC.value.lerp(activeTheme.colorC, lerpSpeed);
-    u.uOpacity.value = THREE.MathUtils.lerp(
-      u.uOpacity.value,
-      activeTheme.opacity * targetOpacityMult,
-      lerpSpeed
-    );
+      const activeTheme = isDark ? themeColors.dark : themeColors.light;
+      u.uColorA.value.lerp(activeTheme.colorA, lerpSpeed);
+      u.uColorB.value.lerp(activeTheme.colorB, lerpSpeed);
+      u.uColorC.value.lerp(activeTheme.colorC, lerpSpeed);
+      u.uOpacity.value = THREE.MathUtils.lerp(
+        u.uOpacity.value,
+        activeTheme.opacity * targetOpacityMult,
+        lerpSpeed
+      );
+    }
 
     // 7. Idle Motion:
     // - Slow yaw oscillation of ~+/-35 degrees (+/-0.61 rad) so mic stays visible

@@ -11,8 +11,13 @@ export default function Navbar({ settings }) {
   const phone = settings?.phone || '7092490337';
 
   useEffect(() => {
+    let lastScrolled = false;
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 24);
+      const scrolled = window.scrollY > 24;
+      if (scrolled !== lastScrolled) {
+        lastScrolled = scrolled;
+        setIsScrolled(scrolled);
+      }
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -33,7 +38,6 @@ export default function Navbar({ settings }) {
   const navLinks = [
     { name: 'Home', href: '#home' },
     { name: 'Services', href: '#services' },
-    { name: 'Products', href: '#products' },
     { name: 'Pricing', href: '#pricing' },
     { name: 'About', href: '#about' },
     { name: 'Contact', href: '#contact' },
@@ -82,11 +86,15 @@ export default function Navbar({ settings }) {
             <button
               onClick={toggleTheme}
               type="button"
-              className="p-2 rounded-full border border-border bg-surface hover:bg-hover text-text transition-colors focus-visible:ring-2 focus-visible:ring-brand"
+              className="p-2 sm:p-2.5 rounded-full border border-border/80 bg-surface/90 hover:bg-hover text-text transition-all duration-200 cursor-pointer shadow-sm focus-visible:ring-2 focus-visible:ring-brand flex items-center justify-center min-w-[40px] min-h-[40px]"
               aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
               title={isDark ? "Switch to light theme" : "Switch to dark theme"}
             >
-              {isDark ? <Sun className="w-4 h-4 text-brand" /> : <Moon className="w-4 h-4 text-brand" />}
+              {isDark ? (
+                <Sun className="w-4 h-4 text-brand transition-transform hover:rotate-45" />
+              ) : (
+                <Moon className="w-4 h-4 text-brand transition-transform hover:-rotate-12" />
+              )}
             </button>
 
             <a
@@ -115,8 +123,9 @@ export default function Navbar({ settings }) {
             <button
               onClick={toggleTheme}
               type="button"
-              className="p-2 rounded-lg border border-border bg-surface text-text"
-              aria-label="Toggle theme"
+              className="p-2 rounded-lg border border-border bg-surface text-text cursor-pointer flex items-center justify-center min-w-[40px] min-h-[40px]"
+              aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+              title={isDark ? "Switch to light theme" : "Switch to dark theme"}
             >
               {isDark ? <Sun className="w-4 h-4 text-brand" /> : <Moon className="w-4 h-4 text-brand" />}
             </button>

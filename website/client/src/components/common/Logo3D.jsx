@@ -111,78 +111,24 @@ export default function Logo3D({
           rotateY: interactive && !isTouchDevice ? rotateY : 0,
           transformStyle: 'preserve-3d',
         }}
-        animate={
-          isTouchDevice
-            ? {
-                rotateY: [-2, 2, -2],
-                rotateX: [1, -1, 1],
-              }
-            : undefined
-        }
-        transition={
-          isTouchDevice
-            ? {
-                repeat: Infinity,
-                duration: 6,
-                ease: 'easeInOut',
-              }
-            : undefined
-        }
       >
         {/* ============================================================
             LAYER 1: Ambient Contact Shadow (Soft brand olive / dark glow)
             ============================================================ */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 rounded-full pointer-events-none transition-all duration-300"
+          className="absolute inset-0 rounded-full pointer-events-none transition-opacity duration-300"
           style={{
-            transform: 'translateZ(-14px) translateY(4px) scale(0.92)',
+            transform: 'translateZ(-6px) translateY(3px) scale(0.95)',
             background: isDark
-              ? 'radial-gradient(circle, rgba(184, 224, 138, 0.22) 0%, rgba(0, 0, 0, 0.6) 70%, transparent 100%)'
-              : 'radial-gradient(circle, rgba(66, 88, 50, 0.22) 0%, rgba(0, 0, 0, 0.12) 65%, transparent 100%)',
-            filter: 'blur(6px)',
+              ? 'radial-gradient(circle, rgba(184, 224, 138, 0.25) 0%, rgba(0, 0, 0, 0.5) 70%, transparent 100%)'
+              : 'radial-gradient(circle, rgba(66, 88, 50, 0.2) 0%, rgba(0, 0, 0, 0.1) 65%, transparent 100%)',
             opacity: isHovered ? 0.95 : 0.65,
           }}
         />
 
         {/* ============================================================
-            LAYER 2: Extrusion / Layered Depth (Subtle rear silhouette)
-            ============================================================ */}
-        <img
-          src={logoSrc}
-          alt=""
-          aria-hidden="true"
-          loading="eager"
-          className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none transition-opacity duration-300"
-          style={{
-            transform: 'translateZ(-5px) translate(1px, 2px)',
-            filter: isDark
-              ? 'brightness(0.35) contrast(1.4) drop-shadow(0 0 1px rgba(0,0,0,0.8))'
-              : 'brightness(0.4) contrast(1.3) drop-shadow(0 0 1px rgba(0,0,0,0.3))',
-            opacity: 0.6,
-          }}
-        />
-
-        {/* ============================================================
-            LAYER 3: Mid Depth Layer (Intermediary extrusion)
-            ============================================================ */}
-        <img
-          src={logoSrc}
-          alt=""
-          aria-hidden="true"
-          loading="eager"
-          className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none"
-          style={{
-            transform: 'translateZ(-2px) translate(0.5px, 1px)',
-            filter: isDark
-              ? 'brightness(0.7) contrast(1.2)'
-              : 'brightness(0.75) contrast(1.15)',
-            opacity: 0.75,
-          }}
-        />
-
-        {/* ============================================================
-            LAYER 4: Primary Official Face Layer
+            LAYER 2: Primary Official Face Layer with 3D Depth
             ============================================================ */}
         <motion.div
           className="relative w-full h-full flex items-center justify-center"
@@ -199,15 +145,15 @@ export default function Logo3D({
             className="w-full h-full object-contain drop-shadow-sm transition-all duration-300"
             style={{
               filter: isDark
-                ? 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 12px rgba(184, 224, 138, 0.28))'
-                : 'drop-shadow(0 2px 4px rgba(66, 88, 50, 0.18))',
+                ? 'drop-shadow(0 2px 5px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 10px rgba(184, 224, 138, 0.35))'
+                : 'drop-shadow(0 2px 4px rgba(66, 88, 50, 0.25))',
             }}
           />
 
           {/* ============================================================
-              LAYER 5: Specular Gloss / Metallic Reflection Overlay
+              LAYER 3: Specular Gloss / Metallic Reflection Overlay
               ============================================================ */}
-          <motion.div
+          <div
             aria-hidden="true"
             className={`absolute inset-0 pointer-events-none overflow-hidden transition-opacity duration-300 ${
               variant === 'circle' ? 'rounded-full' : 'rounded-lg'

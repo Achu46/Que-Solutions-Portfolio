@@ -5,7 +5,6 @@ import * as THREE from 'three';
 import { useTheme } from '../../context/ThemeContext';
 import { getParticleGeometry } from './particleGeometry';
 import HeroParticleSystem from './HeroParticleSystem';
-import HeroPostProcessing from './HeroPostProcessing';
 import HeroPosterFallback from './HeroPosterFallback';
 import Hero3DErrorBoundary from './Hero3DErrorBoundary';
 
@@ -23,26 +22,26 @@ function Hero3DScene({ isDark, isPersistent = false, clipPath = 'none', scrollCo
   const [morphTarget, setMorphTarget] = useState(0.0);
   const [frameloop, setFrameloop] = useState('always');
   
-  // Device classification & Particle budget: 20k high, 12k mid, 8k tablet, 5k phone
+// Device classification & Particle budget: 12k high, 8k mid, 5k tablet, 3k phone for silky 60fps
   const [deviceTier, setDeviceTier] = useState(() => {
-    if (typeof window === 'undefined') return { isPhone: false, isHighTier: true, maxCount: 20000, initialDpr: 1.5 };
+    if (typeof window === 'undefined') return { isPhone: false, isHighTier: true, maxCount: 12000, initialDpr: 1.35 };
     const w = window.innerWidth;
     const isPhone = w < 640;
     const isTablet = w >= 640 && w < 1024;
     const isMidDesktop = w >= 1024 && w < 1440;
     const isHighTier = w >= 1440;
 
-    let maxCount = 20000;
-    let initialDpr = 1.5;
+    let maxCount = 12000;
+    let initialDpr = 1.35;
     if (isPhone) {
-      maxCount = 5000;
-      initialDpr = 1.25;
+      maxCount = 3000;
+      initialDpr = 1.0;
     } else if (isTablet) {
-      maxCount = 8000;
-      initialDpr = 1.35;
+      maxCount = 5000;
+      initialDpr = 1.2;
     } else if (isMidDesktop) {
-      maxCount = 12000;
-      initialDpr = 1.45;
+      maxCount = 8000;
+      initialDpr = 1.25;
     }
 
     return { isPhone, isTablet, isHighTier, maxCount, initialDpr };
@@ -181,11 +180,6 @@ function Hero3DScene({ isDark, isPersistent = false, clipPath = 'none', scrollCo
             scrollControls={scrollControls}
           />
         )}
-
-        <HeroPostProcessing
-          isDark={isDark}
-          isHighTierDesktop={deviceTier.isHighTier}
-        />
       </Canvas>
     </div>
   );

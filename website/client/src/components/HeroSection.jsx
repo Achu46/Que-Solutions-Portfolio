@@ -2,7 +2,6 @@ import React, { Suspense } from 'react';
 import { ArrowDown, ArrowUpRight, Headphones, MessageSquare, PhoneOutgoing } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import HeroPosterFallback from './3d/HeroPosterFallback';
-import Logo3D from './common/Logo3D';
 
 const Hero3DCanvas = React.lazy(() => import('./3d/Hero3DCanvas'));
 
@@ -20,42 +19,13 @@ export default function HeroSection({ hero, settings }) {
           ========================================================================= */}
       <div 
         id="hero-card"
-        className="relative flex-1 w-full overflow-hidden flex flex-col justify-between px-5 sm:px-8 lg:px-12 py-6 sm:py-8 lg:py-10 transition-colors duration-300"
+        className="relative flex-1 w-full overflow-hidden flex flex-col justify-between px-5 sm:px-8 lg:px-12 pt-24 sm:pt-28 lg:pt-32 pb-6 sm:pb-8 lg:pb-10 transition-colors duration-300"
         style={{
           background: 'var(--hero-gradient)',
         }}
       >
         {/* Soft volumetric light cone from top centre */}
         <div className="absolute inset-0 volumetric-cone z-0 pointer-events-none" />
-
-        {/* ---------------- TOP BAR (3D Brand Logo Left, Contact Us Right) ---------------- */}
-        <div className="relative z-20 flex items-center justify-between w-full">
-          <a href="#home" className="flex items-center gap-2.5 sm:gap-3 group select-none">
-            <Logo3D size="sm" variant="circle" />
-            <div className="flex flex-col">
-              <span className="text-xs sm:text-sm font-bold tracking-wider text-text leading-tight group-hover:text-brand transition-colors">
-                QUE SOLUTIONS
-              </span>
-              <span className="hidden sm:inline-block text-[9px] tracking-widest text-brand font-bold uppercase">
-                People Today. A Brighter Tomorrow.
-              </span>
-            </div>
-          </a>
-
-          <a
-            href="#contact"
-            className="inverse inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 min-h-[44px] rounded-full text-xs font-bold uppercase tracking-wider hover:opacity-95 active:scale-95 transition-all shadow-sm"
-            style={{
-              color: 'var(--inverse-text)',
-              backgroundColor: 'var(--inverse-bg)',
-            }}
-          >
-            <span className="w-2 h-2 rounded-full accent-dot animate-pulse flex-shrink-0" />
-            <span className="relative z-10 font-bold tracking-wide" style={{ color: 'var(--inverse-text)' }}>
-              Contact us
-            </span>
-          </a>
-        </div>
 
         {/* ---------------- 2-COLUMN HERO BODY (Text Left, 3D Stage Right) ---------------- */}
         <div className="relative z-20 my-auto py-4 sm:py-6 lg:py-8 grid grid-cols-1 min-[900px]:grid-cols-12 gap-8 lg:gap-10 items-center max-w-[1320px] mx-auto w-full">
