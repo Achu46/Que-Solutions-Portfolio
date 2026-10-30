@@ -12,6 +12,7 @@ export const CONTACT_INFO = {
   phone: "7092490337",
   displayPhone: "+91 70924 90337",
   whatsappUrl: "https://wa.me/917092490337",
+  googleQuoteFormUrl: "https://docs.google.com/forms/d/e/1FAIpQLSeHWPoqo14hoM9QqY9Z-1x8z1R4aolL1t1kyEArTB3TFxuxJQ/viewform?usp=publish-editor",
   location: "Erode, Tamil Nadu",
   operatingHours: "4 hrs/day, Mon to Sat (~104 hrs/month)",
   operatingScheduleDesc: "Structured non-24/7 outsourced coverage tailored for growing product businesses",

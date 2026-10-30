@@ -38,7 +38,7 @@ export const FALLBACK_SITE_DATA = {
     headline: 'Reliable Customer Support for Growing Businesses',
     subheadline: 'Affordable outsourced customer care, call centre and chat support for small and growing product-based businesses.',
     primary_cta_text: 'Get a Quote',
-    primary_cta_link: '#contact',
+    primary_cta_link: 'https://docs.google.com/forms/d/e/1FAIpQLSeHWPoqo14hoM9QqY9Z-1x8z1R4aolL1t1kyEArTB3TFxuxJQ/viewform?usp=publish-editor',
     secondary_cta_text: 'Talk to Us',
     secondary_cta_link: 'tel:7092490337'
   },

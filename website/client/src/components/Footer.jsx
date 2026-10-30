@@ -6,10 +6,10 @@ import Reveal from './common/Reveal';
 
 export default function Footer({ settings }) {
   const currentYear = new Date().getFullYear();
-  const phone = settings?.phone || '7092490337';
+  const phone = settings?.phone || '70924 90337';
   const email = settings?.email || 'que.solutions.services@gmail.com';
   const location = settings?.location || 'Erode, Tamil Nadu';
-  const whatsappUrl = settings?.social_whatsapp || 'https://wa.me/917092490337';
+  const whatsappUrl = 'https://wa.me/917092490337';
 
   return (
     <footer className="w-full bg-surface border-t border-border/80 pt-16 pb-[calc(6rem+env(safe-area-inset-bottom,0px))] sm:pb-16 text-text relative z-10 transition-colors">
@@ -55,7 +55,14 @@ export default function Footer({ settings }) {
                 <a href="#about" className="hover:text-brand transition-colors">About Our Company</a>
               </li>
               <li>
-                <a href="#contact" className="hover:text-brand transition-colors">Get a Quote</a>
+                <a
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSeHWPoqo14hoM9QqY9Z-1x8z1R4aolL1t1kyEArTB3TFxuxJQ/viewform?usp=publish-editor"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-brand transition-colors"
+                >
+                  Get a Quote
+                </a>
               </li>
             </ul>
           </div>
@@ -88,6 +95,15 @@ export default function Footer({ settings }) {
                 <MapPin className="w-3.5 h-3.5 text-brand shrink-0" />
                 <span>{location}</span>
               </div>
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 hover:text-brand transition-colors"
+              >
+                <MessageCircle className="w-3.5 h-3.5 text-brand shrink-0" />
+                <span>WhatsApp: {phone}</span>
+              </a>
               <div className="flex items-center gap-2">
                 <Clock className="w-3.5 h-3.5 text-brand shrink-0" />
                 <span>Mon – Sat: 4 hrs/day</span>

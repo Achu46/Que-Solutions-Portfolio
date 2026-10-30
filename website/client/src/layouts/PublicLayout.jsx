@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import FloatingWhatsApp from '../components/common/FloatingWhatsApp';
 
 export default function PublicLayout({ children, settings }) {
   return (
@@ -10,6 +11,8 @@ export default function PublicLayout({ children, settings }) {
         {children}
       </main>
       <Footer settings={settings} />
+      <FloatingWhatsApp phone={settings?.phone || '7092490337'} />
     </div>
   );
 }
+

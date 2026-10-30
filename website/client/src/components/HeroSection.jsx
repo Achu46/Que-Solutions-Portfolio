@@ -53,7 +53,9 @@ export default function HeroSection({ hero, settings }) {
             {/* Action Buttons Row: Get a Quote + View Our Work (Full width on mobile, 44px min touch target) */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center min-[641px]:max-[899px]:justify-center gap-3 sm:gap-4 pt-1 w-full sm:w-auto">
               <a
-                href="#contact"
+                href="https://docs.google.com/forms/d/e/1FAIpQLSeHWPoqo14hoM9QqY9Z-1x8z1R4aolL1t1kyEArTB3TFxuxJQ/viewform?usp=publish-editor"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="brand-inverse inline-flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 min-h-[44px] w-full sm:w-auto rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider hover:opacity-95 active:scale-95 transition-all"
               >
                 <span className="w-2.5 h-2.5 rounded-full accent-dot" />

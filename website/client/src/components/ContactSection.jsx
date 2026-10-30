@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Phone, MapPin, Send, CheckCircle2, AlertCircle, MessageCircle, Clock, ShieldCheck } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle2, AlertCircle, MessageCircle, Clock, ShieldCheck, FileText, ExternalLink } from 'lucide-react';
 import { api } from '../services/api';
 import Reveal from './common/Reveal';
 
@@ -19,10 +19,11 @@ export default function ContactSection({ settings }) {
   const [successResult, setSuccessResult] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const phone = settings?.phone || '7092490337';
+  const phone = settings?.phone || '70924 90337';
   const email = settings?.email || 'que.solutions.services@gmail.com';
   const location = settings?.location || 'Erode, Tamil Nadu';
-  const whatsappUrl = settings?.social_whatsapp || 'https://wa.me/917092490337';
+  const whatsappUrl = 'https://wa.me/917092490337';
+  const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSeHWPoqo14hoM9QqY9Z-1x8z1R4aolL1t1kyEArTB3TFxuxJQ/viewform?usp=publish-editor';
 
   // Listen for preselection events from Services & Pricing cards
   useEffect(() => {
@@ -160,6 +161,23 @@ export default function ContactSection({ settings }) {
                       <div className="text-sm font-bold text-text">Mon – Sat: 4 hrs/day (~104 hrs/mo)</div>
                     </div>
                   </div>
+                  <a
+                    href={googleFormUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-4 rounded-2xl border border-brand/50 bg-brand/5 flex items-center gap-4 hover:border-brand transition-colors group"
+                  >
+                    <div className="w-11 h-11 rounded-xl bg-surface border border-border flex items-center justify-center text-brand shrink-0 group-hover:scale-105 transition-transform">
+                      <FileText className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-brand font-semibold">Official Quote Form</div>
+                      <div className="text-sm font-bold text-text flex items-center gap-1.5">
+                        <span>Fill via Google Forms</span>
+                        <ExternalLink className="w-3.5 h-3.5 opacity-70" />
+                      </div>
+                    </div>
+                  </a>
                 </div>
 
                 {/* Instant WhatsApp Action */}
@@ -171,7 +189,7 @@ export default function ContactSection({ settings }) {
                     className="w-full inline-flex items-center justify-center gap-2.5 py-4 px-6 rounded-2xl inverse text-xs font-bold uppercase tracking-wider shadow-lg hover:opacity-95 active:scale-95 transition-all"
                   >
                     <MessageCircle className="w-4 h-4" />
-                    <span>Chat on WhatsApp</span>
+                    <span>Chat on WhatsApp (+91 70924 90337)</span>
                   </a>
                 </div>
               </div>
@@ -207,7 +225,25 @@ export default function ContactSection({ settings }) {
                 )}
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Official Google Form Direct Link Banner */}
+                <div className="mb-6 p-4 sm:p-5 rounded-2xl border border-brand/40 bg-brand/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                  <div className="space-y-0.5">
+                    <span className="inline-block text-[10px] font-mono font-bold tracking-widest text-brand uppercase">Official Google Quote Form</span>
+                    <h4 className="text-sm font-bold text-text">Que Solutions Client Inquiry & Service Request</h4>
+                    <p className="text-xs text-text opacity-75">Prefer filling our official form on Google Forms directly?</p>
+                  </div>
+                  <a
+                    href={googleFormUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="brand-inverse inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap shadow-sm hover:opacity-95 active:scale-95 transition-all shrink-0"
+                  >
+                    <span>Open Quote Form</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-5">
                 
                 {/* Honeypot anti-spam field hidden from humans */}
                 <div className="hidden" aria-hidden="true">

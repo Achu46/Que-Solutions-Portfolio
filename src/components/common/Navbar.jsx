@@ -101,7 +101,9 @@ export default function Navbar({ settings }) {
             </a>
 
             <a
-              href="#contact"
+              href="https://docs.google.com/forms/d/e/1FAIpQLSeHWPoqo14hoM9QqY9Z-1x8z1R4aolL1t1kyEArTB3TFxuxJQ/viewform?usp=publish-editor"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 text-xs uppercase tracking-wider font-bold px-5 py-2.5 min-h-[44px] rounded-full shadow-soft hover:opacity-95 active:scale-95 transition-all z-10"
               style={{
                 backgroundColor: '#FFFFFF',
@@ -172,7 +174,9 @@ export default function Navbar({ settings }) {
               <span>Call {phone}</span>
             </a>
             <a
-              href="#contact"
+              href="https://docs.google.com/forms/d/e/1FAIpQLSeHWPoqo14hoM9QqY9Z-1x8z1R4aolL1t1kyEArTB3TFxuxJQ/viewform?usp=publish-editor"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setMobileMenuOpen(false)}
               className="brand-inverse flex items-center justify-center gap-2 text-sm font-bold py-3.5 rounded-xl shadow-soft"
             >
