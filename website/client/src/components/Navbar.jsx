@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Phone, Menu, X, ArrowRight, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import Logo3D from './common/Logo3D';
 
 export default function Navbar({ settings }) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -48,17 +49,13 @@ export default function Navbar({ settings }) {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
-          {/* Official Brand Logo in Neutral Rounded Container */}
-          <a href="#home" className="flex items-center gap-3 group">
-            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-surface border border-border flex items-center justify-center p-1.5 shadow-sm overflow-hidden flex-shrink-0 transition-transform duration-200 group-hover:scale-105">
-              <img
-                src="/logo.png"
-                alt="QUE SOLUTIONS"
-                className="w-full h-full object-contain"
-              />
-            </div>
+          {/* Official Brand Logo with 3D Effect */}
+          <a href="#home" className="flex items-center gap-3 group select-none">
+            <Logo3D size="md" variant="circle" />
             <div className="hidden sm:block">
-              <span className="text-base font-bold tracking-wider text-text block leading-tight">QUE SOLUTIONS</span>
+              <span className="text-base font-bold tracking-wider text-text block leading-tight group-hover:text-brand transition-colors">
+                QUE SOLUTIONS
+              </span>
               <span className="text-[10px] tracking-widest text-brand font-bold uppercase block">
                 People Today. A Brighter Tomorrow.
               </span>

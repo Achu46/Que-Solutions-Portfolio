@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../../context/ThemeContext';
+import Logo3D from './Logo3D';
 
 export default function FloatingGlassNav({ settings }) {
   const [activeSection, setActiveSection] = useState('home');
@@ -54,7 +55,20 @@ export default function FloatingGlassNav({ settings }) {
       className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom,0px))] sm:bottom-6 left-1/2 -translate-x-1/2 z-40 select-none max-w-[calc(100vw-1rem)] sm:max-w-max px-1"
     >
       <div className="relative flex items-center gap-0.5 sm:gap-1.5 p-1 sm:p-2 rounded-full border border-border/80 bg-surface/90 backdrop-blur-xl shadow-2xl overflow-x-auto no-scrollbar">
-        
+        {/* Official 3D Brand Emblem */}
+        <a
+          href="#home"
+          onClick={() => setActiveSection('home')}
+          aria-label="QUE SOLUTIONS Home"
+          title="QUE SOLUTIONS"
+          className="relative flex-shrink-0 flex items-center justify-center pl-1 sm:pl-1.5 pr-0.5 min-h-[44px] rounded-full transition-transform active:scale-95"
+        >
+          <Logo3D size="xs" variant="circle" />
+        </a>
+
+        {/* Subtle Brand Divider */}
+        <div className="w-[1px] h-4 bg-border/60 mx-0.5 flex-shrink-0" />
+
         {/* Navigation Items */}
         {navLinks.map((link) => {
           const isActive = activeSection === link.id;

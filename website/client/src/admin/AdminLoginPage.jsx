@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Lock, Mail, ArrowRight, ShieldCheck, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import Logo3D from '../components/common/Logo3D';
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('');
@@ -49,12 +50,8 @@ export default function AdminLoginPage() {
         
         {/* Top Brand Logo */}
         <div className="text-center space-y-3">
-          <div className="inline-block p-1 rounded-full border border-border bg-elevated">
-            <img
-              src="/logo.png"
-              alt="QUE SOLUTIONS"
-              className="h-14 w-auto object-contain rounded-full"
-            />
+          <div className="inline-block">
+            <Logo3D size="lg" variant="circle" />
           </div>
           <h1 className="text-2xl font-bold text-text">
             {isForgotMode ? 'Reset Admin Password' : 'Administrator Portal'}

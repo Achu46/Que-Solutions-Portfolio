@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { ArrowDown, ArrowUpRight, Headphones, MessageSquare, PhoneOutgoing } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import HeroPosterFallback from './3d/HeroPosterFallback';
+import Logo3D from './common/Logo3D';
 
 const Hero3DCanvas = React.lazy(() => import('./3d/Hero3DCanvas'));
 
@@ -27,8 +28,20 @@ export default function HeroSection({ hero, settings }) {
         {/* Soft volumetric light cone from top centre */}
         <div className="absolute inset-0 volumetric-cone z-0 pointer-events-none" />
 
-        {/* ---------------- TOP BAR (Contact Us only, no empty gap) ---------------- */}
-        <div className="relative z-20 flex items-center justify-end w-full">
+        {/* ---------------- TOP BAR (3D Brand Logo Left, Contact Us Right) ---------------- */}
+        <div className="relative z-20 flex items-center justify-between w-full">
+          <a href="#home" className="flex items-center gap-2.5 sm:gap-3 group select-none">
+            <Logo3D size="sm" variant="circle" />
+            <div className="flex flex-col">
+              <span className="text-xs sm:text-sm font-bold tracking-wider text-text leading-tight group-hover:text-brand transition-colors">
+                QUE SOLUTIONS
+              </span>
+              <span className="hidden sm:inline-block text-[9px] tracking-widest text-brand font-bold uppercase">
+                People Today. A Brighter Tomorrow.
+              </span>
+            </div>
+          </a>
+
           <a
             href="#contact"
             className="inverse inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 min-h-[44px] rounded-full text-xs font-bold uppercase tracking-wider hover:opacity-95 active:scale-95 transition-all shadow-sm"

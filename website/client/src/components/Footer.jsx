@@ -1,6 +1,7 @@
 import React from 'react';
 import { Mail, Phone, MapPin, Clock, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Logo3D from './common/Logo3D';
 
 export default function Footer({ settings }) {
   const currentYear = new Date().getFullYear();
@@ -16,17 +17,8 @@ export default function Footer({ settings }) {
           
           {/* Brand Info */}
           <div className="space-y-4">
-            <a href="#home" className="inline-block">
-              <div className="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center p-1.5 shadow-sm overflow-hidden flex-shrink-0">
-                <img
-                  src="/logo.png"
-                  alt="QUE SOLUTIONS"
-                  width="40"
-                  height="40"
-                  loading="lazy"
-                  className="w-full h-full object-contain"
-                />
-              </div>
+            <a href="#home" className="inline-block" aria-label="QUE SOLUTIONS Home">
+              <Logo3D size="md" variant="circle" />
             </a>
             <p className="text-xs font-semibold text-brand tracking-wider uppercase">
               Customer Care & Call Centre Services
