@@ -181,7 +181,8 @@ export default function WorkSection() {
           })}
         </div>
 
-        {/* Additional SaaS Highlight Card */}
+        {/* Additional SaaS Highlight Card (Commented out per user request) */}
+        {/*
         <Reveal delay={0.4}>
           <div className="rounded-3xl border border-border/80 bg-surface/70 backdrop-blur-md p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
             <div className="flex items-center gap-4">
@@ -207,6 +208,7 @@ export default function WorkSection() {
             </a>
           </div>
         </Reveal>
+        */}
 
       </div>
     </section>
