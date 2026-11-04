@@ -3,4 +3,4 @@ Allow: /
 Disallow: /que
 Disallow: /que/*
 
-Sitemap: https://quesolutions.in/sitemap.xml
+Sitemap: https://queflow.in/sitemap.xml

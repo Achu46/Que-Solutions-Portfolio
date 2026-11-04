@@ -11,20 +11,22 @@
     <meta name="keywords" content="customer care services, call centre services, outsourced customer support, inbound call support, outbound call support, chat support, Que Solutions Erode, QueFlow CRM" />
     <meta name="author" content="QUE SOLUTIONS" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://quesolutions.in/" />
+    <meta name="geo.region" content="IN-TN" />
+    <meta name="geo.placename" content="Erode" />
+    <link rel="canonical" href="https://queflow.in/" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://quesolutions.in/" />
+    <meta property="og:url" content="https://queflow.in/" />
     <meta property="og:title" content="QUE SOLUTIONS — Customer Care & Call Centre Services" />
     <meta property="og:description" content="Dedicated outsourced customer care and call centre services for small and growing product businesses. People Today. A Brighter Tomorrow." />
-    <meta property="og:image" content="/logo.png" />
+    <meta property="og:image" content="https://queflow.in/logo.png" />
 
     <!-- Twitter / X -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:title" content="QUE SOLUTIONS — Customer Care & Call Centre Services" />
     <meta property="twitter:description" content="Dedicated outsourced customer care and call centre services for small and growing product businesses." />
-    <meta property="twitter:image" content="/logo.png" />
+    <meta property="twitter:image" content="https://queflow.in/logo.png" />
 
     <!-- Load complete Poppins font family (300, 400, 500, 600, 700, 800) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,17 +52,28 @@
       })();
     </script>
 
-    <!-- Schema.org JSON-LD -->
+    <!-- Schema.org JSON-LD (SEO & AEO) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@graph": [
         {
-          "@type": "Organization",
-          "@id": "https://quesolutions.in/#organization",
+          "@type": "WebSite",
+          "@id": "https://queflow.in/#website",
           "name": "QUE SOLUTIONS",
-          "url": "https://quesolutions.in/",
-          "logo": "https://quesolutions.in/logo.png",
+          "url": "https://queflow.in/",
+          "description": "Dedicated customer care and call centre services for small and growing product-based businesses.",
+          "publisher": {
+            "@id": "https://queflow.in/#organization"
+          },
+          "inLanguage": "en"
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://queflow.in/#organization",
+          "name": "QUE SOLUTIONS",
+          "url": "https://queflow.in/",
+          "logo": "https://queflow.in/logo.png",
           "description": "Customer Care & Call Centre Services for small and growing product-based businesses.",
           "telephone": "+917092490337",
           "email": "que.solutions.services@gmail.com",
@@ -69,13 +82,14 @@
             "addressLocality": "Erode",
             "addressRegion": "Tamil Nadu",
             "addressCountry": "IN"
-          }
+          },
+          "areaServed": "IN"
         },
         {
           "@type": "LocalBusiness",
-          "@id": "https://quesolutions.in/#localbusiness",
+          "@id": "https://queflow.in/#localbusiness",
           "name": "QUE SOLUTIONS",
-          "url": "https://quesolutions.in/",
+          "url": "https://queflow.in/",
           "telephone": "+917092490337",
           "email": "que.solutions.services@gmail.com",
           "priceRange": "INR 11,999 - INR 21,999",
@@ -86,6 +100,84 @@
             "addressRegion": "Tamil Nadu",
             "addressCountry": "IN"
           }
+        },
+        {
+          "@type": "Service",
+          "@id": "https://queflow.in/#services",
+          "name": "Outsourced Customer Care & Call Centre Services",
+          "provider": {
+            "@id": "https://queflow.in/#organization"
+          },
+          "serviceType": "Customer Support Services",
+          "areaServed": "IN",
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Call Centre & Support Services",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Inbound Call Support",
+                  "description": "Professional inbound phone support handling product inquiries, orders, and customer queries."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Outbound Follow-Up Support",
+                  "description": "Proactive outbound calls for lead qualification, feedback collection, and order confirmations."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Live Chat Support",
+                  "description": "Real-time chat and messaging response on website and messaging channels."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://queflow.in/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What services does QUE SOLUTIONS provide?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "QUE SOLUTIONS provides outsourced customer care and call centre services for small and growing product-based businesses, including inbound calls, outbound follow-ups, live chat support, and QueFlow CRM integration."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Where is QUE SOLUTIONS located?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "QUE SOLUTIONS is based in Erode, Tamil Nadu, India, and provides outsourced services to businesses across India."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What are QUE SOLUTIONS working hours?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "QUE SOLUTIONS operates Monday through Saturday from 10:00 AM to 2:00 PM (4 hours/day)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Who is QUE SOLUTIONS designed for?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "QUE SOLUTIONS is built for small and growing product-based businesses, e-commerce retailers, and D2C brands looking for high-quality, cost-effective customer care without hiring an internal call center team."
+              }
+            }
+          ]
         }
       ]
     }

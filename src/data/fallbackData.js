@@ -207,7 +207,7 @@ export const fallbackProjects = [
       "Real-time admin lead management with CSV export and status tracking",
       "Instant offline fallback data rendering without layout shift",
     ],
-    liveUrl: "https://quesolutions.in",
+    liveUrl: "https://queflow.in",
     images: [],
   },
   {
